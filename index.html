@@ -121,6 +121,9 @@
     body.theme-boys .glow-chip:hover {
       box-shadow: 0 4px 12px rgba(2, 132, 199, 0.18) !important;
     }
+    body.theme-boys nav a:hover {
+      color: #0284C7 !important;
+    }
 
     @keyframes floatSlow {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -313,16 +316,16 @@
         </a>
 
         <!-- 2. DESKTOP NAV LINKS (CLEAN, SPACIOUS & NON-CRAMPED) -->
-        <nav class="hidden lg:flex items-center gap-1 xl:gap-2 font-cute text-xs xl:text-sm text-slate-600">
-          <a href="#katalog" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold">Katalog</a>
-          <a href="#cara-order" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold">Cara Pesan</a>
-          <a href="#viewer-3d" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold">3D Studio</a>
-          <a href="#upload-custom" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold">Custom & Biaya</a>
-          <a href="#b2b-showroom" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold">B2B & Event</a>
-          <a href="#track-order" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-sky-50 hover:text-sky-600 transition-all font-semibold flex items-center gap-1 text-slate-700">
+        <nav class="hidden lg:flex items-center gap-1 xl:gap-2.5 font-cute text-xs xl:text-sm text-slate-600 whitespace-nowrap shrink-0">
+          <a href="#katalog" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold whitespace-nowrap">Katalog</a>
+          <a href="#cara-order" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold whitespace-nowrap">Cara Pesan</a>
+          <a href="#viewer-3d" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold whitespace-nowrap">3D Studio</a>
+          <a href="#upload-custom" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold whitespace-nowrap">Custom & Biaya</a>
+          <a href="#b2b-showroom" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-pink-600 transition-all font-semibold whitespace-nowrap">B2B & Event</a>
+          <a href="#track-order" class="px-2.5 xl:px-3 py-1.5 rounded-full hover:bg-sky-50 hover:text-sky-600 transition-all font-semibold flex items-center gap-1 text-slate-700 whitespace-nowrap">
             <i data-lucide="truck" class="w-3.5 h-3.5 text-sky-500"></i> Lacak
           </a>
-          <a href="admin.html" target="_blank" class="ml-1 px-2.5 xl:px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold flex items-center gap-1 border border-purple-200 transition-all" title="Buka Panel Admin">
+          <a href="admin.html" target="_blank" class="ml-1 px-2.5 xl:px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold flex items-center gap-1 border border-purple-200 transition-all whitespace-nowrap" title="Buka Panel Admin">
             <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin
           </a>
         </nav>
@@ -2332,7 +2335,7 @@
         logoBadge.className = 'w-9 h-9 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-white shadow-xs group-hover:rotate-12 transition-transform';
         footerLogo.innerHTML = 'Kirei<span class="text-sky-600">Studio</span>';
         
-        mainCtaBtn.className = 'btn-bouncy bg-gradient-to-r from-sky-500 to-sky-600 text-white font-cute px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold shadow-xs flex items-center gap-1.5 glow-chip';
+        mainCtaBtn.className = 'btn-bouncy bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white font-cute px-3.5 py-2 rounded-full text-xs font-bold shadow-xs hidden xl:flex items-center gap-1.5 glow-chip whitespace-nowrap';
         
         heroBadge.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-sky-200 text-sky-600 text-xs font-cute font-semibold mb-5 shadow-xs glow-chip';
         if (badgeIcon1) badgeIcon1.textContent = '⚡';
@@ -2414,7 +2417,7 @@
         logoBadge.className = 'w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center text-white shadow-xs group-hover:rotate-12 transition-transform';
         footerLogo.innerHTML = 'Kirei<span class="text-purple-500">3D</span>';
         
-        mainCtaBtn.className = 'btn-bouncy bg-gradient-to-r from-pink-500 to-pink-600 text-white font-cute px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs flex items-center gap-1.5 glow-chip';
+        mainCtaBtn.className = 'btn-bouncy bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-cute px-3.5 py-2 rounded-full text-xs font-bold shadow-xs hidden xl:flex items-center gap-1.5 glow-chip whitespace-nowrap';
         
         heroBadge.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-pink-200 text-pink-600 text-xs font-cute font-semibold mb-5 shadow-xs glow-chip';
         if (badgeIcon1) badgeIcon1.textContent = '🌸';
