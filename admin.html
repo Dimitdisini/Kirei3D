@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirei3D Studio Hub — Admin & Content Management Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0B1320; color: #F8FAFC; }
+    .font-cute { font-family: 'Fredoka', cursive, sans-serif; }
+    .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+    .nav-tab-active {
+      background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%) !important;
+      color: #FFFFFF !important;
+      border-color: transparent !important;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
+    }
+  </style>
+</head>
+<body class="p-4 sm:p-6 lg:p-8 min-h-screen">
+
+  <!-- TOP HEADER BAR -->
+  <header class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-900/90 backdrop-blur-md p-5 rounded-3xl border border-slate-800 shadow-xl mb-6">
+    <div class="flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-sky-500 flex items-center justify-center text-white shadow-lg">
+        <i data-lucide="layers" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-cute text-xl sm:text-2xl font-bold text-white">Kirei3D Studio Command Center</h1>
+          <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono-code font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE OPS
+          </span>
+        </div>
+        <p class="text-xs text-slate-400 mt-0.5">
+          Founders: <strong>Dimitri (CEO)</strong> • <strong>Bayu (COO)</strong> • <strong>Puja (CCO)</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="index.html" target="_blank" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-cute font-bold text-slate-300 border border-slate-700 flex items-center gap-1.5 transition-all">
+        <i data-lucide="external-link" class="w-4 h-4 text-sky-400"></i> Buka Web Toko (Live)
+      </a>
+      <button onclick="syncAllData()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-xs font-cute font-bold text-white flex items-center gap-1.5 shadow-md transition-all">
+        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sinkron Database
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN NAVIGATION TABS -->
+  <div class="max-w-7xl mx-auto flex flex-wrap items-center gap-2 mb-8 bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800">
+    <button onclick="switchAdminTab('orders')" id="tabBtn-orders" class="nav-tab-active px-4 py-2.5 rounded-xl text-xs font-cute font-bold transition-all flex items-center gap-2 text-slate-300 hover:text-white">
+      <i data-lucide="clipboard-list" class="w-4 h-4"></i> 1. Antrean & Fleet Ops (Lacak Pesanan)
+    </button>
+    <button onclick="switchAdminTab('products')" id="tabBtn-products" class="px-4 py-2.5 rounded-xl text-xs font-cute font-bold transition-all flex items-center gap-2 text-slate-400 hover:text-white">
+      <i data-lucide="image" class="w-4 h-4"></i> 2. Ganti Gambar & Katalog Produk
+    </button>
+    <button onclick="switchAdminTab('reels')" id="tabBtn-reels" class="px-4 py-2.5 rounded-xl text-xs font-cute font-bold transition-all flex items-center gap-2 text-slate-400 hover:text-white">
+      <i data-lucide="video" class="w-4 h-4"></i> 3. Ganti Video TikTok & Reels
+    </button>
+    <button onclick="switchAdminTab('hpp')" id="tabBtn-hpp" class="px-4 py-2.5 rounded-xl text-xs font-cute font-bold transition-all flex items-center gap-2 text-slate-400 hover:text-white">
+      <i data-lucide="calculator" class="w-4 h-4"></i> 4. Kalkulator HPP (0.4mm) & Stok Filamen
+    </button>
+  </div>
+
+  <main class="max-w-7xl mx-auto space-y-8">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: ORDER QUEUE & FLEET MONITOR         -->
+    <!-- ========================================== -->
+    <div id="tabContent-orders" class="space-y-8">
+      
+      <!-- KPI STATS COUNTER -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <div class="bg-slate-900/80 p-5 rounded-3xl border border-slate-800 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-cute">
+            <span>Antrean Masuk</span>
+            <span class="text-amber-400 text-base">⏳</span>
+          </div>
+          <div class="my-2">
+            <div class="text-3xl font-bold font-cute text-white" id="statInQueue">2</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Perlu AI Slicing / Approval</div>
+          </div>
+          <div class="text-[10px] text-amber-400 font-mono-code">Lead Time: ~1.5 Hari</div>
+        </div>
+
+        <div class="bg-slate-900/80 p-5 rounded-3xl border border-slate-800 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-cute">
+            <span>Sedang Dicetak</span>
+            <span class="text-sky-400 text-base">🖨️</span>
+          </div>
+          <div class="my-2">
+            <div class="text-3xl font-bold font-cute text-sky-400" id="statPrinting">2</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Bambu Lab #1 & #2 Active</div>
+          </div>
+          <div class="text-[10px] text-sky-400 font-mono-code">Nozzle Standar 0.4mm</div>
+        </div>
+
+        <div class="bg-slate-900/80 p-5 rounded-3xl border border-slate-800 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-cute">
+            <span>Lolos QC & Kirim</span>
+            <span class="text-emerald-400 text-base">📦</span>
+          </div>
+          <div class="my-2">
+            <div class="text-3xl font-bold font-cute text-emerald-400" id="statReady">2</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Siap serah terima kurir</div>
+          </div>
+          <div class="text-[10px] text-emerald-400 font-mono-code">Checklist 5-Titik PASSED</div>
+        </div>
+
+        <div class="bg-slate-900/80 p-5 rounded-3xl border border-slate-800 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-cute">
+            <span>Total Omzet Bulan Ini</span>
+            <span class="text-pink-400 text-base">💰</span>
+          </div>
+          <div class="my-2">
+            <div class="text-2xl font-bold font-cute text-pink-400" id="statRevenue">Rp 3.845.000</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">28 Transaksi Selesai</div>
+          </div>
+          <div class="text-[10px] text-pink-400 font-mono-code">Target: Rp 12.000.000</div>
+        </div>
+
+      </div>
+
+      <!-- FLEET STATUS (BAYU COO) -->
+      <div class="bg-slate-900/80 p-6 rounded-3xl border border-slate-800">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="cpu" class="w-4 h-4 text-sky-400"></i>
+            <h2 class="font-cute text-base font-bold text-white">Armada Mesin Cetak FDM (Fleet Monitor)</h2>
+          </div>
+          <span class="text-xs text-slate-400 font-cute">Penanggung Jawab: <strong>Bayu (COO)</strong></span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Printer #1 -->
+          <div class="bg-slate-800/60 p-4.5 rounded-2xl border border-slate-700/80 flex items-center justify-between gap-4 p-4">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-xl font-bold">#1</div>
+              <div>
+                <div class="font-cute font-bold text-sm text-white flex items-center gap-2">
+                  <span>Bambu Lab A1 Mini</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-mono-code">PRINTING (78%)</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-0.5">Job: <strong class="text-white">KR-20260902-003</strong> (Chibi Couple DIY)</div>
+                <div class="text-[10px] text-slate-500 font-mono-code">Nozzle: 0.4mm • PLA Matte White</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-mono-code text-sky-300 font-bold">ETA: 45m</div>
+              <div class="text-[10px] text-slate-500">Bed: 60°C • Nozzle: 215°C</div>
+            </div>
+          </div>
+
+          <!-- Printer #2 -->
+          <div class="bg-slate-800/60 p-4.5 rounded-2xl border border-slate-700/80 flex items-center justify-between gap-4 p-4">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold">#2</div>
+              <div>
+                <div class="font-cute font-bold text-sm text-white flex items-center gap-2">
+                  <span>Bambu Lab P1S</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-mono-code">PRINTING (34%)</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-0.5">Job: <strong class="text-white">KR-20260902-001</strong> (Trophy Padel Open)</div>
+                <div class="text-[10px] text-slate-500 font-mono-code">Nozzle: 0.4mm • PLA Silk Gold</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-mono-code text-amber-300 font-bold">ETA: 2h 15m</div>
+              <div class="text-[10px] text-slate-500">Bed: 60°C • Nozzle: 220°C</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS TABLE -->
+      <div class="bg-slate-900/80 p-6 rounded-3xl border border-slate-800">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="font-cute text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="clipboard-list" class="w-5 h-5 text-pink-400"></i> Daftar Pesanan & Antrean Live Tracking
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Ubah status pengerjaan pesanan. Customer bisa melacak langsung di website secara real-time!</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 text-xs font-cute">
+            <button onclick="filterTable('all')" class="px-3 py-1.5 rounded-xl bg-pink-500 text-white font-bold">Semua</button>
+            <button onclick="filterTable('IN_QUEUE')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white border border-slate-700">Antrean</button>
+            <button onclick="filterTable('PRINTING')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white border border-slate-700">Sedang Print</button>
+            <button onclick="filterTable('QC_PASSED')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white border border-slate-700">Lolos QC</button>
+            <button onclick="filterTable('SHIPPED')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white border border-slate-700">Terkirim</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300 border border-slate-800 rounded-2xl overflow-hidden">
+            <thead class="bg-slate-800/80 text-slate-400 font-cute uppercase text-[11px]">
+              <tr>
+                <th class="p-3.5">Order ID</th>
+                <th class="p-3.5">Customer & Kontak</th>
+                <th class="p-3.5">Item Produk</th>
+                <th class="p-3.5">Aset Foto</th>
+                <th class="p-3.5">Total & Status Bayar</th>
+                <th class="p-3.5">Status Pengerjaan</th>
+                <th class="p-3.5 text-right">Aksi Kelola</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800" id="orderTableBody">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: PRODUCT CATALOG & IMAGE CMS         -->
+    <!-- ========================================== -->
+    <div id="tabContent-products" class="hidden space-y-6">
+      <div class="bg-slate-900/80 p-6 rounded-3xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <h2 class="font-cute text-xl font-bold text-white flex items-center gap-2">
+            <i data-lucide="image" class="w-5 h-5 text-purple-400"></i> Katalog & Media Manager
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">Ganti foto utama, upload foto contoh hasil baru, dan ubah harga produk yang tampil di website utama.</p>
+        </div>
+        <button onclick="openProductEditModal(null)" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 font-cute font-bold text-xs text-white flex items-center gap-1.5 shadow-md">
+          <i data-lucide="plus" class="w-4 h-4"></i> Tambah Produk Baru
+        </button>
+      </div>
+
+      <!-- Products Grid in Admin -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="adminProductGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: TIKTOK & REELS CURATOR              -->
+    <!-- ========================================== -->
+    <div id="tabContent-reels" class="hidden space-y-6">
+      <div class="bg-slate-900/80 p-6 rounded-3xl border border-slate-800">
+        <h2 class="font-cute text-xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="video" class="w-5 h-5 text-pink-400"></i> Curator Video TikTok & Instagram Reels
+        </h2>
+        <p class="text-xs text-slate-400 mt-0.5 mb-6">
+          Kelola 4 slot video vertikal yang tampil di section <strong>"Trending di TikTok & Instagram Reels"</strong> pada halaman utama.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="adminReelsGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: HPP CALCULATOR & FILAMENT STOCK     -->
+    <!-- ========================================== -->
+    <div id="tabContent-hpp" class="hidden space-y-6">
+      <div class="bg-slate-900/80 p-6 rounded-3xl border border-slate-800">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="font-cute text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="calculator" class="w-5 h-5 text-emerald-400"></i> Standar Kalkulasi HPP & Stok Filamen
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Formula HPP resmi berbasis Bambu Lab Nozzle 0.4mm, listrik PLN R-1, dan penyusutan mesin.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-mono-code text-xs font-bold">
+            Tarif Dasar: Mulai Rp 500 / gram
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- HPP Simulator Box -->
+          <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700 space-y-3">
+            <h3 class="font-cute font-bold text-sm text-white">⚡ Simulator HPP Cepat</h3>
+            <div>
+              <label class="block text-[11px] font-cute text-slate-400 mb-1">Berat Cetak Bersih (gram):</label>
+              <input type="number" id="hppWeight" value="50" oninput="recalcHppAdmin()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono-code text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-cute text-slate-400 mb-1">Waktu Cetak (Jam @ Nozzle 0.4mm):</label>
+              <input type="number" id="hppHours" value="2.5" step="0.5" oninput="recalcHppAdmin()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono-code text-white">
+            </div>
+            <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-700 space-y-1.5 text-xs font-mono-code">
+              <div class="flex justify-between text-slate-400"><span>Bahan Filamen (+8% waste):</span> <span id="resHppFilament">Rp 10.800</span></div>
+              <div class="flex justify-between text-slate-400"><span>Listrik (110W PLN R-1):</span> <span id="resHppElectric">Rp 412</span></div>
+              <div class="flex justify-between text-slate-400"><span>Depresiasi Mesin (Rp 2k/jam):</span> <span id="resHppDeprec">Rp 5.000</span></div>
+              <div class="flex justify-between text-slate-400"><span>Kemasan & Stiker Bonus:</span> <span>Rp 4.000</span></div>
+              <div class="border-t border-slate-700 pt-1.5 flex justify-between font-bold text-pink-400 text-sm">
+                <span>Total HPP Riil:</span> <span id="resHppTotal">Rp 20.212</span>
+              </div>
+              <div class="flex justify-between font-bold text-emerald-400 text-xs pt-1">
+                <span>Rekomendasi Jual (Margin 65%):</span> <span id="resPriceRec">Rp 58.000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filament Spool Inventory Monitor -->
+          <div class="md:col-span-2 bg-slate-800/60 p-5 rounded-2xl border border-slate-700 space-y-3">
+            <h3 class="font-cute font-bold text-sm text-white">🧵 Monitoring Stok Spool Filamen PLA</h3>
+            <div class="space-y-2.5 text-xs font-cute">
+              <div class="p-3 bg-slate-900 rounded-xl border border-slate-700 flex items-center justify-between">
+                <div>
+                  <div class="font-bold text-white">PLA Matte Pastel Pink (eSUN)</div>
+                  <div class="text-[10px] text-slate-400 font-mono-code">Sisa: <strong>0.65 kg</strong> / 1.0 kg (65%)</div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">AMAN</span>
+              </div>
+
+              <div class="p-3 bg-slate-900 rounded-xl border border-slate-700 flex items-center justify-between">
+                <div>
+                  <div class="font-bold text-white">PLA Silk Dual-Color Gold/Black (Sunlu)</div>
+                  <div class="text-[10px] text-slate-400 font-mono-code">Sisa: <strong>0.30 kg</strong> / 1.0 kg (30%)</div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-bold">RE-ORDER SOON</span>
+              </div>
+
+              <div class="p-3 bg-slate-900 rounded-xl border border-slate-700 flex items-center justify-between">
+                <div>
+                  <div class="font-bold text-white">PLA Glow-in-the-Dark Green (Bambu Lab)</div>
+                  <div class="text-[10px] text-slate-400 font-mono-code">Sisa: <strong>0.85 kg</strong> / 1.0 kg (85%)</div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">AMAN</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: KELOLA STATUS ORDER & RESI          -->
+  <!-- ========================================== -->
+  <div id="detailModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full p-6 text-white relative shadow-2xl">
+      <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="font-cute text-xl font-bold mb-1" id="modalOrderCode">Order Detail</h3>
+      <p class="text-xs text-slate-400 mb-4" id="modalCustomerName">Customer Information</p>
+
+      <div class="space-y-4">
+        <div class="p-3 bg-slate-800/60 rounded-2xl border border-slate-700 text-center">
+          <span class="text-[11px] font-cute text-slate-400 block mb-2">Foto / File Referensi Customer:</span>
+          <img id="modalAssetImg" src="assets/chibi.jpg" class="max-h-48 mx-auto rounded-xl object-contain border border-slate-600 shadow-md">
+        </div>
+
+        <div>
+          <label class="block font-cute text-xs text-slate-400 mb-1">Update Status Pengerjaan:</label>
+          <select id="modalStatusSelect" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-cute text-white focus:outline-none focus:border-pink-500">
+            <option value="ASSET_RECEIVED">1. 📸 Foto/File Diterima</option>
+            <option value="AI_MODELING">2. 💻 AI Modeling & Slicing 3D</option>
+            <option value="IN_QUEUE">3. ⏳ Masuk Antrean Mesin Bambu Lab</option>
+            <option value="PRINTING">4. 🖨️ Sedang Dicetak di Printer (Nozzle 0.4mm)</option>
+            <option value="QC_PASSED">5. 🔍 Lolos QC 5-Titik & Siap Packing</option>
+            <option value="SHIPPED">6. 🚚 Diserahkan ke Ekspedisi (Input Resi)</option>
+            <option value="DELIVERED">7. 🎉 Diterima Customer</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-cute text-xs text-slate-400 mb-1">Nomor Resi Ekspedisi (JNE / J&T / SiCepat / Paxel):</label>
+          <input type="text" id="modalTrackingInput" placeholder="Contoh: JP9283748291" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono-code text-white focus:outline-none focus:border-pink-500">
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button onclick="saveOrderStatus()" class="flex-1 py-2.5 rounded-xl bg-pink-500 hover:bg-pink-600 font-cute font-bold text-xs text-white shadow-md">
+            Simpan Status
+          </button>
+          <button onclick="sendWaNotification()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-cute font-bold text-xs text-white shadow-md flex items-center justify-center gap-1">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Update WA
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: EDIT PRODUK & GANTI FOTO KATALOG    -->
+  <!-- ========================================== -->
+  <div id="productEditModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-xl w-full p-6 text-white relative shadow-2xl max-h-[90vh] overflow-y-auto">
+      <button onclick="closeProductEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="font-cute text-xl font-bold mb-1" id="productModalTitle">Edit Produk & Foto Katalog</h3>
+      <p class="text-xs text-slate-400 mb-4">Ganti nama, harga, gambar utama, dan gambar contoh hasil.</p>
+
+      <form id="productForm" onsubmit="saveProductForm(event)" class="space-y-4 text-xs font-cute">
+        <input type="hidden" id="prodEditId">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Nama Produk:</label>
+            <input type="text" id="prodEditTitle" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-pink-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Kategori:</label>
+            <select id="prodEditCategory" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-pink-500">
+              <option value="custom">Custom & Peta 3D</option>
+              <option value="trophy">Trophy & Event</option>
+              <option value="toys">Toys & Fidget ASMR</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Harga Mulai Dari (Rp):</label>
+            <input type="number" id="prodEditPrice" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 font-mono-code text-white focus:outline-none focus:border-pink-500">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Badge Produk (Misal: BEST SELLER 💖):</label>
+            <input type="text" id="prodEditBadge" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-pink-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">URL / File Path Foto Utama (Main Image):</label>
+          <div class="flex gap-2">
+            <input type="text" id="prodEditMainImg" required placeholder="assets/chibi.jpg" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 font-mono-code text-white focus:outline-none focus:border-pink-500">
+          </div>
+        </div>
+
+        <!-- 3 Sample Images -->
+        <div class="space-y-2 p-3 bg-slate-800/60 rounded-2xl border border-slate-700">
+          <span class="text-slate-300 font-bold block mb-1">📸 Foto Contoh Hasil (Thumbnail Preview):</span>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-0.5">Contoh Hasil 1:</label>
+              <input type="text" id="prodEditThumb1" placeholder="assets/chibi.jpg" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-[11px] font-mono-code text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-0.5">Contoh Hasil 2:</label>
+              <input type="text" id="prodEditThumb2" placeholder="assets/chibi_couple.jpg" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-[11px] font-mono-code text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-0.5">Contoh Hasil 3:</label>
+              <input type="text" id="prodEditThumb3" placeholder="assets/chibi_cat.jpg" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-[11px] font-mono-code text-white">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">Deskripsi Singkat:</label>
+          <textarea id="prodEditDesc" rows="2" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-pink-500"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 font-bold text-white shadow-md hover:opacity-90">
+          Simpan ke Website Toko
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: EDIT TIKTOK / REELS VIDEO           -->
+  <!-- ========================================== -->
+  <div id="reelEditModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-6 text-white relative shadow-2xl">
+      <button onclick="closeReelEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="font-cute text-xl font-bold mb-1" id="reelModalTitle">Edit Video TikTok / Reels</h3>
+      <p class="text-xs text-slate-400 mb-4">Ubah link video, thumbnail, dan caption hook TikTok.</p>
+
+      <form id="reelForm" onsubmit="saveReelForm(event)" class="space-y-4 text-xs font-cute">
+        <input type="hidden" id="reelEditId">
+
+        <div>
+          <label class="block text-slate-400 mb-1">Judul / Hook Caption:</label>
+          <input type="text" id="reelEditTitle" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white font-sans focus:outline-none focus:border-pink-500">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">URL Thumbnail Gambar:</label>
+          <input type="text" id="reelEditImg" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 font-mono-code text-white focus:outline-none focus:border-pink-500">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">URL Video TikTok / IG Reels:</label>
+          <input type="url" id="reelEditUrl" placeholder="https://tiktok.com/@kirei3d/video/..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 font-mono-code text-white focus:outline-none focus:border-pink-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Views Display:</label>
+            <input type="text" id="reelEditViews" placeholder="48.2k views" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white font-sans">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Likes Display:</label>
+            <input type="text" id="reelEditLikes" placeholder="4.8k likes" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white font-sans">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-pink-500 hover:bg-pink-600 font-bold text-white shadow-md">
+          Simpan Video Reel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // 1. DEFAULT DATA (Orders, Products, Reels)
+    let defaultOrders = [
+      {
+        code: "KR-20260902-001",
+        name: "Coach Indra (Padel Club)",
+        phone: "6281298765432",
+        product: "Custom 3D Trophy Padel Open 2026",
+        total: "Rp 750.000",
+        payment: "PAID_QRIS",
+        status: "PRINTING",
+        asset: "assets/trophy_padel.jpg",
+        resi: "-"
+      },
+      {
+        code: "KR-20260902-002",
+        name: "Anisa Rahma",
+        phone: "6281311223344",
+        product: "3D Embossed Photocard Frame (Bunny Wings)",
+        total: "Rp 49.000",
+        payment: "PAID_QRIS",
+        status: "QC_PASSED",
+        asset: "assets/photocard_bunny.jpg",
+        resi: "-"
+      },
+      {
+        code: "KR-20260902-003",
+        name: "Rizky Pratama",
+        phone: "6281788990011",
+        product: "Miniatur Chibi DIY Kit (Couple)",
+        total: "Rp 150.000",
+        payment: "PAID_TRANSFER",
+        status: "PRINTING",
+        asset: "assets/chibi_couple.jpg",
+        resi: "-"
+      },
+      {
+        code: "KR-20260902-004",
+        name: "Dimas & Sarah",
+        phone: "6281233445566",
+        product: "3D Topo Terrain Matterhorn Route",
+        total: "Rp 95.000",
+        payment: "PAID_QRIS",
+        status: "IN_QUEUE",
+        asset: "assets/topo_map.jpg",
+        resi: "-"
+      },
+      {
+        code: "KR-20260902-005",
+        name: "Kevin Sanjaya",
+        phone: "6281877665544",
+        product: "Mechanical Keycap Clicker (Gameboy Retro)",
+        total: "Rp 29.000",
+        payment: "PAID_QRIS",
+        status: "SHIPPED",
+        asset: "assets/keycap_gameboy.jpg",
+        resi: "JT8374928172"
+      }
+    ];
+
+    let defaultProducts = [
+      {
+        id: "trophy",
+        title: "Custom 3D Tournament Trophy",
+        category: "trophy",
+        categoryLabel: "Trophy & Award Custom",
+        price: 180000,
+        badge: "HOT FOR EVENT 🏆",
+        mainImg: "assets/trophy_padel.jpg",
+        thumbs: ["assets/trophy_padel.jpg", "assets/trophy_esports.jpg"],
+        desc: "Piala turnamen maskot olahraga (padel, badminton) atau trophy kejuaraan Esports Valorant futuristik dengan plakat nama juara!"
+      },
+      {
+        id: "topo",
+        title: "3D Topo Terrain & Trail Map",
+        category: "custom",
+        categoryLabel: "Relief Map & Strava",
+        price: 95000,
+        badge: "TRAIL & MARATHON 🏔️",
+        mainImg: "assets/topo_map.jpg",
+        thumbs: ["assets/topo_map.jpg", "assets/strava.jpg", "assets/strava_cycling.jpg"],
+        desc: "Peta kontur gunung 3D, jalur hiking Strava, atau rute cycling Tour de Bali di shadowbox frame kayu!"
+      },
+      {
+        id: "chibi",
+        title: "Miniatur Chibi Custom (DIY Kit)",
+        category: "custom",
+        categoryLabel: "Custom 3D Sculpt",
+        price: 95000,
+        badge: "BEST SELLER 💖",
+        mainImg: "assets/chibi.jpg",
+        thumbs: ["assets/chibi.jpg", "assets/chibi_couple.jpg", "assets/chibi_cat.jpg"],
+        desc: "Ubah fotomu, pasangan, atau anabul kucing/anjing jadi figur chibi lucu. Warnai sendiri atau pesan versi full painted!"
+      },
+      {
+        id: "keycap",
+        title: "Mechanical Keycap Clicker",
+        category: "toys",
+        categoryLabel: "Clicky Fidget Charm",
+        price: 29000,
+        badge: "CUSTOM NAMA ASMR ⌨️",
+        mainImg: "assets/keycap_name.jpg",
+        thumbs: ["assets/keycap_name.jpg", "assets/keycap.jpg", "assets/keycap_gameboy.jpg"],
+        desc: "Gantungan switch mekanik asli dengan ukiran nama / inisial custom timbul, Gameboy retro, atau cakar kucing!"
+      },
+      {
+        id: "photocard",
+        title: "3D Embossed Photocard Frame",
+        category: "toys",
+        categoryLabel: "Idol Toploader Frame",
+        price: 49000,
+        badge: "K-POP & GOTHIC 🪽",
+        mainImg: "assets/photocard.jpg",
+        thumbs: ["assets/photocard.jpg", "assets/photocard_bunny.jpg", "assets/photocard_goth.jpg"],
+        desc: "Bingkai photocard idol dengan ornamen sayap malaikat, kuping kelinci, atau tema sayap kelelawar gothic 3D!"
+      },
+      {
+        id: "flexi",
+        title: "Flexi Dragon & Axolotl Toys",
+        category: "toys",
+        categoryLabel: "Articulated Flexi",
+        price: 65000,
+        badge: "PRINT-IN-PLACE 🐉",
+        mainImg: "assets/fidget.jpg",
+        thumbs: ["assets/fidget.jpg", "assets/fidget_axolotl.jpg"],
+        desc: "Hewan artikulasi lentur (naga & axolotl) yang dicetak langsung menyatu tanpa lem. Super satisfying dimainkan!"
+      }
+    ];
+
+    let defaultReels = [
+      { id: 1, title: "DIY Warnai Chibi Couple 🎨", img: "assets/chibi.jpg", url: "https://tiktok.com", views: "48.2k views", likes: "4.8k likes", badge: "REELS" },
+      { id: 2, title: "Proses Cetak Piala Padel 12 Jam!", img: "assets/trophy_padel.jpg", url: "https://tiktok.com", views: "124.5k views", likes: "12.1k likes", badge: "TROPHY BTS" },
+      { id: 3, title: "Rute Marathon Jadi Pajangan Kayu", img: "assets/topo_map.jpg", url: "https://tiktok.com", views: "89.3k views", likes: "7.9k likes", badge: "STRAVA 3D" },
+      { id: 4, title: "ASMR Suara Switch Blue Clicky", img: "assets/keycap_name.jpg", url: "https://tiktok.com", views: "210.4k views", likes: "19.5k likes", badge: "ASMR KLIK" }
+    ];
+
+    // Load from localStorage or fallback
+    let orders = JSON.parse(localStorage.getItem('kirei3d_orders')) || defaultOrders;
+    let products = JSON.parse(localStorage.getItem('kirei3d_products')) || defaultProducts;
+    let reels = JSON.parse(localStorage.getItem('kirei3d_reels')) || defaultReels;
+
+    let currentEditingCode = null;
+
+    // 2. TAB SWITCHING
+    function switchAdminTab(tabName) {
+      const tabs = ['orders', 'products', 'reels', 'hpp'];
+      tabs.forEach(t => {
+        const content = document.getElementById(`tabContent-${t}`);
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (t === tabName) {
+          content.classList.remove('hidden');
+          btn.className = 'nav-tab-active px-4 py-2.5 rounded-xl text-xs font-cute font-bold transition-all flex items-center gap-2 text-white';
+        } else {
+          content.classList.add('hidden');
+          btn.className = 'px-4 py-2.5 rounded-xl text-xs font-cute font-bold transition-all flex items-center gap-2 text-slate-400 hover:text-white';
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // 3. RENDER ORDERS
+    function renderOrders(list = orders) {
+      const tbody = document.getElementById('orderTableBody');
+      if (!tbody) return;
+
+      const statusBadges = {
+        'IN_QUEUE': '<span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-mono-code text-[10px] font-bold">⏳ ANTREAN</span>',
+        'AI_MODELING': '<span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 font-mono-code text-[10px] font-bold">💻 AI SLICING</span>',
+        'PRINTING': '<span class="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-400 font-mono-code text-[10px] font-bold">🖨️ PRINTING</span>',
+        'QC_PASSED': '<span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono-code text-[10px] font-bold">🔍 LOLOS QC</span>',
+        'SHIPPED': '<span class="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-400 font-mono-code text-[10px] font-bold">🚚 TERKIRIM</span>',
+        'ASSET_RECEIVED': '<span class="px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-300 font-mono-code text-[10px] font-bold">📸 FOTO DITERIMA</span>',
+        'DELIVERED': '<span class="px-2.5 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 font-mono-code text-[10px] font-bold">🎉 SELESAI</span>'
+      };
+
+      tbody.innerHTML = list.map(o => `
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="p-3.5 font-mono-code font-bold text-white">${o.code}</td>
+          <td class="p-3.5">
+            <div class="font-cute font-bold text-white">${o.name}</div>
+            <div class="text-[10px] text-slate-400 font-mono-code">${o.phone}</div>
+          </td>
+          <td class="p-3.5 font-cute text-slate-200">${o.product}</td>
+          <td class="p-3.5">
+            <button onclick="openDetailModal('${o.code}')" class="flex items-center gap-1.5 p-1 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700">
+              <img src="${o.asset}" class="w-7 h-7 object-cover rounded">
+              <span class="text-[10px] text-slate-300 font-cute">Lihat</span>
+            </button>
+          </td>
+          <td class="p-3.5">
+            <span class="text-xs font-mono-code font-bold text-emerald-400">${o.total}</span>
+            <span class="block text-[9px] text-slate-500 font-mono-code">${o.payment}</span>
+          </td>
+          <td class="p-3.5">${statusBadges[o.status] || o.status}</td>
+          <td class="p-3.5 text-right">
+            <button onclick="openDetailModal('${o.code}')" class="px-3 py-1 bg-pink-500/20 hover:bg-pink-500 text-pink-300 hover:text-white rounded-lg text-xs font-cute font-bold transition-all border border-pink-500/30">
+              Kelola & WA
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function openDetailModal(code) {
+      currentEditingCode = code;
+      const order = orders.find(o => o.code === code);
+      if (!order) return;
+
+      document.getElementById('modalOrderCode').textContent = `Kelola Pesanan: ${order.code}`;
+      document.getElementById('modalCustomerName').textContent = `${order.name} • ${order.product} (${order.total})`;
+      document.getElementById('modalAssetImg').src = order.asset;
+      document.getElementById('modalStatusSelect').value = order.status;
+      document.getElementById('modalTrackingInput').value = order.resi === '-' ? '' : order.resi;
+
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    function saveOrderStatus() {
+      const order = orders.find(o => o.code === currentEditingCode);
+      if (order) {
+        order.status = document.getElementById('modalStatusSelect').value;
+        const resiVal = document.getElementById('modalTrackingInput').value.trim();
+        order.resi = resiVal ? resiVal : '-';
+        localStorage.setItem('kirei3d_orders', JSON.stringify(orders));
+        renderOrders();
+        closeDetailModal();
+        alert(`✓ Status order ${order.code} berhasil diperbarui menjadi ${order.status}! Data otomatis tersinkron ke halaman live tracking customer.`);
+      }
+    }
+
+    function sendWaNotification() {
+      const order = orders.find(o => o.code === currentEditingCode);
+      if (!order) return;
+
+      const statusMsgs = {
+        'AI_MODELING': 'Desain 3D & AI Slicing pesanan kamu sedang kami proses ya! Nanti kami infokan tangkapan layarnya.',
+        'PRINTING': 'Kabar seru! Pesanan kamu saat ini sedang dicetak di mesin 3D printer Bambu Lab kami dengan presisi Nozzle 0.4mm 🖨️✨',
+        'QC_PASSED': 'Pesanan kamu sudah selesai dicetak dan lolos uji QC 5-titik! Saat ini sedang dipacking rapi dengan box kardus e-flute & bonus stiker 🎁',
+        'SHIPPED': `Paket pesanan kamu sudah diserahkan ke kurir! Nomor Resi pengiriman: *${order.resi}*. Kamu bisa pantau status live langsung di website kami!`,
+        'DELIVERED': 'Pesanan kamu sudah sampai! Semoga suka dengan hasil cetak 3D Kirei3D Atelier ya kak. Jangan lupa tag kami di IG/TikTok @kirei3d.id ✨'
+      };
+
+      const customMsg = statusMsgs[order.status] || `Pesanan kamu dengan kode *${order.code}* statusnya saat ini: *${order.status}*.`;
+      const trackUrl = `${window.location.origin}${window.location.pathname.replace('admin.html', 'index.html')}#track-order`;
+      const text = encodeURIComponent(`Halo Kak ${order.name}!\n\nUpdate dari *Kirei3D Studio* untuk pesanan *${order.code}* (${order.product}):\n\n${customMsg}\n\n👉 Lacak status live kapan saja: ${trackUrl}\n\nTerima kasih banyak sudah mempercayakan pesanan 3D print di Kirei3D! ✨`);
+      window.open(`https://wa.me/${order.phone}?text=${text}`, '_blank');
+    }
+
+    function filterTable(status) {
+      if (status === 'all') {
+        renderOrders(orders);
+      } else {
+        renderOrders(orders.filter(o => o.status === status));
+      }
+    }
+
+    // 4. RENDER PRODUCTS CMS
+    function renderProductsAdmin() {
+      const grid = document.getElementById('adminProductGrid');
+      if (!grid) return;
+
+      grid.innerHTML = products.map((p, idx) => `
+        <div class="bg-slate-900/90 rounded-3xl p-5 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="relative h-48 rounded-2xl overflow-hidden mb-3 bg-slate-800">
+              <img src="${p.mainImg}" class="w-full h-full object-cover">
+              <span class="absolute top-2.5 left-2.5 bg-pink-500 text-white text-[9px] font-cute px-2.5 py-0.5 rounded-full font-bold shadow-xs">${p.badge || 'PRODUK'}</span>
+            </div>
+            
+            <div class="flex items-center gap-1.5 mb-3">
+              ${p.thumbs.map(t => `<img src="${t}" class="w-9 h-9 rounded-lg object-cover border border-slate-700">`).join('')}
+              <span class="text-[10px] text-slate-400 font-cute ml-auto">${p.thumbs.length} Contoh</span>
+            </div>
+
+            <div class="text-xs font-cute text-pink-400 font-semibold mb-0.5">${p.categoryLabel || p.category}</div>
+            <h3 class="font-cute text-base font-bold text-white mb-1">${p.title}</h3>
+            <p class="text-xs text-slate-400 line-clamp-2 mb-3">${p.desc}</p>
+          </div>
+
+          <div class="flex items-center justify-between border-t border-slate-800 pt-3 mt-2">
+            <div>
+              <span class="text-[10px] text-slate-500 block font-cute">Harga Mulai</span>
+              <span class="font-cute font-bold text-sm text-emerald-400">Rp ${Number(p.price).toLocaleString('id-ID')}</span>
+            </div>
+            <button onclick="openProductEditModal(${idx})" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-cute font-bold border border-slate-700 flex items-center gap-1">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5 text-pink-400"></i> Edit / Ganti Foto
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function openProductEditModal(index) {
+      if (index === null) {
+        document.getElementById('productModalTitle').textContent = 'Tambah Produk Baru';
+        document.getElementById('prodEditId').value = '';
+        document.getElementById('prodEditTitle').value = '';
+        document.getElementById('prodEditCategory').value = 'custom';
+        document.getElementById('prodEditPrice').value = 50000;
+        document.getElementById('prodEditBadge').value = 'NEW ARRIVAL ✨';
+        document.getElementById('prodEditMainImg').value = 'assets/chibi.jpg';
+        document.getElementById('prodEditThumb1').value = 'assets/chibi.jpg';
+        document.getElementById('prodEditThumb2').value = 'assets/chibi_couple.jpg';
+        document.getElementById('prodEditThumb3').value = '';
+        document.getElementById('prodEditDesc').value = 'Deskripsi produk baru...';
+      } else {
+        const p = products[index];
+        document.getElementById('productModalTitle').textContent = `Edit Produk: ${p.title}`;
+        document.getElementById('prodEditId').value = index;
+        document.getElementById('prodEditTitle').value = p.title;
+        document.getElementById('prodEditCategory').value = p.category;
+        document.getElementById('prodEditPrice').value = p.price;
+        document.getElementById('prodEditBadge').value = p.badge || '';
+        document.getElementById('prodEditMainImg').value = p.mainImg;
+        document.getElementById('prodEditThumb1').value = p.thumbs[0] || '';
+        document.getElementById('prodEditThumb2').value = p.thumbs[1] || '';
+        document.getElementById('prodEditThumb3').value = p.thumbs[2] || '';
+        document.getElementById('prodEditDesc').value = p.desc;
+      }
+      document.getElementById('productEditModal').classList.remove('hidden');
+    }
+
+    function closeProductEditModal() {
+      document.getElementById('productEditModal').classList.add('hidden');
+    }
+
+    function saveProductForm(e) {
+      e.preventDefault();
+      const idVal = document.getElementById('prodEditId').value;
+      const thumbs = [
+        document.getElementById('prodEditThumb1').value.trim(),
+        document.getElementById('prodEditThumb2').value.trim(),
+        document.getElementById('prodEditThumb3').value.trim()
+      ].filter(t => t.length > 0);
+
+      const productData = {
+        id: idVal !== '' ? products[idVal].id : 'prod_' + Date.now(),
+        title: document.getElementById('prodEditTitle').value,
+        category: document.getElementById('prodEditCategory').value,
+        categoryLabel: document.getElementById('prodEditCategory').options[document.getElementById('prodEditCategory').selectedIndex].text,
+        price: parseInt(document.getElementById('prodEditPrice').value, 10),
+        badge: document.getElementById('prodEditBadge').value,
+        mainImg: document.getElementById('prodEditMainImg').value,
+        thumbs: thumbs.length > 0 ? thumbs : [document.getElementById('prodEditMainImg').value],
+        desc: document.getElementById('prodEditDesc').value
+      };
+
+      if (idVal !== '') {
+        products[idVal] = productData;
+      } else {
+        products.push(productData);
+      }
+
+      localStorage.setItem('kirei3d_products', JSON.stringify(products));
+      renderProductsAdmin();
+      closeProductEditModal();
+      alert('✓ Produk dan foto katalog berhasil diperbarui! Perubahan tersimpan dan aktif di website.');
+    }
+
+    // 5. RENDER REELS CURATOR
+    function renderReelsAdmin() {
+      const grid = document.getElementById('adminReelsGrid');
+      if (!grid) return;
+
+      grid.innerHTML = reels.map((r, idx) => `
+        <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between">
+          <div class="relative aspect-[9/16] bg-slate-950">
+            <img src="${r.img}" class="w-full h-full object-cover opacity-90">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+            <span class="absolute top-2.5 left-2.5 bg-red-500 text-white text-[9px] font-cute px-2 py-0.5 rounded-full font-bold">
+              ${r.badge || 'REELS'}
+            </span>
+            <div class="absolute bottom-3 left-3 right-3 text-white">
+              <div class="text-xs font-cute font-bold truncate">${r.title}</div>
+              <div class="text-[10px] text-slate-300 mt-0.5 flex justify-between">
+                <span>👁️ ${r.views}</span>
+                <span>❤️ ${r.likes}</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-[10px] text-slate-500 font-mono-code">Slot #${r.id}</span>
+            <button onclick="openReelEditModal(${idx})" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-pink-300 hover:text-white rounded-lg text-xs font-cute font-bold border border-slate-700">
+              Ganti Video
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function openReelEditModal(idx) {
+      const r = reels[idx];
+      document.getElementById('reelEditId').value = idx;
+      document.getElementById('reelModalTitle').textContent = `Edit Slot Video #${r.id}`;
+      document.getElementById('reelEditTitle').value = r.title;
+      document.getElementById('reelEditImg').value = r.img;
+      document.getElementById('reelEditUrl').value = r.url;
+      document.getElementById('reelEditViews').value = r.views;
+      document.getElementById('reelEditLikes').value = r.likes;
+
+      document.getElementById('reelEditModal').classList.remove('hidden');
+    }
+
+    function closeReelEditModal() {
+      document.getElementById('reelEditModal').classList.add('hidden');
+    }
+
+    function saveReelForm(e) {
+      e.preventDefault();
+      const idx = document.getElementById('reelEditId').value;
+      reels[idx] = {
+        id: reels[idx].id,
+        title: document.getElementById('reelEditTitle').value,
+        img: document.getElementById('reelEditImg').value,
+        url: document.getElementById('reelEditUrl').value,
+        views: document.getElementById('reelEditViews').value,
+        likes: document.getElementById('reelEditLikes').value,
+        badge: reels[idx].badge
+      };
+
+      localStorage.setItem('kirei3d_reels', JSON.stringify(reels));
+      renderReelsAdmin();
+      closeReelEditModal();
+      alert(`✓ Video TikTok Slot #${reels[idx].id} berhasil diperbarui!`);
+    }
+
+    // 6. HPP RECALCULATOR
+    function recalcHppAdmin() {
+      const weight = parseFloat(document.getElementById('hppWeight').value) || 0;
+      const hours = parseFloat(document.getElementById('hppHours').value) || 0;
+
+      const filamentCost = (weight * 1.08) * 200; // Rp 200/gram standard PLA + 8% waste
+      const electricCost = hours * 165; // 110W Bambu Lab @ PLN R-1
+      const deprecCost = hours * 2000; // Rp 2.000 / jam
+      const packCost = 4000; // Box + sticker
+
+      const totalHpp = filamentCost + electricCost + deprecCost + packCost;
+      const recPrice = Math.round((totalHpp / 0.35) / 1000) * 1000; // 65% retail margin
+
+      document.getElementById('resHppFilament').textContent = `Rp ${Math.round(filamentCost).toLocaleString('id-ID')}`;
+      document.getElementById('resHppElectric').textContent = `Rp ${Math.round(electricCost).toLocaleString('id-ID')}`;
+      document.getElementById('resHppDeprec').textContent = `Rp ${Math.round(deprecCost).toLocaleString('id-ID')}`;
+      document.getElementById('resHppTotal').textContent = `Rp ${Math.round(totalHpp).toLocaleString('id-ID')}`;
+      document.getElementById('resPriceRec').textContent = `Rp ${recPrice.toLocaleString('id-ID')}`;
+    }
+
+    // 7. SYNC ALL DATA
+    function syncAllData() {
+      renderOrders();
+      renderProductsAdmin();
+      renderReelsAdmin();
+      recalcHppAdmin();
+      alert("✓ Semua data Antrean, Foto Produk, Video TikTok, dan HPP berhasil disinkronkan!");
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderOrders();
+      renderProductsAdmin();
+      renderReelsAdmin();
+      recalcHppAdmin();
+    });
+  </script>
+</body>
+</html>
