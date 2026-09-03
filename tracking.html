@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Lacak Status Pesanan 3D — Kirei3D Atelier</title>
+  
+  <!-- PWA Meta -->
+  <meta name="theme-color" content="#FF5C8A">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>">
+  
+  <!-- Tailwind CSS & Google Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            fredoka: ['Fredoka', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            pastelPink: '#FFB7C5',
+            pastelPinkDark: '#FF5C8A',
+            skyBlue: '#38BDF8',
+            skyBlueDark: '#0284C7',
+            warmCream: '#FAF7F2',
+            softDark: '#1E293B',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #FAF7F2;
+      background-image: radial-gradient(#FBCFE8 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
+      color: #1E293B;
+    }
+    .font-cute { font-family: 'Fredoka', cursive, sans-serif; }
+    .btn-bouncy { transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .btn-bouncy:hover { transform: translateY(-2px); }
+    .btn-bouncy:active { transform: translateY(1.5px) scale(0.98); }
+    .glow-hover { transition: all 0.25s ease; }
+    .glow-hover:hover {
+      box-shadow: 0 16px 32px -8px rgba(2, 132, 199, 0.15);
+      border-color: rgba(2, 132, 199, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-sky-200 selection:text-sky-900 pb-16">
+
+  <!-- TOP CLEAN NAVBAR -->
+  <header class="w-full bg-white/90 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      
+      <!-- LOGO -->
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-pink-400 via-pink-500 to-purple-600 flex items-center justify-center text-white shadow-xs group-hover:rotate-12 transition-transform">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </div>
+        <div class="flex items-baseline gap-1.5">
+          <span class="font-cute text-xl font-bold tracking-tight text-slate-900">Kirei<span class="text-pink-600">3D</span></span>
+          <span class="text-[9px] font-cute text-slate-400 font-bold uppercase tracking-widest border-l border-slate-200 pl-1.5 hidden sm:inline-block">Tracking Portal</span>
+        </div>
+      </a>
+
+      <!-- RIGHT NAV -->
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="btn-bouncy px-3.5 py-1.5 rounded-full text-xs font-cute font-bold text-slate-600 hover:bg-slate-100 flex items-center gap-1.5 border border-slate-200 bg-white shadow-xs">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5 text-pink-500"></i>
+          <span>Kembali ke Toko</span>
+        </a>
+        <a href="b2b.html" class="btn-bouncy px-3.5 py-1.5 rounded-full text-xs font-cute font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 hidden sm:flex items-center gap-1.5 border border-purple-200">
+          <span>🏆 B2B & Event</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN TRACKING CONTAINER -->
+  <main class="max-w-3xl mx-auto px-4 py-10 w-full my-auto">
+    
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-sky-50 text-sky-700 rounded-full text-xs font-cute font-bold mb-2 border border-sky-200">
+        <span>🚚</span> Live Production Tracker <span>🖨️</span>
+      </div>
+      <h1 class="font-cute text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
+        Pantau Status Cetak 3D Kamu
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+        Masukkan ID Pesanan kamu (misal: <strong class="font-mono text-sky-600 cursor-pointer underline" onclick="fillSampleOrder('KR-20260902-001')">KR-20260902-001</strong>) untuk melihat tahapan pengerjaan secara real-time.
+      </p>
+    </div>
+
+    <!-- SEARCH FORM -->
+    <div class="glow-hover bg-white rounded-3xl p-6 sm:p-8 border border-sky-200/90 shadow-sm mb-6">
+      <div class="flex flex-col sm:flex-row gap-2.5">
+        <div class="relative flex-1">
+          <i data-lucide="hash" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="trackInput" placeholder="Contoh: KR-20260902-001" class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-10 pr-4 py-3 text-xs font-mono uppercase focus:outline-none focus:border-sky-500 shadow-inner">
+        </div>
+        <button onclick="handleTrackingSearch()" class="btn-bouncy px-6 py-3 bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white rounded-2xl text-xs font-cute font-bold shadow-xs flex items-center justify-center gap-2">
+          <i data-lucide="search" class="w-4 h-4"></i>
+          <span>Lacak Sekarang</span>
+        </button>
+      </div>
+
+      <!-- Quick sample pills -->
+      <div class="flex items-center gap-2 mt-4 text-[11px] font-cute text-slate-500 flex-wrap">
+        <span>Contoh Cepat:</span>
+        <button onclick="fillSampleOrder('KR-20260902-001')" class="px-2.5 py-0.5 rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-100 border border-sky-200 font-mono">KR-20260902-001 (Proses Cetak)</button>
+        <button onclick="fillSampleOrder('KR-20260901-088')" class="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-200 font-mono">KR-20260901-088 (Siap Kirim)</button>
+      </div>
+    </div>
+
+    <!-- RESULT CARD -->
+    <div id="resultBox" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm space-y-6">
+      
+      <!-- Card Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-5">
+        <div>
+          <span class="text-[10px] text-slate-400 font-mono block uppercase tracking-wider">Order Reference ID</span>
+          <div class="font-mono font-bold text-base text-slate-900" id="displayOrderCode">KR-20260902-001</div>
+        </div>
+        <div class="sm:text-right">
+          <span class="text-[10px] text-slate-400 font-cute block">Status Produksi:</span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-700 font-cute text-xs font-bold" id="displayStatusBadge">
+            <span class="w-2 h-2 rounded-full bg-sky-500 animate-ping"></span>
+            <span id="displayStatusText">SEDANG DICETAK (Bambu Lab)</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Stepper 4 Langkah -->
+      <div>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-center text-xs font-cute">
+          
+          <!-- Step 1 -->
+          <div id="step1" class="p-3.5 bg-emerald-50/80 rounded-2xl border border-emerald-300 flex flex-col items-center">
+            <span class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-xs mb-1.5 font-bold shadow-xs">✓</span>
+            <strong class="text-slate-800 text-xs">1. Aset Disetujui</strong>
+            <span class="text-[10px] text-emerald-600 mt-0.5">3D Model Ready</span>
+          </div>
+
+          <!-- Step 2 -->
+          <div id="step2" class="p-3.5 bg-sky-50/80 rounded-2xl border-2 border-sky-500 shadow-xs flex flex-col items-center relative">
+            <span class="w-8 h-8 rounded-xl bg-sky-600 text-white flex items-center justify-center text-xs mb-1.5 font-bold shadow-xs animate-bounce">2</span>
+            <strong class="text-sky-800 text-xs">2. Proses Cetak</strong>
+            <span class="text-[10px] text-sky-600 mt-0.5">Bambu Lab 0.4mm</span>
+          </div>
+
+          <!-- Step 3 -->
+          <div id="step3" class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col items-center opacity-60">
+            <span class="w-8 h-8 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center text-xs mb-1.5 font-bold">3</span>
+            <strong class="text-slate-600 text-xs">3. QC & Finishing</strong>
+            <span class="text-[10px] text-slate-400 mt-0.5">Amplas & Detail</span>
+          </div>
+
+          <!-- Step 4 -->
+          <div id="step4" class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col items-center opacity-60">
+            <span class="w-8 h-8 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center text-xs mb-1.5 font-bold">4</span>
+            <strong class="text-slate-600 text-xs">4. Pengiriman</strong>
+            <span class="text-[10px] text-slate-400 mt-0.5" id="displayResiText">Resi Kurir JNE/J&T</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Detail Info Box -->
+      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-xs space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500 font-cute">Item Pesanan:</span>
+          <strong class="text-slate-800 font-cute" id="displayItemName">Custom 3D Tournament Trophy (Padel Cup)</strong>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500 font-cute">Pilihan Material / Warna:</span>
+          <strong class="text-slate-800 font-cute" id="displayMaterial">PLA Silk Gold Metallic + Black Base</strong>
+        </div>
+        <div class="flex items-center justify-between border-t border-slate-200/60 pt-2">
+          <span class="text-slate-500 font-cute">Estimasi Selesai / Kirim:</span>
+          <strong class="text-emerald-600 font-cute font-bold" id="displayEstTime">Hari ini, 18:00 WIB</strong>
+        </div>
+      </div>
+
+      <!-- Direct WA Action -->
+      <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <span class="text-slate-500 font-cute">Ada perubahan data alamat / file?</span>
+        <a id="waSupportLink" href="https://wa.me/6281219159200?text=Halo%20Admin%20Kirei3D!%20Saya%20ingin%20tanya%20progres%20order%20saya%20dengan%20ID:%20KR-20260902-001" target="_blank" class="btn-bouncy px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-cute font-bold border border-emerald-200 flex items-center gap-1.5 shadow-xs">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+          <span>Hubungi CS via WhatsApp</span>
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- MINIMALIST FOOTER -->
+  <footer class="max-w-5xl mx-auto px-4 text-center text-xs text-slate-400 font-cute py-6 border-t border-slate-200/60 w-full">
+    <p>© 2026 Kirei3D Atelier. Precision 3D Printing & Pop Culture Collectibles.</p>
+  </footer>
+
+  <script>
+    const sampleDatabase = {
+      'KR-20260902-001': {
+        item: 'Custom 3D Tournament Trophy (Padel Open 2026)',
+        material: 'PLA Silk Gold Metallic + Akrilik Plakat',
+        step: 2,
+        status: '🖨️ SEDANG DICETAK (Bambu Lab Fleet)',
+        est: 'Hari ini, 18:00 WIB',
+        resi: 'Proses Packing'
+      },
+      'KR-20260901-088': {
+        item: 'Miniatur Chibi Custom DIY Couple Kit',
+        material: 'Matte Pastel Pink & White + Cat Akrilik 6 Warna',
+        step: 4,
+        status: '🚚 PAKET DIKIRIM (JNE Express)',
+        est: 'Tiba Besok Siang',
+        resi: 'JNE: 0112938472910'
+      },
+      'KR-20260902-045': {
+        item: '3D Strava Finisher Frame (Rinjani Summit)',
+        material: 'Relief Topografi 3D + Bingkai Kayu Natural',
+        step: 3,
+        status: '🔍 LOLOS QC & FINISHING',
+        est: 'Besok, 10:00 WIB',
+        resi: 'Siap Dikirim Sore'
+      }
+    };
+
+    function fillSampleOrder(code) {
+      document.getElementById('trackInput').value = code;
+      handleTrackingSearch();
+    }
+
+    function handleTrackingSearch() {
+      const code = document.getElementById('trackInput').value.trim().toUpperCase();
+      if (!code) {
+        alert("Silakan masukkan ID Order kamu!");
+        return;
+      }
+
+      const data = sampleDatabase[code] || {
+        item: 'Custom 3D Print File (' + code + ')',
+        material: 'PLA Premium Nozzle 0.4mm',
+        step: 2,
+        status: '🖨️ SEDANG DALAM ANTREAN MESIN',
+        est: 'Estimasi 1-2 Hari Kerja',
+        resi: 'Belum Terbit'
+      };
+
+      document.getElementById('displayOrderCode').textContent = code;
+      document.getElementById('displayStatusText').textContent = data.status;
+      document.getElementById('displayItemName').textContent = data.item;
+      document.getElementById('displayMaterial').textContent = data.material;
+      document.getElementById('displayEstTime').textContent = data.est;
+      document.getElementById('displayResiText').textContent = data.resi;
+
+      // Update stepper visuals
+      for (let i = 1; i <= 4; i++) {
+        const stepEl = document.getElementById('step' + i);
+        if (!stepEl) continue;
+
+        if (i < data.step) {
+          stepEl.className = 'p-3.5 bg-emerald-50/80 rounded-2xl border border-emerald-300 flex flex-col items-center';
+          stepEl.querySelector('span').className = 'w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-xs mb-1.5 font-bold shadow-xs';
+          stepEl.querySelector('span').textContent = '✓';
+        } else if (i === data.step) {
+          stepEl.className = 'p-3.5 bg-sky-50/80 rounded-2xl border-2 border-sky-500 shadow-xs flex flex-col items-center relative';
+          stepEl.querySelector('span').className = 'w-8 h-8 rounded-xl bg-sky-600 text-white flex items-center justify-center text-xs mb-1.5 font-bold shadow-xs animate-bounce';
+          stepEl.querySelector('span').textContent = i;
+        } else {
+          stepEl.className = 'p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col items-center opacity-60';
+          stepEl.querySelector('span').className = 'w-8 h-8 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center text-xs mb-1.5 font-bold';
+          stepEl.querySelector('span').textContent = i;
+        }
+      }
+
+      document.getElementById('waSupportLink').href = `https://wa.me/6281219159200?text=Halo%20Admin%20Kirei3D!%20Saya%20ingin%20tanya%20progres%20order%20saya%20dengan%20ID:%20${encodeURIComponent(code)}`;
+      lucide.createIcons();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

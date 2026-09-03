@@ -1,0 +1,19 @@
+{
+  "name": "Kirei3D Atelier — Custom 3D Printing",
+  "short_name": "Kirei3D",
+  "description": "Atelier 3D Printing Custom, Pop Charms, Miniatur Chibi & Fidget Art Toys",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#FF5C8A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎀</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "entertainment", "productivity"]
+}
