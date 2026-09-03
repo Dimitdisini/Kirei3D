@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Sparkles, ShoppingBag, Truck, Crown, Sun, Moon } from 'lucide-react';
+import { Sparkles, ShoppingBag, Truck, Crown } from 'lucide-react';
 
 interface NavbarProps {
   currentTheme?: 'girls' | 'boys';
@@ -53,13 +53,9 @@ export default function Navbar({
               title="Ganti Tema"
             >
               {currentTheme === 'girls' ? (
-                <>
-                  <span className="text-pink-500">🎀 Girls</span>
-                </>
+                <span className="text-pink-500">🎀 Girls</span>
               ) : (
-                <>
-                  <span className="text-sky-500">⚡ Boys</span>
-                </>
+                <span className="text-sky-500">⚡ Boys</span>
               )}
             </button>
           )}

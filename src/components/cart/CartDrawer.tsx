@@ -1,15 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { X, ShoppingBag, Trash2, CheckCircle2, QrCode, Send } from 'lucide-react';
+import { X, ShoppingBag, CheckCircle2, QrCode, Send } from 'lucide-react';
+import { CartItem } from '@/types/order';
 import confetti from 'canvas-confetti';
-
-export interface CartItem {
-  title: string;
-  price: number;
-  img: string;
-  qty: number;
-}
 
 interface CartDrawerProps {
   isOpen: boolean;
