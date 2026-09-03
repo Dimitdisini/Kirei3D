@@ -2,37 +2,27 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Crown, ArrowLeft, Truck, Send, Award, Layers, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Crown, ArrowLeft, Truck, Send } from 'lucide-react';
+import { b2bProductOptions, getTierDiscount } from '@/data/b2b';
 import confetti from 'canvas-confetti';
 
 export default function B2BPage() {
   const [pcsQty, setPcsQty] = useState(50);
-  const [prodType, setProdType] = useState('trophy'); // trophy | medal | merch
+  const [prodTypeId, setProdTypeId] = useState('trophy');
   const [orgName, setOrgName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [notes, setNotes] = useState('');
 
-  const getBasePrice = () => {
-    if (prodType === 'trophy') return 85000;
-    if (prodType === 'medal') return 35000;
-    return 25000; // merch
-  };
-
-  const getTierDiscount = (qty: number) => {
-    if (qty >= 200) return 0.25; // 25%
-    if (qty >= 100) return 0.2; // 20%
-    if (qty >= 50) return 0.15; // 15%
-    return 0.1; // 10%
-  };
-
-  const baseUnitPrice = getBasePrice();
+  const selectedOption =
+    b2bProductOptions.find((o) => o.id === prodTypeId) || b2bProductOptions[0];
+  const baseUnitPrice = selectedOption.basePrice;
   const discountPercent = getTierDiscount(pcsQty);
   const finalUnitPrice = Math.round(baseUnitPrice * (1 - discountPercent));
   const grandTotal = finalUnitPrice * pcsQty;
 
   const handleConsultWA = () => {
     const msg = encodeURIComponent(
-      `Halo Tim B2B Kirei3D! Saya dari [${orgName || 'Komunitas/Kantor'}] ingin konsultasi order bulk 3D:\n- Jenis: ${prodType.toUpperCase()}\n- Qty: ${pcsQty} pcs\n- Estimasi Total: Rp ${grandTotal.toLocaleString(
+      `Halo Tim B2B Kirei3D! Saya dari [${orgName || 'Komunitas/Kantor'}] ingin konsultasi order bulk 3D:\n- Jenis: ${selectedOption.label}\n- Qty: ${pcsQty} pcs\n- Estimasi Total: Rp ${grandTotal.toLocaleString(
         'id-ID'
       )}\n- Tanggal Event: ${eventDate || 'Segera'}\n- Catatan: ${notes || '-'}`
     );
@@ -120,13 +110,15 @@ export default function B2BPage() {
                   Kategori Produk Event
                 </label>
                 <select
-                  value={prodType}
-                  onChange={(e) => setProdType(e.target.value)}
+                  value={prodTypeId}
+                  onChange={(e) => setProdTypeId(e.target.value)}
                   className="w-full p-3 text-xs rounded-xl border border-slate-200 font-cute bg-white focus:border-purple-500"
                 >
-                  <option value="trophy">Trophy / Piala Turnamen 3D (Base: Rp 85.000)</option>
-                  <option value="medal">Medali Finisher Strava / Lari (Base: Rp 35.000)</option>
-                  <option value="merch">Custom Keycap / Keychain Logo (Base: Rp 25.000)</option>
+                  {b2bProductOptions.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 

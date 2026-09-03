@@ -6,100 +6,30 @@ import ThreeViewer from '@/components/ThreeViewer';
 import CartDrawer, { CartItem } from '@/components/CartDrawer';
 import QrisModal from '@/components/QrisModal';
 import ReviewModal from '@/components/ReviewModal';
+import { Product } from '@/data/products';
+import { FaqItem } from '@/data/faqs';
+import { Review } from '@/data/reviews';
 import {
   Sparkles,
   ShoppingBag,
-  Upload,
-  Check,
+  Palette,
+  Layers,
   ChevronDown,
   Star,
   Send,
-  Heart,
-  Palette,
-  Layers,
-  Award,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-
-interface Review {
-  name: string;
-  product: string;
-  comment: string;
-  photo: string;
-  time: string;
-}
-
-const PRODUCTS = [
-  {
-    id: 'chibi-custom',
-    title: 'Miniatur Chibi Custom DIY Kit',
-    category: 'Art Toy',
-    price: 95000,
-    img: '/assets/chibi.jpg',
-    badge: '🔥 Terlaris',
-    desc: 'Figurine chibi 3D custom lengkap dengan base display & acrylic paint kit.',
-  },
-  {
-    id: 'fidget-axolotl',
-    title: 'Fidget Art Toy Axolotl Articulated',
-    category: 'Fidget',
-    price: 45000,
-    img: '/assets/fidget.jpg',
-    badge: '✨ Cute & Flexible',
-    desc: 'Mainan fidget 3D terartikulasi fleksibel dengan bahan PLA sutra mengkilap.',
-  },
-  {
-    id: 'keycap-anime',
-    title: 'Artisanal Keycap Anime Pop',
-    category: 'Keycap',
-    price: 35000,
-    img: '/assets/keycap.jpg',
-    badge: '⌨️ Mechanical Keyboard',
-    desc: 'Keycap custom 3D resin/PLA presisi cocok untuk switch Cherry MX / Outemu.',
-  },
-  {
-    id: 'strava-topo',
-    title: 'Plakat Strava Topo 3D Relief',
-    category: 'Relief',
-    price: 150000,
-    img: '/assets/topo_map.jpg',
-    badge: '🏆 Trophy & Medali',
-    desc: 'Plakat peta kontur 3D dari rute lari/sepeda Strava kamu.',
-  },
-  {
-    id: 'photocard-frame',
-    title: 'Kpop Photocard 3D Frame Stand',
-    category: 'Frame',
-    price: 65000,
-    img: '/assets/photocard.jpg',
-    badge: '🎀 Collector Item',
-    desc: 'Stand frame photocard akrilik + 3D print border pastel untuk koleksi K-Pop kamu.',
-  },
-];
-
-const FAQS = [
-  {
-    q: 'Berapa lama proses pembuatan cetak 3D kustom?',
-    a: 'Proses produksi memakan waktu 1–3 hari kerja tergantung ukuran & kompleksitas file 3D kamu.',
-  },
-  {
-    q: 'Bahan/Filamen apa yang digunakan di Kirei3D?',
-    a: 'Kami menggunakan PLA+ ramah lingkungan bersertifikat ramah anak, serta Resin 8K presisi tinggi untuk detail halus.',
-  },
-  {
-    q: 'Bagaimana cara mengirim file 3D / foto rute Strava saya?',
-    a: 'Kamu bisa upload gambar/file di simulator 3D di atas atau kirimkan langsung via WhatsApp tim kami.',
-  },
-  {
-    q: 'Apakah bisa cetak jumlah banyak untuk event / kantor?',
-    a: 'Sangat bisa! Silakan masuk ke halaman B2B & Event untuk penawaran diskon khusus grosir/bulk order.',
-  },
-];
 
 export default function HomePage() {
   const [theme, setTheme] = useState<'girls' | 'boys'>('girls');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Dynamic API Fetched States
+  const [products, setProducts] = useState<Product[]>([]);
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 3D Simulator State
   const [calcModel, setCalcModel] = useState('chibi');
@@ -112,32 +42,38 @@ export default function HomePage() {
   const [addonGiftBox, setAddonGiftBox] = useState(false);
   const [custName, setCustName] = useState('');
   const [custNotes, setCustNotes] = useState('');
-  const [uploadedFileName, setUploadedFileName] = useState('');
 
   // Modals
   const [qrisModalState, setQrisModalState] = useState({ isOpen: false, amount: 0, label: '' });
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [reviews, setReviews] = useState<Review[]>([
-    {
-      name: 'Aura & Team',
-      product: 'Plakat Strava Topo 3D',
-      comment: 'Keren banget hasil 3D relief rute maratonnya! Sangat detail dan rapi.',
-      photo: '/assets/review_trophy.jpg',
-      time: '2 hari lalu',
-    },
-    {
-      name: 'Rin & Kiki',
-      product: 'Chibi Doll Custom Pair',
-      comment: 'Warna sakuranya cantik banget. Cat akriliknya juga dapet lengkap!',
-      photo: '/assets/review_chibi.jpg',
-      time: 'Kemarin',
-    },
-  ]);
   const [faqOpenIndex, setFaqOpenIndex] = useState<number | null>(null);
 
+  // Fetch Data from API Endpoints dynamically
   useEffect(() => {
     document.body.className = `theme-${theme} selection:bg-pink-200 selection:text-pink-900 min-h-screen flex flex-col justify-between`;
   }, [theme]);
+
+  useEffect(() => {
+    async function loadInitialData() {
+      try {
+        setIsLoading(true);
+        const [prodRes, faqRes, revRes] = await Promise.all([
+          fetch('/api/products').then((r) => r.json()),
+          fetch('/api/faqs').then((r) => r.json()),
+          fetch('/api/reviews').then((r) => r.json()),
+        ]);
+
+        if (prodRes.success) setProducts(prodRes.data);
+        if (faqRes.success) setFaqs(faqRes.data);
+        if (revRes.success) setReviews(revRes.data);
+      } catch (err) {
+        console.error('Failed to fetch data from API:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadInitialData();
+  }, []);
 
   // Cart operations
   const handleAddToCart = (title: string, price: number, img: string) => {
@@ -199,18 +135,21 @@ export default function HomePage() {
     window.open(`https://wa.me/6281219159200?text=${msg}`, '_blank');
   };
 
-  const handleAddReview = (name: string, product: string, comment: string, photo: string) => {
-    setReviews((prev) => [
-      {
-        name,
-        product,
-        comment,
-        photo: photo || '/assets/chibi.jpg',
-        time: 'Baru Saja',
-      },
-      ...prev,
-    ]);
-    confetti({ particleCount: 50, spread: 60 });
+  const handleAddReview = async (name: string, product: string, comment: string, photo: string) => {
+    try {
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, product, comment, photo }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setReviews((prev) => [json.data, ...prev]);
+        confetti({ particleCount: 50, spread: 60 });
+      }
+    } catch (err) {
+      console.error('Failed to post review:', err);
+    }
   };
 
   return (
@@ -456,47 +395,51 @@ export default function HomePage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PRODUCTS.map((prod) => (
-            <div
-              key={prod.id}
-              className="glow-hover bg-white rounded-3xl p-4 border border-slate-200 shadow-xs flex flex-col justify-between group"
-            >
-              <div>
-                <div className="relative h-52 rounded-2xl overflow-hidden mb-4 bg-slate-100">
-                  <img
-                    src={prod.img}
-                    alt={prod.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-cute px-2.5 py-1 rounded-full font-bold shadow-xs">
-                    {prod.badge}
-                  </span>
+        {isLoading ? (
+          <div className="text-center py-12 font-cute text-slate-400">Memuat katalog dari API...</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((prod) => (
+              <div
+                key={prod.id}
+                className="glow-hover bg-white rounded-3xl p-4 border border-slate-200 shadow-xs flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="relative h-52 rounded-2xl overflow-hidden mb-4 bg-slate-100">
+                    <img
+                      src={prod.img}
+                      alt={prod.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-cute px-2.5 py-1 rounded-full font-bold shadow-xs">
+                      {prod.badge}
+                    </span>
+                  </div>
+
+                  <div className="text-[11px] font-cute font-bold text-pink-600 uppercase mb-1">
+                    {prod.category}
+                  </div>
+                  <h3 className="font-cute font-bold text-base text-slate-900 mb-1.5">
+                    {prod.title}
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed mb-4">{prod.desc}</p>
                 </div>
 
-                <div className="text-[11px] font-cute font-bold text-pink-600 uppercase mb-1">
-                  {prod.category}
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                  <div className="font-cute font-bold text-base text-slate-900">
+                    Rp {prod.price.toLocaleString('id-ID')}
+                  </div>
+                  <button
+                    onClick={() => handleAddToCart(prod.title, prod.price, prod.img)}
+                    className="btn-bouncy px-3.5 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-600 font-cute font-bold text-xs border border-pink-200 flex items-center gap-1.5"
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5" /> + Cart
+                  </button>
                 </div>
-                <h3 className="font-cute font-bold text-base text-slate-900 mb-1.5">
-                  {prod.title}
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed mb-4">{prod.desc}</p>
               </div>
-
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                <div className="font-cute font-bold text-base text-slate-900">
-                  Rp {prod.price.toLocaleString('id-ID')}
-                </div>
-                <button
-                  onClick={() => handleAddToCart(prod.title, prod.price, prod.img)}
-                  className="btn-bouncy px-3.5 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-600 font-cute font-bold text-xs border border-pink-200 flex items-center gap-1.5"
-                >
-                  <ShoppingBag className="w-3.5 h-3.5" /> + Cart
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* REVIEWS & MARQUEE SECTION */}
@@ -521,9 +464,9 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {reviews.map((rev, i) => (
+            {reviews.map((rev) => (
               <div
-                key={i}
+                key={rev.id}
                 className="bg-white p-4 rounded-3xl border border-slate-200 shadow-xs flex gap-4 items-center"
               >
                 <img
@@ -555,8 +498,8 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-3">
-          {FAQS.map((faq, idx) => (
-            <div key={idx} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          {faqs.map((faq, idx) => (
+            <div key={faq.id || idx} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
               <button
                 onClick={() => setFaqOpenIndex(faqOpenIndex === idx ? null : idx)}
                 className="w-full p-4 text-left font-cute font-bold text-sm text-slate-800 flex items-center justify-between"
@@ -582,7 +525,7 @@ export default function HomePage() {
       <footer className="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500">
         <div className="max-w-6xl mx-auto px-4">
           <div className="font-cute font-bold text-sm text-slate-900 mb-1">Kirei3D Atelier Studio</div>
-          <p>© 2026 Kirei3D Atelier. Designed with Next.js & Three.js.</p>
+          <p>© 2026 Kirei3D Atelier. Powered by Next.js API Services.</p>
         </div>
       </footer>
 

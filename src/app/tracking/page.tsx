@@ -1,63 +1,39 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Truck, ArrowLeft, Crown, Search, CheckCircle2, Clock, Printer, PackageCheck } from 'lucide-react';
-
-interface MockOrder {
-  id: string;
-  customer: string;
-  item: string;
-  statusStep: number; // 1 to 5
-  eta: string;
-  printer: string;
-  trackingNo: string;
-}
-
-const MOCK_DATABASE: Record<string, MockOrder> = {
-  'K3D-9842': {
-    id: 'K3D-9842',
-    customer: 'Aurel A.',
-    item: 'Miniatur Chibi Custom (Sakura Pink) + Paint Kit',
-    statusStep: 3,
-    eta: 'Hari ini, 16:00 WIB',
-    printer: 'Prusa MK4 #03 (Bed Temp: 60°C)',
-    trackingNo: 'JP8291039421',
-  },
-  'K3D-8821': {
-    id: 'K3D-8821',
-    customer: 'Rian Pratama',
-    item: 'Plakat Strava Topo 3D Relief Marathon',
-    statusStep: 4,
-    eta: 'Besok Pagi, 10:00 WIB',
-    printer: 'Bambu Lab X1-Carbon #01',
-    trackingNo: 'SPX902384729',
-  },
-};
+import { Truck, ArrowLeft, Crown, Search, CheckCircle2, Clock, Printer } from 'lucide-react';
+import { OrderTracking } from '@/data/tracking';
 
 export default function TrackingPage() {
   const [searchId, setSearchId] = useState('K3D-9842');
-  const [order, setOrder] = useState<MockOrder | null>(MOCK_DATABASE['K3D-9842']);
-  const [searched, setSearched] = useState(true);
+  const [order, setOrder] = useState<OrderTracking | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchTrackingData = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`/api/tracking?id=${encodeURIComponent(id)}`);
+      const json = await res.json();
+      if (json.success) {
+        setOrder(json.data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch tracking details:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTrackingData('K3D-9842');
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const id = searchId.trim().toUpperCase();
-    if (MOCK_DATABASE[id]) {
-      setOrder(MOCK_DATABASE[id]);
-    } else {
-      // Dynamic fallback order for any input ID
-      setOrder({
-        id: id || 'K3D-CUSTOM',
-        customer: 'Pelanggan Kirei3D',
-        item: 'Custom 3D Print Order',
-        statusStep: 2,
-        eta: '1-2 Hari Kerja',
-        printer: 'Bambu Lab P1S #04',
-        trackingNo: 'Menunggu Kurir',
-      });
+    if (searchId.trim()) {
+      fetchTrackingData(searchId.trim());
     }
-    setSearched(true);
   };
 
   const steps = [
@@ -132,15 +108,16 @@ export default function TrackingPage() {
             />
             <button
               type="submit"
-              className="px-5 py-3 rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-cute font-bold text-sm shadow-md btn-bouncy flex items-center gap-1.5"
+              disabled={isLoading}
+              className="px-5 py-3 rounded-2xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 text-white font-cute font-bold text-sm shadow-md btn-bouncy flex items-center gap-1.5"
             >
-              <Search className="w-4 h-4" /> Cari
+              <Search className="w-4 h-4" /> {isLoading ? 'Cari...' : 'Cari'}
             </button>
           </div>
         </form>
 
         {/* RESULT DETAILS */}
-        {searched && order && (
+        {order && (
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 pb-4 gap-2">
               <div>

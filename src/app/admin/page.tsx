@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Layers,
@@ -9,62 +9,52 @@ import {
   ClipboardList,
   Printer,
   TrendingUp,
-  UserCheck,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
 } from 'lucide-react';
+import { AdminOrder, initialFleetStatus, initialFounders } from '@/data/admin';
 import confetti from 'canvas-confetti';
-
-interface AdminOrder {
-  id: string;
-  customer: string;
-  item: string;
-  qty: number;
-  total: number;
-  status: string;
-  printer: string;
-}
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'orders' | 'fleet' | 'metrics'>('orders');
-  const [orders, setOrders] = useState<AdminOrder[]>([
-    {
-      id: 'K3D-9842',
-      customer: 'Aurel A.',
-      item: 'Miniatur Chibi Custom (Sakura Pink) + Paint Kit',
-      qty: 1,
-      total: 110000,
-      status: 'Printing in Progress',
-      printer: 'Prusa MK4 #03',
-    },
-    {
-      id: 'K3D-8821',
-      customer: 'Rian Pratama',
-      item: 'Plakat Strava Topo 3D Relief Marathon',
-      qty: 2,
-      total: 300000,
-      status: 'Post-Processing & QC',
-      printer: 'Bambu Lab X1C #01',
-    },
-    {
-      id: 'K3D-7712',
-      customer: 'Nadia S.',
-      item: 'Artisanal Keycap Anime Pop',
-      qty: 4,
-      total: 140000,
-      status: 'Pesanan Diterima',
-      printer: 'Elegoo Mars 4 8K #02',
-    },
-  ]);
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleUpdateStatus = (id: string, newStatus: string) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === id ? { ...o, status: newStatus } : o))
-    );
+  const fetchAdminOrders = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch('/api/admin/orders');
+      const json = await res.json();
+      if (json.success) {
+        setOrders(json.data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch admin orders:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSyncData = () => {
+  useEffect(() => {
+    fetchAdminOrders();
+  }, []);
+
+  const handleUpdateStatus = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch('/api/admin/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status: newStatus }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setOrders(json.data);
+      }
+    } catch (err) {
+      console.error('Failed to update status:', err);
+    }
+  };
+
+  const handleSyncData = async () => {
+    await fetchAdminOrders();
     confetti({ particleCount: 50, spread: 60 });
     alert('Database Kirei3D Studio berhasil disinkronkan!');
   };
@@ -151,64 +141,66 @@ export default function AdminPage() {
       {activeTab === 'orders' && (
         <div className="max-w-7xl mx-auto bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
           <h2 className="font-cute text-lg font-bold text-slate-900">
-            Daftar Antrean Order Cetak 3D Real-Time
+            Daftar Antrean Order Cetak 3D Real-Time (API Driven)
           </h2>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-cute">
-              <thead>
-                <tr className="border-b border-slate-200 text-slate-400">
-                  <th className="py-3 px-4">ORDER ID</th>
-                  <th className="py-3 px-4">PEMESAN</th>
-                  <th className="py-3 px-4">PRODUK</th>
-                  <th className="py-3 px-4">TOTAL</th>
-                  <th className="py-3 px-4">STATUS</th>
-                  <th className="py-3 px-4">ACTION STATUS</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {orders.map((o) => (
-                  <tr key={o.id} className="hover:bg-slate-50">
-                    <td className="py-3.5 px-4 font-bold text-pink-600">{o.id}</td>
-                    <td className="py-3.5 px-4 font-bold text-slate-800">{o.customer}</td>
-                    <td className="py-3.5 px-4 text-slate-600">{o.item}</td>
-                    <td className="py-3.5 px-4 font-bold text-slate-900">
-                      Rp {o.total.toLocaleString('id-ID')}
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span className="px-2.5 py-1 rounded-full bg-pink-50 text-pink-700 font-bold border border-pink-200">
-                        {o.status}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <select
-                        value={o.status}
-                        onChange={(e) => handleUpdateStatus(o.id, e.target.value)}
-                        className="p-1.5 text-xs rounded-xl border border-slate-200 font-cute bg-white focus:border-pink-500"
-                      >
-                        <option value="Pesanan Diterima">Pesanan Diterima</option>
-                        <option value="3D Slicing & File Prep">3D Slicing & File Prep</option>
-                        <option value="Printing in Progress">Printing in Progress</option>
-                        <option value="Post-Processing & QC">Post-Processing & QC</option>
-                        <option value="Pengiriman Kurir">Pengiriman Kurir</option>
-                      </select>
-                    </td>
+          {isLoading ? (
+            <div className="text-center py-8 text-xs font-cute text-slate-400">
+              Memuat data antrean dari API...
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs font-cute">
+                <thead>
+                  <tr className="border-b border-slate-200 text-slate-400">
+                    <th className="py-3 px-4">ORDER ID</th>
+                    <th className="py-3 px-4">PEMESAN</th>
+                    <th className="py-3 px-4">PRODUK</th>
+                    <th className="py-3 px-4">TOTAL</th>
+                    <th className="py-3 px-4">STATUS</th>
+                    <th className="py-3 px-4">ACTION STATUS</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {orders.map((o) => (
+                    <tr key={o.id} className="hover:bg-slate-50">
+                      <td className="py-3.5 px-4 font-bold text-pink-600">{o.id}</td>
+                      <td className="py-3.5 px-4 font-bold text-slate-800">{o.customer}</td>
+                      <td className="py-3.5 px-4 text-slate-600">{o.item}</td>
+                      <td className="py-3.5 px-4 font-bold text-slate-900">
+                        Rp {o.total.toLocaleString('id-ID')}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="px-2.5 py-1 rounded-full bg-pink-50 text-pink-700 font-bold border border-pink-200">
+                          {o.status}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <select
+                          value={o.status}
+                          onChange={(e) => handleUpdateStatus(o.id, e.target.value)}
+                          className="p-1.5 text-xs rounded-xl border border-slate-200 font-cute bg-white focus:border-pink-500"
+                        >
+                          <option value="Pesanan Diterima">Pesanan Diterima</option>
+                          <option value="3D Slicing & File Prep">3D Slicing & File Prep</option>
+                          <option value="Printing in Progress">Printing in Progress</option>
+                          <option value="Post-Processing & QC">Post-Processing & QC</option>
+                          <option value="Pengiriman Kurir">Pengiriman Kurir</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
       {/* TAB CONTENT: FLEET */}
       {activeTab === 'fleet' && (
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { name: 'Bambu Lab X1-Carbon #01', status: 'Active (82%)', temp: 'Nozzle: 220°C | Bed: 65°C', job: 'Topo Relief Strava' },
-            { name: 'Elegoo Mars 4 8K Resin #02', status: 'Active (45%)', temp: 'UV Light Exposure: 2.5s', job: 'Anime Artisanal Keycaps' },
-            { name: 'Prusa MK4 #03', status: 'Standby / Idle', temp: 'Nozzle: 25°C | Bed: 25°C', job: 'Siap untuk antrean baru' },
-          ].map((m, idx) => (
+          {initialFleetStatus.map((m, idx) => (
             <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
               <div className="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-3">
                 <Printer className="w-5 h-5" />
@@ -245,21 +237,32 @@ export default function AdminPage() {
           <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
             <h3 className="font-cute font-bold text-lg text-slate-900 mb-4">Tim Founder Kirei3D Studio</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-cute">
-              <div className="p-4 bg-pink-50 rounded-2xl border border-pink-200">
-                <div className="font-bold text-slate-900">Dimitri</div>
-                <div className="text-xs text-pink-600 font-bold">Chief Executive Officer (CEO)</div>
-                <div className="text-[11px] text-slate-500 mt-1">Lead 3D Designer & Product Visionary</div>
-              </div>
-              <div className="p-4 bg-sky-50 rounded-2xl border border-sky-200">
-                <div className="font-bold text-slate-900">Bayu</div>
-                <div className="text-xs text-sky-600 font-bold">Chief Operating Officer (COO)</div>
-                <div className="text-[11px] text-slate-500 mt-1">Head of 3D Printing Fleet & Logistics</div>
-              </div>
-              <div className="p-4 bg-purple-50 rounded-2xl border border-purple-200">
-                <div className="font-bold text-slate-900">Puja</div>
-                <div className="text-xs text-purple-600 font-bold">Chief Creative Officer (CCO)</div>
-                <div className="text-[11px] text-slate-500 mt-1">Creative Art Director & Finishing Specialist</div>
-              </div>
+              {initialFounders.map((f, idx) => (
+                <div
+                  key={idx}
+                  className={`p-4 rounded-2xl border ${
+                    f.badgeColor === 'pink'
+                      ? 'bg-pink-50 border-pink-200'
+                      : f.badgeColor === 'sky'
+                      ? 'bg-sky-50 border-sky-200'
+                      : 'bg-purple-50 border-purple-200'
+                  }`}
+                >
+                  <div className="font-bold text-slate-900">{f.name}</div>
+                  <div
+                    className={`text-xs font-bold ${
+                      f.badgeColor === 'pink'
+                        ? 'text-pink-600'
+                        : f.badgeColor === 'sky'
+                        ? 'text-sky-600'
+                        : 'text-purple-600'
+                    }`}
+                  >
+                    {f.role}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-1">{f.desc}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
