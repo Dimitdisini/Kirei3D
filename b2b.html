@@ -25,9 +25,10 @@
             mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
-            pastelPink: '#FFB7C5',
-            pastelPurple: '#CDB4DB',
+            warmCream: '#FAF7F2',
             softDark: '#1E293B',
+            pastelPurple: '#8B5CF6',
+            pastelGold: '#F59E0B',
           }
         }
       }
@@ -42,6 +43,7 @@
       background-image: radial-gradient(#E2E8F0 1.2px, transparent 1.2px);
       background-size: 24px 24px;
       color: #1E293B;
+      -webkit-font-smoothing: antialiased;
     }
     .font-cute { font-family: 'Fredoka', cursive, sans-serif; }
     .btn-bouncy { transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -52,13 +54,27 @@
       box-shadow: 0 16px 36px -8px rgba(139, 92, 246, 0.15);
       border-color: rgba(139, 92, 246, 0.4);
     }
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      padding: 0 !important;
+      margin: 0 !important;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+    }
+    .faq-content.open {
+      max-height: 400px;
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="selection:bg-purple-200 selection:text-purple-900 pb-20">
 
-  <!-- TOP NAVBAR -->
+  <!-- ========================================== -->
+  <!-- 1. TOP NAVBAR                              -->
+  <!-- ========================================== -->
   <header class="w-full bg-white/90 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
       
       <!-- LOGO -->
       <a href="index.html" class="flex items-center gap-2.5 group">
@@ -67,19 +83,23 @@
         </div>
         <div class="flex items-baseline gap-1.5">
           <span class="font-cute text-xl font-bold tracking-tight text-slate-900">Kirei<span class="text-purple-600">B2B</span></span>
-          <span class="text-[9px] font-cute text-slate-400 font-bold uppercase tracking-widest border-l border-slate-200 pl-1.5 hidden sm:inline-block">Corporate & Event</span>
+          <span class="text-[9px] font-cute text-slate-400 font-bold uppercase tracking-widest border-l border-slate-200 pl-1.5 hidden sm:inline-block">Corporate & Event Division</span>
         </div>
       </a>
 
       <!-- NAV ACTIONS -->
-      <div class="flex items-center gap-3">
-        <a href="index.html" class="btn-bouncy px-3.5 py-1.5 rounded-full text-xs font-cute font-bold text-slate-600 hover:bg-slate-100 flex items-center gap-1.5 border border-slate-200 bg-white shadow-xs">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5 text-pink-500"></i>
-          <span>Kembali ke Toko</span>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="index.html" class="btn-bouncy px-3 py-1.5 rounded-full text-xs font-cute font-bold text-slate-600 hover:bg-slate-100 flex items-center gap-1.5 border border-slate-200 bg-white shadow-xs">
+          <i data-lucide="store" class="w-3.5 h-3.5 text-pink-500"></i>
+          <span>Toko Retail</span>
         </a>
-        <a href="tracking.html" class="btn-bouncy px-3.5 py-1.5 rounded-full text-xs font-cute font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 hidden sm:flex items-center gap-1.5 border border-sky-200">
+        <a href="tracking.html" class="btn-bouncy px-3 py-1.5 rounded-full text-xs font-cute font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 hidden sm:flex items-center gap-1.5 border border-sky-200">
           <i data-lucide="truck" class="w-3.5 h-3.5 text-sky-500"></i>
           <span>Lacak Order</span>
+        </a>
+        <a href="#calculator" class="btn-bouncy px-3.5 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-cute font-bold border border-amber-200 hidden md:flex items-center gap-1.5">
+          <i data-lucide="calculator" class="w-3.5 h-3.5 text-amber-600"></i>
+          <span>Kalkulator Grosir</span>
         </a>
         <a href="https://wa.me/6281219159200?text=Halo%20Tim%20B2B%20Kirei3D!%20Saya%20dari%20[Perusahaan/Komunitas]%20ingin%20konsultasi%20pembuatan%20custom%203D%20merchandise%20massal." target="_blank" class="btn-bouncy px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-cute font-bold shadow-xs flex items-center gap-1.5">
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
@@ -90,186 +110,363 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="py-14 sm:py-20 text-center max-w-4xl mx-auto px-4">
+  <!-- ========================================== -->
+  <!-- 2. HERO SECTION                            -->
+  <!-- ========================================== -->
+  <section class="py-14 sm:py-20 text-center max-w-5xl mx-auto px-4">
     <div class="inline-flex items-center gap-1.5 px-4 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-cute font-bold mb-4 border border-purple-200">
-      <span>🏆</span> Solusi Custom 3D Batch & Event Partner <span>✨</span>
+      <span>🏆</span> Solusi Produksi Kustom 3D Skala Batch & Turnamen <span>⚡</span>
     </div>
     <h1 class="font-cute text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-4">
-      Piala Turnamen Unik, Finisher Lari & Merchandise Kantor Berkelas
+      Piala Turnamen Berkelas, Plakat Strava Finisher & Merchandise Kantor Unik
     </h1>
     <p class="text-xs sm:text-sm text-slate-500 max-w-2xl mx-auto leading-relaxed mb-8">
-      Bukan piala pasaran dari cetakan akrilik datar. Kami memproduksi piala 3D bertekstur emas, plakat rute lari/sepeda Strava timbul, dan souvenir interaktif dengan kapasitas cetak armada Bambu Lab presisi tinggi.
+      Tinggalkan piala akrilik 2D datar pasaran. Hadirkan piala 3D bertekstur emas, plakat rute lari/sepeda Strava timbul, serta souvenir interaktif dengan presisi armada mesin Bambu Lab bergaransi QC layer per unit.
     </p>
 
     <!-- Stat Badges -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto text-left mb-10">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto text-left mb-10">
       <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
         <div class="font-cute text-xl font-bold text-purple-600">0.4mm</div>
-        <div class="text-[11px] text-slate-400 font-cute">High-Speed Nozzle</div>
+        <div class="text-[11px] text-slate-400 font-cute">High-Speed FDM Nozzle</div>
       </div>
       <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
         <div class="font-cute text-xl font-bold text-emerald-600">100%</div>
-        <div class="text-[11px] text-slate-400 font-cute">Garansi QC Layer</div>
+        <div class="text-[11px] text-slate-400 font-cute">Garansi QC Layer & Retur</div>
       </div>
       <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
         <div class="font-cute text-xl font-bold text-sky-600">Free</div>
-        <div class="text-[11px] text-slate-400 font-cute">Digital 3D Mockup</div>
+        <div class="text-[11px] text-slate-400 font-cute">3D Digital Mockup</div>
       </div>
       <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-        <div class="font-cute text-xl font-bold text-amber-500">Up to 35%</div>
+        <div class="font-cute text-xl font-bold text-amber-500">Up to 45%</div>
         <div class="text-[11px] text-slate-400 font-cute">Tier Diskon Grosir</div>
       </div>
     </div>
+
+    <!-- Quick CTA Buttons -->
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="#calculator" class="btn-bouncy px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-cute text-xs sm:text-sm font-bold rounded-2xl shadow-md flex items-center gap-2">
+        <i data-lucide="calculator" class="w-4 h-4"></i>
+        <span>Simulasi Harga Grosir</span>
+      </a>
+      <a href="#sample-box" class="btn-bouncy px-6 py-3 bg-white hover:bg-slate-50 text-slate-700 font-cute text-xs sm:text-sm font-bold rounded-2xl border border-slate-200 shadow-xs flex items-center gap-2">
+        <i data-lucide="package" class="w-4 h-4 text-purple-600"></i>
+        <span>Pesan Sample Box (Rp 99k)</span>
+      </a>
+    </div>
   </section>
 
-  <!-- 4 B2B CORE SOLUTIONS -->
-  <section class="max-w-6xl mx-auto px-4 mb-16">
-    <div class="text-center mb-10">
+  <!-- ========================================== -->
+  <!-- 3. LIVE INTERACTIVE B2B BULK CALCULATOR    -->
+  <!-- ========================================== -->
+  <section id="calculator" class="max-w-5xl mx-auto px-4 mb-20">
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-purple-200/90 shadow-xl relative overflow-hidden">
+      
+      <div class="text-center mb-8">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-cute font-bold mb-2 border border-purple-200">
+          <span>⚡</span> Live Quote & Production Estimator <span>📊</span>
+        </span>
+        <h2 class="font-cute text-2xl sm:text-3xl font-bold text-slate-900">
+          Kalkulator Grosir & Estimasi Waktu Mesin
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          Hitung estimasi penghematan biaya berjenjang dan durasi cetak armada Bambu Lab kami secara real-time.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Controls (Left 7 Cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Select Product -->
+          <div>
+            <label class="block font-cute text-xs font-bold text-slate-700 mb-1.5">Pilih Kategori Produk:</label>
+            <select id="b2bProductSelect" onchange="calculateB2BQuote()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-xs sm:text-sm font-cute font-semibold focus:outline-none focus:border-purple-500">
+              <option value="trophy" data-base="180000" data-weight="160" data-hours="3.5">🏆 Piala Maskot Turnamen 3D (Padel / Golf / Esports)</option>
+              <option value="strava" data-base="145000" data-weight="35" data-hours="1.2">🏃 Plakat 3D Strava / Topographic Mountain Finisher</option>
+              <option value="keycap" data-base="35000" data-weight="14" data-hours="0.33">⌨️ Corporate Mechanical Keycap Clicker Berlogo</option>
+              <option value="consignment" data-base="49000" data-weight="40" data-hours="1.0">☕ Paket Konsinyasi Display Kafe (Toploader Frame)</option>
+              <option value="gacha" data-base="35000" data-weight="18" data-hours="0.5">🎪 Event Blind Bag Mystery Charm Pack</option>
+            </select>
+          </div>
+
+          <!-- Quantity Selector & Presets -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="font-cute text-xs font-bold text-slate-700">Jumlah Pesanan (Pcs):</label>
+              <span id="qtyDisplay" class="font-cute font-bold text-sm text-purple-600 bg-purple-50 px-3 py-0.5 rounded-full border border-purple-200">50 Pcs</span>
+            </div>
+            
+            <input type="range" id="qtyRange" min="1" max="1000" step="1" value="50" oninput="updateQtyFromRange(this.value)" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-purple-600 mb-3">
+
+            <!-- Preset Buttons -->
+            <div class="grid grid-cols-4 gap-2 font-cute text-xs">
+              <button onclick="setQtyPreset(20)" class="btn-bouncy py-1.5 rounded-xl border border-slate-200 hover:border-purple-300 bg-slate-50 hover:bg-purple-50 text-slate-700 font-bold text-center">20 Pcs<br><span class="text-[10px] text-purple-600">-15%</span></button>
+              <button onclick="setQtyPreset(50)" class="btn-bouncy py-1.5 rounded-xl border border-slate-200 hover:border-purple-300 bg-purple-50 text-purple-700 font-bold text-center">50 Pcs<br><span class="text-[10px] text-emerald-600">-25%</span></button>
+              <button onclick="setQtyPreset(100)" class="btn-bouncy py-1.5 rounded-xl border border-slate-200 hover:border-purple-300 bg-slate-50 hover:bg-purple-50 text-slate-700 font-bold text-center">100 Pcs<br><span class="text-[10px] text-sky-600">-35%</span></button>
+              <button onclick="setQtyPreset(250)" class="btn-bouncy py-1.5 rounded-xl border border-slate-200 hover:border-purple-300 bg-slate-50 hover:bg-purple-50 text-slate-700 font-bold text-center">250+ Pcs<br><span class="text-[10px] text-amber-600">-45%</span></button>
+            </div>
+          </div>
+
+          <!-- Add-on Options -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2.5">
+            <span class="font-cute text-xs font-bold text-slate-700 block">Layanan Tambahan (Add-on):</span>
+            
+            <label class="flex items-center justify-between text-xs font-cute text-slate-600 cursor-pointer">
+              <div class="flex items-center gap-2">
+                <input type="checkbox" id="addonMetalPlaque" onchange="calculateB2BQuote()" class="rounded text-purple-600 focus:ring-0">
+                <span>Pelat Grafir Akrilik / Kayu Nama Juara (+Rp 8.000/pcs)</span>
+              </div>
+              <span class="text-[11px] font-bold text-slate-400">+Rp 8k</span>
+            </label>
+
+            <label class="flex items-center justify-between text-xs font-cute text-slate-600 cursor-pointer">
+              <div class="flex items-center gap-2">
+                <input type="checkbox" id="addonGiftBox" onchange="calculateB2BQuote()" class="rounded text-purple-600 focus:ring-0">
+                <span>Hardbox Premium & Pita Eksklusif Event (+Rp 12.000/pcs)</span>
+              </div>
+              <span class="text-[11px] font-bold text-slate-400">+Rp 12k</span>
+            </label>
+          </div>
+
+        </div>
+
+        <!-- Result Card (Right 5 Cols) -->
+        <div class="lg:col-span-5 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-3xl p-6 text-white flex flex-col justify-between shadow-lg">
+          <div>
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+              <span class="text-xs font-cute text-slate-300">Estimasi Penawaran B2B</span>
+              <span id="tierBadge" class="bg-emerald-500/20 text-emerald-300 text-[10px] font-cute font-bold px-2.5 py-0.5 rounded-full border border-emerald-400/30">Tier Diskon 25%</span>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="space-y-2 mb-4 text-xs font-cute">
+              <div class="flex justify-between text-slate-300">
+                <span>Harga Retail / Pcs:</span>
+                <span id="retailUnitDisplay" class="line-through text-slate-400">Rp 165.000</span>
+              </div>
+              <div class="flex justify-between items-baseline text-white">
+                <span class="font-bold">Harga B2B / Pcs:</span>
+                <span id="bulkUnitDisplay" class="text-lg font-bold text-amber-300">Rp 123.750</span>
+              </div>
+              <div class="flex justify-between text-emerald-400 font-bold border-t border-white/10 pt-2">
+                <span>Total Penghematan:</span>
+                <span id="savingsDisplay">Hemat Rp 2.062.500</span>
+              </div>
+            </div>
+
+            <!-- Total Estimated Price -->
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/15 mb-4 text-center">
+              <span class="text-[11px] text-slate-300 font-cute block mb-0.5">Total Estimasi Biaya Pesanan:</span>
+              <div id="grandTotalDisplay" class="text-2xl sm:text-3xl font-cute font-bold text-white tracking-tight">
+                Rp 6.187.500
+              </div>
+            </div>
+
+            <!-- Production Capacity Info -->
+            <div class="space-y-1.5 text-[11px] text-slate-300 font-cute bg-white/5 p-3 rounded-xl border border-white/10 mb-4">
+              <div class="flex items-center gap-1.5 text-sky-300 font-bold">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                <span id="leadTimeDisplay">Estimasi Waktu Cetak: 3 - 5 Hari Kerja</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-slate-400">
+                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                <span id="filamentTotalDisplay">Total Material: ~9.0 Kg PLA Pro High-Speed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <button onclick="sendB2BQuoteWA()" class="btn-bouncy w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-cute text-xs sm:text-sm font-bold rounded-2xl shadow-lg flex items-center justify-center gap-2">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Kirim Kalkulasi ke WhatsApp Admin</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 4. 4 B2B CORE PARTNERSHIP PILLARS          -->
+  <!-- ========================================== -->
+  <section class="max-w-6xl mx-auto px-4 mb-20">
+    <div class="text-center mb-12">
       <span class="text-xs font-cute font-bold text-purple-600 uppercase tracking-wider bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
-        4 Layanan Utama
+        4 Pilar Solusi
       </span>
       <h2 class="font-cute text-2xl sm:text-3xl font-bold text-slate-900 mt-2">
-        Koleksi Kustomisasi untuk Berbagai Event
+        Kategori Kemitraan Khusus Event & Perusahaan
       </h2>
+      <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl mx-auto">
+        Kustomisasi penuh mulai dari bentuk 3D, pilihan warna filamen silk/matte, hingga kemasan eksklusif.
+      </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
-      <!-- Card 1: Trophy -->
-      <div class="glow-hover bg-white rounded-3xl p-6 border border-amber-200/90 shadow-sm flex flex-col justify-between">
+      <!-- Pillar 1: Sports & Esports Trophy -->
+      <div class="glow-hover bg-white rounded-3xl p-6 sm:p-8 border border-amber-200/90 shadow-sm flex flex-col justify-between">
         <div>
-          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-4 border border-amber-200">
-            🏆
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl border border-amber-200">
+              🏆
+            </div>
+            <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-amber-800 bg-amber-100 px-3 py-1 rounded-full">
+              MOQ: 10 Pcs
+            </span>
           </div>
-          <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 inline-block mb-2">
-            Turnamen Olahraga & Esports
-          </span>
-          <h3 class="font-cute text-base font-bold text-slate-900 mb-2">Piala Maskot 3D Custom</h3>
+
+          <h3 class="font-cute text-lg sm:text-xl font-bold text-slate-900 mb-2">Piala Turnamen & Maskot 3D Custom</h3>
           <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            Piala bentuk raket padel, bola mini soccer, piala golf, atau karakter game (Valorant/MLBB) dengan finishing Silk Gold berkilau.
+            Piala bentuk raket padel timbul, trofi mini soccer, kejuaraan golf, atau maskot game esports (Valorant/MLBB). Menggunakan filamen <strong>Silk Gold & Bronze berkilau</strong> yang terasa mewah dan kokoh di podium juara.
           </p>
+
+          <div class="bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200/60 space-y-1.5 text-xs font-cute text-slate-700 mb-6">
+            <div class="flex items-center gap-2">✓ <span>Free desain 3D prototype & revisi logo</span></div>
+            <div class="flex items-center gap-2">✓ <span>Pelat grafir nama juara & nama turnamen</span></div>
+            <div class="flex items-center gap-2">✓ <span>Kapasitas cetak cepat hingga 50 piala/minggu</span></div>
+          </div>
         </div>
-        <div class="border-t border-slate-100 pt-4">
-          <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20minta%20mockup%20desain%20Piala%20Turnamen%203D." target="_blank" class="btn-bouncy w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-cute font-bold shadow-xs text-center block">
-            Minta Mockup Desain
-          </a>
-        </div>
+
+        <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20konsultasi%20pembuatan%20Piala%20Turnamen%203D%20untuk%20event%20kami." target="_blank" class="btn-bouncy w-full py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl text-xs font-cute font-bold shadow-xs text-center block">
+          Konsultasi Piala Turnamen
+        </a>
       </div>
 
-      <!-- Card 2: Strava -->
-      <div class="glow-hover bg-white rounded-3xl p-6 border border-sky-200/90 shadow-sm flex flex-col justify-between">
+      <!-- Pillar 2: Corporate Desk Merch -->
+      <div class="glow-hover bg-white rounded-3xl p-6 sm:p-8 border border-purple-200/90 shadow-sm flex flex-col justify-between">
         <div>
-          <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl mb-4 border border-sky-200">
-            🏃‍♂️
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl border border-purple-200">
+              🏢
+            </div>
+            <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-purple-800 bg-purple-100 px-3 py-1 rounded-full">
+              MOQ: 20 Pcs
+            </span>
           </div>
-          <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200 inline-block mb-2">
-            Running & Cycling Club
-          </span>
-          <h3 class="font-cute text-base font-bold text-slate-900 mb-2">3D Strava & Topo Finisher</h3>
+
+          <h3 class="font-cute text-lg sm:text-xl font-bold text-slate-900 mb-2">Corporate Swag & Mechanical Keycap Clicker</h3>
           <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            Plakat rute lari maraton, gowes, atau relief kontur gunung 3D lengkap dengan grafir nama atlet, jarak, dan catatan waktu *Personal Best*.
+            Souvenir pelepas penat meja kerja untuk *Employee Onboarding Kit*, gathering tahunan, atau seminar eksklusif. Switch mekanik Outemu asli berpadu keycap custom berlogo perusahaan.
           </p>
+
+          <!-- Interactive Multi-Switch Sound Tester -->
+          <div class="bg-purple-50/70 p-3.5 rounded-2xl border border-purple-200/60 mb-6">
+            <span class="text-[11px] font-cute font-bold text-purple-900 block mb-2">🎧 Coba Suara Switch ASMR:</span>
+            <div class="grid grid-cols-3 gap-1.5 font-cute text-[10px]">
+              <button onclick="playSwitchSound('blue')" class="btn-bouncy py-1.5 bg-blue-600 text-white rounded-lg font-bold shadow-xs">Blue (Clicky)</button>
+              <button onclick="playSwitchSound('brown')" class="btn-bouncy py-1.5 bg-amber-700 text-white rounded-lg font-bold shadow-xs">Brown (Tactile)</button>
+              <button onclick="playSwitchSound('red')" class="btn-bouncy py-1.5 bg-rose-600 text-white rounded-lg font-bold shadow-xs">Red (Linear)</button>
+            </div>
+          </div>
         </div>
-        <div class="border-t border-slate-100 pt-4">
-          <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20minta%20info%20paket%20Finisher%20Plakat%203D%20Strava." target="_blank" class="btn-bouncy w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-cute font-bold shadow-xs text-center block">
-            Minta Mockup Rute
-          </a>
-        </div>
+
+        <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20tertarik%20dengan%20Souvenir%20Corporate%20Keycap%20Clicker%20berlogo%20kantor." target="_blank" class="btn-bouncy w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl text-xs font-cute font-bold shadow-xs text-center block">
+          Pesan Corporate Swag
+        </a>
       </div>
 
-      <!-- Card 3: Corporate Keycap -->
-      <div class="glow-hover bg-white rounded-3xl p-6 border border-purple-200/90 shadow-sm flex flex-col justify-between">
+      <!-- Pillar 3: Kafe Consignment -->
+      <div class="glow-hover bg-white rounded-3xl p-6 sm:p-8 border border-pink-200/90 shadow-sm flex flex-col justify-between">
         <div>
-          <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl mb-4 border border-purple-200">
-            🏢
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center text-2xl border border-pink-200">
+              ☕
+            </div>
+            <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-pink-800 bg-pink-100 px-3 py-1 rounded-full">
+              Bagi Hasil 70 / 30
+            </span>
           </div>
-          <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200 inline-block mb-2">
-            Corporate Gift & Seminar
-          </span>
-          <h3 class="font-cute text-base font-bold text-slate-900 mb-2">Keycap Switch Berlogo</h3>
+
+          <h3 class="font-cute text-lg sm:text-xl font-bold text-slate-900 mb-2">Titip Jual Kafe Estetik (Consignment)</h3>
           <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            Gantungan kunci mechanical switch berlogo brand kantor sebagai fidget pelepas penat meja kerja. Disukai tim & klien!
+            Tambahkan penghasilan meja kasir kafe kamu dengan produk 3D pop culture (Frame Photocard K-Pop timbul, gantungan Y2K, dan figurine unyu). Kami sediakan rak display mini akrilik gratis!
           </p>
-        </div>
-        <div>
-          <!-- Mini ASMR Interactive Clicker -->
-          <div class="border-t border-slate-100 pt-3 mb-3 bg-purple-50/60 rounded-xl p-2.5 text-center">
-            <button onclick="playClickASMR()" class="btn-bouncy px-3 py-1.5 bg-purple-600 text-white rounded-lg text-[11px] font-cute font-bold shadow-xs inline-flex items-center gap-1.5">
-              <span>⌨️ Klik Tes Switch:</span> <span id="clickCounter" class="bg-white/20 px-1.5 py-0.2 rounded font-mono">0</span>
-            </button>
+
+          <div class="bg-pink-50/60 p-3.5 rounded-2xl border border-pink-200/60 space-y-1.5 text-xs font-cute text-slate-700 mb-6">
+            <div class="flex items-center gap-2">✓ <span>Free Display Stand Akrilik Counter Meja</span></div>
+            <div class="flex items-center gap-2">✓ <span>Sistem barcode SKU & restock bulanan</span></div>
+            <div class="flex items-center gap-2">✓ <span>Tanpa modal awal (Risk-Free Partnership)</span></div>
           </div>
-          <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20tanya%20souvenir%20kantor%20Keycap%20Clicker%20berlogo." target="_blank" class="btn-bouncy w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-cute font-bold shadow-xs text-center block">
-            Konsultasi Souvenir
-          </a>
         </div>
+
+        <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20punya%20kafe%20dan%20ingin%20mengajukan%20kemitraan%20titip%20jual%20(konsinyasi%2070/30)." target="_blank" class="btn-bouncy w-full py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-2xl text-xs font-cute font-bold shadow-xs text-center block">
+          Ajukan Kemitraan Kafe
+        </a>
       </div>
 
-      <!-- Card 4: Konsinyasi Kafe -->
-      <div class="glow-hover bg-white rounded-3xl p-6 border border-pink-200/90 shadow-sm flex flex-col justify-between">
+      <!-- Pillar 4: Event Blind Bag Gacha -->
+      <div class="glow-hover bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200/90 shadow-sm flex flex-col justify-between">
         <div>
-          <div class="w-12 h-12 rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center text-2xl mb-4 border border-pink-200">
-            ☕
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl border border-emerald-200">
+              🎪
+            </div>
+            <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
+              MOQ: 50 Pcs
+            </span>
           </div>
-          <span class="text-[10px] font-cute font-bold uppercase tracking-wider text-pink-700 bg-pink-50 px-2.5 py-0.5 rounded-full border border-pink-200 inline-block mb-2">
-            Kafe Estetik & Komunitas
-          </span>
-          <h3 class="font-cute text-base font-bold text-slate-900 mb-2">Photocard & Konsinyasi</h3>
+
+          <h3 class="font-cute text-lg sm:text-xl font-bold text-slate-900 mb-2">Event Blind Bag & Gacha Charm Pack</h3>
           <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            Bingkai toploader timbul 3D untuk fandom K-Pop/Anime dengan display mini akrilik gratis untuk meja kasir kafe kamu.
+            Paket kantong misteri (Blind Bag) isi figur atau charm 3D custom untuk booth festival kampus, event jejepangan, bazaar komunitas, atau doorprize interaktif.
           </p>
+
+          <div class="bg-emerald-50/60 p-3.5 rounded-2xl border border-emerald-200/60 space-y-1.5 text-xs font-cute text-slate-700 mb-6">
+            <div class="flex items-center gap-2">✓ <span>Kemasan foil kustom dengan logo event</span></div>
+            <div class="flex items-center gap-2">✓ <span>Rasio tingkat kelangkaan (Common / Secret Rare)</span></div>
+            <div class="flex items-center gap-2">✓ <span>Include kartu koleksi checklist karakter</span></div>
+          </div>
         </div>
-        <div class="border-t border-slate-100 pt-4">
-          <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20ajukan%20kerja%20sama%20titip%20jual%20/konsinyasi%20di%20kafe%20saya." target="_blank" class="btn-bouncy w-full py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xs font-cute font-bold shadow-xs text-center block">
-            Ajukan Titip Jual (70/30)
-          </a>
-        </div>
+
+        <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20tanya%20paket%20Event%20Blind%20Bag%20Gacha%20Charm." target="_blank" class="btn-bouncy w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-xs font-cute font-bold shadow-xs text-center block">
+          Pesan Paket Gacha Event
+        </a>
       </div>
 
     </div>
   </section>
 
-  <!-- VOLUME PRICING TIERS BANNER -->
-  <section class="max-w-6xl mx-auto px-4 mb-16">
-    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
+  <!-- ========================================== -->
+  <!-- 5. ORDER SAMPLE BOX B2B ($99k / Rp 99.000) -->
+  <!-- ========================================== -->
+  <section id="sample-box" class="max-w-5xl mx-auto px-4 mb-20">
+    <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
       
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
         
         <div class="lg:col-span-7">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 backdrop-blur rounded-full text-xs font-cute font-bold text-amber-300 mb-3 border border-white/10">
-            ⚡ Skala Produksi Batch Cepat & Hemat
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-cute font-bold mb-3 border border-amber-400/30">
+            📦 Risk-Free Trial Kit
           </span>
-          <h3 class="font-cute text-2xl sm:text-3xl font-bold mb-3 leading-tight">
-            Tingkatan Diskon Khusus Pesanan Partai Besar
+          <h3 class="font-cute text-2xl sm:text-4xl font-bold mb-3 leading-tight">
+            Pesan Sample Box B2B (Hanya Rp 99.000)
           </h3>
-          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
-            Dapatkan diskon berjenjang, gratis digital 3D prototype sebelum cetak massal, serta laporan QC per unit.
+          <p class="text-xs sm:text-sm text-purple-200 leading-relaxed mb-6">
+            Ingin mengecek langsung kerapian layer 0.12mm dan tekstur mewah material kami sebelum memesan ratusan pcs? Pesan kotak sampel fisik ini.
           </p>
 
-          <div class="grid grid-cols-3 gap-3 text-center font-cute text-xs">
-            <div class="bg-white/10 backdrop-blur p-3.5 rounded-2xl border border-white/15">
-              <span class="text-slate-400 block text-[10px]">10 - 50 Pcs</span>
-              <strong class="text-amber-300 font-bold text-base">Diskon 15%</strong>
-            </div>
-            <div class="bg-white/10 backdrop-blur p-3.5 rounded-2xl border border-white/15">
-              <span class="text-slate-400 block text-[10px]">51 - 100 Pcs</span>
-              <strong class="text-emerald-300 font-bold text-base">Diskon 25%</strong>
-            </div>
-            <div class="bg-white/10 backdrop-blur p-3.5 rounded-2xl border border-white/15">
-              <span class="text-slate-400 block text-[10px]">100+ Pcs</span>
-              <strong class="text-sky-300 font-bold text-base">Diskon 35%</strong>
-            </div>
+          <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/15 space-y-2 text-xs font-cute text-slate-200 mb-6">
+            <div class="flex items-center gap-2">✨ <strong>1x Unit Sample Piala Silk Gold</strong> (Ukuran Miniatur)</div>
+            <div class="flex items-center gap-2">✨ <strong>1x Mechanical Keycap Clicker</strong> (Outemu Blue Switch)</div>
+            <div class="flex items-center gap-2">✨ <strong>4x Swatch Warna Filamen</strong> (Matte Pastel, Silk, Glow-in-Dark)</div>
+            <div class="flex items-center gap-2 text-amber-300">💰 <strong>Garansi Cashback 100%:</strong> Biaya Rp 99k dipotong langsung saat PO pertamamu!</div>
           </div>
         </div>
 
-        <div class="lg:col-span-5 flex flex-col gap-3 justify-center">
-          <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15 text-center">
-            <h4 class="font-cute text-base font-bold mb-1 text-white">Butuh Mini Proposal Resmi?</h4>
-            <p class="text-xs text-slate-300 mb-4 leading-relaxed">Kirimkan rincian event kamu, kami siapkan PDF penawaran dalam 2 jam kerja.</p>
+        <div class="lg:col-span-5 flex flex-col justify-center">
+          <div class="bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20 text-center shadow-lg">
+            <span class="text-xs font-cute text-slate-300 block mb-1">Harga Khusus Sample Kit</span>
+            <div class="font-cute text-3xl font-bold text-amber-300 mb-3">Rp 99.000</div>
+            <p class="text-[11px] text-slate-300 mb-5 leading-relaxed font-cute">Dikirim ke kantor/alamatmu dalam 1-2 hari kerja via JNE/J&T.</p>
             
-            <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20minta%20Mini%20Proposal%20dan%20penawaran%20harga%20untuk%20event%20kami.%20Berikut%20detailnya:%0A-%20Nama%20Instansi/EO:%20%0A-%20Kebutuhan%20Produk:%20%0A-%20Estimasi%20Qty:%20%0A-%20Deadline%20Acara:%20" target="_blank" class="btn-bouncy w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-cute text-xs sm:text-sm font-bold rounded-xl shadow-lg flex items-center justify-center gap-2">
-              <i data-lucide="file-text" class="w-4 h-4"></i>
-              <span>Minta Mini Proposal via WA</span>
+            <a href="https://wa.me/6281219159200?text=Halo%20Kirei3D!%20Saya%20ingin%20memesan%20Sample%20Box%20B2B%20(Rp%2099.000)%20untuk%20evaluasi%20kualitas%20sebelum%20order%20massal." target="_blank" class="btn-bouncy w-full py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-cute text-xs sm:text-sm font-bold rounded-2xl shadow-md flex items-center justify-center gap-2">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>Pesan Sample Box Sekarang</span>
             </a>
           </div>
         </div>
@@ -279,38 +476,331 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-400 font-cute py-6 border-t border-slate-200/60">
-    <p>© 2026 Kirei3D Atelier. Corporate Merch & Event Production Division.</p>
+  <!-- ========================================== -->
+  <!-- 6. INSTANT MINI PROPOSAL GENERATOR         -->
+  <!-- ========================================== -->
+  <section class="max-w-4xl mx-auto px-4 mb-20">
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-md">
+      
+      <div class="text-center mb-8">
+        <span class="text-xs font-cute font-bold text-purple-600 uppercase tracking-wider bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
+          Proposal Resmi 1-Klik
+        </span>
+        <h2 class="font-cute text-2xl sm:text-3xl font-bold text-slate-900 mt-2">
+          Butuh Dokumen Penawaran Formal untuk Atasan/Sponsor?
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          Isi detail singkat di bawah, tim kami akan menyiapkan draf penawaran PDF resmi berstempel dalam 2 jam kerja.
+        </p>
+      </div>
+
+      <div class="space-y-4 text-xs font-cute">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Nama Perusahaan / EO / Komunitas:</label>
+            <input type="text" id="propOrgName" placeholder="Contoh: PT Kreasi Nusantara / Padel Club JKT" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-cute focus:outline-none focus:border-purple-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Nama PIC & Jabatan:</label>
+            <input type="text" id="propPicName" placeholder="Contoh: Budi Santoso (Event Lead)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-cute focus:outline-none focus:border-purple-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Kebutuhan Produk:</label>
+            <select id="propProductNeed" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-cute focus:outline-none focus:border-purple-500 font-semibold">
+              <option value="Piala Turnamen Custom 3D">Piala Turnamen Custom 3D</option>
+              <option value="3D Strava Finisher Plakat">3D Strava Finisher Plakat</option>
+              <option value="Keycap Clicker Berlogo Kantor">Keycap Clicker Berlogo Kantor</option>
+              <option value="Paket Konsinyasi Kafe (70/30)">Paket Konsinyasi Kafe (70/30)</option>
+              <option value="Blind Bag Gacha Event Pack">Blind Bag Gacha Event Pack</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Estimasi Kuantitas:</label>
+            <input type="text" id="propQty" placeholder="Contoh: 50 Pcs" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-cute focus:outline-none focus:border-purple-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Deadline Acara:</label>
+            <input type="text" id="propDeadline" placeholder="Contoh: 25 Oktober 2026" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-cute focus:outline-none focus:border-purple-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Catatan Khusus / Deskripsi Konsep:</label>
+          <textarea id="propNotes" rows="2" placeholder="Sebutkan jika butuh warna khusus, bentuk logo timbul, atau hardbox custom..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-cute focus:outline-none focus:border-purple-500"></textarea>
+        </div>
+
+        <button onclick="submitProposalForm()" class="btn-bouncy w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-cute text-xs sm:text-sm font-bold rounded-2xl shadow-md flex items-center justify-center gap-2">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>Buat & Kirim Draf Proposal ke WhatsApp</span>
+        </button>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 7. B2B FAQ & SERVICE LEVEL AGREEMENT (SLA) -->
+  <!-- ========================================== -->
+  <section class="max-w-4xl mx-auto px-4 mb-20">
+    <div class="text-center mb-10">
+      <span class="text-xs font-cute font-bold text-purple-600 uppercase tracking-wider bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
+        FAQ & Jaminan
+      </span>
+      <h2 class="font-cute text-2xl sm:text-3xl font-bold text-slate-900 mt-2">
+        Pertanyaan Umum Klien B2B
+      </h2>
+    </div>
+
+    <div class="space-y-3 font-cute text-xs">
+      
+      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:border-purple-300 transition-colors">
+        <button onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left font-bold text-slate-900 flex justify-between items-center cursor-pointer hover:text-purple-600 transition-colors">
+          <span>1. Berapa lama waktu pengerjaan untuk pesanan 50–100 pcs?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+        </button>
+        <div class="faq-content">
+          <div class="px-5 pb-4 pt-1 text-slate-500 leading-relaxed border-t border-slate-100/80">
+            Dengan armada printer FDM berkecepatan tinggi Bambu Lab (nozzle 0.4mm), kapasitas produksi kami mencapai 20–40 unit per hari. Untuk pesanan 50–100 pcs, rata-rata waktu pengerjaan adalah 3–5 hari kerja setelah sampel digital disetujui.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:border-purple-300 transition-colors">
+        <button onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left font-bold text-slate-900 flex justify-between items-center cursor-pointer hover:text-purple-600 transition-colors">
+          <span>2. Apakah kami bisa meminta sampel fisik sebelum produksi massal dimulai?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+        </button>
+        <div class="faq-content">
+          <div class="px-5 pb-4 pt-1 text-slate-500 leading-relaxed border-t border-slate-100/80">
+            Tentu saja! Untuk setiap PO di atas 50 pcs, kami akan membuatkan 1 unit golden sample fisik untuk difoto/dikirimkan ke klien sebelum mencetak seluruh batch pesanan. Anda juga bisa memesan Sample Box seharga Rp 99.000 terlebih dahulu.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:border-purple-300 transition-colors">
+        <button onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left font-bold text-slate-900 flex justify-between items-center cursor-pointer hover:text-purple-600 transition-colors">
+          <span>3. Apakah desain logo perusahaan dan maskot turnamen kami aman (NDA)?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+        </button>
+        <div class="faq-content">
+          <div class="px-5 pb-4 pt-1 text-slate-500 leading-relaxed border-t border-slate-100/80">
+            Ya, 100% aman. File 3D STL dan hak kekayaan intelektual (IP) logo perusahaan Anda tidak akan pernah dijual atau dibagikan ke pihak ketiga mana pun. Kami siap menandatangani Non-Disclosure Agreement (NDA) resmi jika dibutuhkan.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:border-purple-300 transition-colors">
+        <button onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left font-bold text-slate-900 flex justify-between items-center cursor-pointer hover:text-purple-600 transition-colors">
+          <span>4. Bagaimana jika ada produk yang cacat saat pengiriman?</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+        </button>
+        <div class="faq-content">
+          <div class="px-5 pb-4 pt-1 text-slate-500 leading-relaxed border-t border-slate-100/80">
+            Setiap produk melalui proses Quality Control (QC) ketat layer demi layer. Jika ada unit yang patah atau cacat cetak saat unboxing, kami memberikan <strong>Garansi Reprint Gratis 100%</strong> dan pengiriman ekspres prioritas.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 8. FOOTER                                  -->
+  <!-- ========================================== -->
+  <footer class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-400 font-cute py-8 border-t border-slate-200/60">
+    <div class="flex items-center justify-center gap-2 mb-2">
+      <span class="font-bold text-slate-700">Kirei3D Atelier</span>
+      <span>•</span>
+      <span>Corporate & Event Production Division</span>
+    </div>
+    <p>© 2026 Kirei3D Atelier. High-Precision FDM 3D Printing Solutions.</p>
   </footer>
 
+  <!-- ========================================== -->
+  <!-- 9. JAVASCRIPT ENGINE                       -->
+  <!-- ========================================== -->
   <script>
-    let clicks = 0;
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // Audio Context for ASMR Clicker
+    let audioCtx;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
 
-    function playClickASMR() {
-      clicks++;
-      document.getElementById('clickCounter').textContent = clicks;
-
+    function playSwitchSound(type) {
       try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800 + Math.random() * 200, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.08);
-      } catch (e) {}
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
 
-      if (clicks % 10 === 0) {
-        confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
+        if (type === 'blue') {
+          // Sharp Crisp Click
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(1200, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.05);
+          gain.gain.setValueAtTime(0.2, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+        } else if (type === 'brown') {
+          // Tactile bump
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.07);
+          gain.gain.setValueAtTime(0.18, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+        } else {
+          // Red linear smooth thock
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(350, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.06);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+        }
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } catch (e) {}
+    }
+
+    // Live B2B Quote Calculator Logic
+    let currentQty = 50;
+
+    function setQtyPreset(val) {
+      currentQty = Math.max(1, Math.min(1000, parseInt(val, 10) || 50));
+      const rangeEl = document.getElementById('qtyRange');
+      if (rangeEl) rangeEl.value = currentQty;
+      calculateB2BQuote();
+    }
+
+    function updateQtyFromRange(val) {
+      currentQty = Math.max(1, Math.min(1000, parseInt(val, 10) || 1));
+      calculateB2BQuote();
+    }
+
+    function calculateB2BQuote() {
+      currentQty = Math.max(1, Math.min(1000, parseInt(currentQty, 10) || 1));
+
+      const select = document.getElementById('b2bProductSelect');
+      const selectedOption = select.options[select.selectedIndex];
+      const basePrice = Math.max(0, parseInt(selectedOption.getAttribute('data-base'), 10) || 180000);
+      const unitWeight = Math.max(0, parseInt(selectedOption.getAttribute('data-weight'), 10) || 160);
+      const unitHours = Math.max(0, parseFloat(selectedOption.getAttribute('data-hours')) || 3.5);
+
+      // Update Qty Display
+      document.getElementById('qtyDisplay').textContent = currentQty + ' Pcs';
+
+      // Tier Discount Calculation (4-Tier Official Model)
+      let discountRate = 0;
+      let tierLabel = 'Harga Normal';
+
+      if (currentQty >= 250) {
+        discountRate = 0.45;
+        tierLabel = 'Tier Diskon 45% (Enterprise)';
+      } else if (currentQty >= 100) {
+        discountRate = 0.35;
+        tierLabel = 'Tier Diskon 35% (Platinum)';
+      } else if (currentQty >= 50) {
+        discountRate = 0.25;
+        tierLabel = 'Tier Diskon 25% (Gold)';
+      } else if (currentQty >= 20) {
+        discountRate = 0.15;
+        tierLabel = 'Tier Diskon 15% (Silver)';
+      }
+
+      // Addons (Added net per unit after discount)
+      let addonTotalPerUnit = 0;
+      const plaqueEl = document.getElementById('addonMetalPlaque');
+      const giftboxEl = document.getElementById('addonGiftBox');
+      if (plaqueEl && plaqueEl.checked) addonTotalPerUnit += 8000;
+      if (giftboxEl && giftboxEl.checked) addonTotalPerUnit += 12000;
+
+      const discountedUnitPrice = Math.max(0, Math.round((basePrice * (1 - discountRate)) + addonTotalPerUnit));
+      const retailUnitPrice = Math.max(0, basePrice + addonTotalPerUnit);
+
+      const grandTotal = Math.max(0, discountedUnitPrice * currentQty);
+      const totalSavings = Math.max(0, (retailUnitPrice - discountedUnitPrice) * currentQty);
+
+      // Production lead time calculation: 4 Bambu Lab printers @ 16h productive/day = 64 machine-hours/day
+      const totalHours = currentQty * unitHours;
+      const fleetCapacityPerDay = 4 * 16; // 64 machine-hours/day
+      const estimatedDays = Math.max(2, Math.ceil(totalHours / fleetCapacityPerDay) + 1);
+      const totalFilamentKg = Math.max(0, (currentQty * unitWeight * 1.1) / 1000).toFixed(1);
+
+      // Render to DOM
+      document.getElementById('tierBadge').textContent = tierLabel;
+      document.getElementById('retailUnitDisplay').textContent = 'Rp ' + retailUnitPrice.toLocaleString('id-ID');
+      document.getElementById('bulkUnitDisplay').textContent = 'Rp ' + discountedUnitPrice.toLocaleString('id-ID');
+      document.getElementById('grandTotalDisplay').textContent = 'Rp ' + grandTotal.toLocaleString('id-ID');
+      document.getElementById('savingsDisplay').textContent = 'Hemat Rp ' + totalSavings.toLocaleString('id-ID');
+      document.getElementById('leadTimeDisplay').textContent = `Estimasi Waktu Cetak: ${estimatedDays} - ${estimatedDays + 2} Hari Kerja`;
+      document.getElementById('filamentTotalDisplay').textContent = `Total Material: ~${totalFilamentKg} Kg PLA Pro High-Speed`;
+    }
+
+    function sendB2BQuoteWA() {
+      const select = document.getElementById('b2bProductSelect');
+      const prodName = select.options[select.selectedIndex].text;
+      const qty = currentQty;
+      const grandTotal = document.getElementById('grandTotalDisplay').textContent;
+      const bulkUnit = document.getElementById('bulkUnitDisplay').textContent;
+      const leadTime = document.getElementById('leadTimeDisplay').textContent;
+
+      let addons = [];
+      if (document.getElementById('addonMetalPlaque').checked) addons.push('Pelat Grafir Akrilik/Kayu');
+      if (document.getElementById('addonGiftBox').checked) addons.push('Hardbox Premium & Pita');
+      const addonStr = addons.length > 0 ? addons.join(', ') : 'Standar Tanpa Add-on';
+
+      const msg = encodeURIComponent(`Halo Tim B2B Kirei3D! Saya ingin mengajukan penawaran resmi berdasarkan kalkulator B2B:%0A%0A- *Produk:* ${prodName}%0A- *Jumlah Pesanan:* ${qty} Pcs%0A- *Add-on:* ${addonStr}%0A- *Harga Satuan:* ${bulkUnit}%0A- *Total Estimasi:* ${grandTotal}%0A- *${leadTime}*%0A%0AMohon konfirmasi ketersediaan slot produksi dan draf invoice/proposalnya kak.`);
+      window.open(`https://wa.me/6281219159200?text=${msg}`, '_blank');
+    }
+
+    function submitProposalForm() {
+      const org = document.getElementById('propOrgName').value.trim();
+      const pic = document.getElementById('propPicName').value.trim();
+      const prod = document.getElementById('propProductNeed').value;
+      const qty = document.getElementById('propQty').value.trim();
+      const deadline = document.getElementById('propDeadline').value.trim();
+      const notes = document.getElementById('propNotes').value.trim() || '-';
+
+      if (!org || !pic || !qty) {
+        alert("Silakan lengkapi nama instansi, nama PIC, dan jumlah pesanan!");
+        return;
+      }
+
+      const msg = encodeURIComponent(`Halo Kirei3D! Saya ingin mengajukan permohonan Mini Proposal Resmi:%0A%0A- *Instansi/Brand:* ${org}%0A- *Nama PIC:* ${pic}%0A- *Kebutuhan:* ${prod}%0A- *Estimasi Qty:* ${qty}%0A- *Deadline Acara:* ${deadline}%0A- *Catatan Konsep:* ${notes}%0A%0AMohon bantuannya untuk draf penawaran formal PDF ya kak.`);
+      window.open(`https://wa.me/6281219159200?text=${msg}`, '_blank');
+      confetti({ particleCount: 50, spread: 60 });
+    }
+
+    function toggleFaq(btn) {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('i');
+      const isOpen = content.classList.contains('open');
+
+      // Close all other FAQs in the container
+      document.querySelectorAll('.faq-content').forEach(el => {
+        el.classList.remove('open');
+      });
+      document.querySelectorAll('.space-y-3 button i').forEach(ic => {
+        ic.classList.remove('rotate-180');
+      });
+
+      // Toggle current
+      if (!isOpen) {
+        content.classList.add('open');
+        if (icon) icon.classList.add('rotate-180');
       }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      calculateB2BQuote();
       lucide.createIcons();
     });
   </script>

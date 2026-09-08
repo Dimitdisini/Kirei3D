@@ -26,8 +26,9 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- Three.js CDN for 3D Viewer -->
+  <!-- Three.js CDN & OrbitControls for 3D Viewer -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
   <script>
     tailwind.config = {
@@ -109,9 +110,15 @@
     .faq-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      padding: 0 !important;
+      margin: 0 !important;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
     }
-    .faq-content.open { max-height: 400px; }
+    .faq-content.open {
+      max-height: 400px;
+      opacity: 1;
+    }
 
     .thumb-btn {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -255,10 +262,6 @@
             <i data-lucide="truck" class="w-3.5 h-3.5 text-sky-500"></i>
             <span>Lacak Order</span>
           </a>
-          <a href="admin.html" target="_blank" class="ml-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center gap-1 border border-slate-200 transition-all whitespace-nowrap" title="Buka Panel Admin">
-            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-purple-600"></i>
-            <span>Admin</span>
-          </a>
         </nav>
 
         <!-- ACTIONS: THEME TOGGLE + CART + CTA + MOBILE HAMBURGER -->
@@ -279,6 +282,7 @@
             <i data-lucide="shopping-bag" class="w-4 h-4"></i>
             <span id="cartBadge" class="absolute -top-1 -right-1 bg-pink-500 text-white text-[9px] font-cute font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-white shadow-xs">0</span>
           </button>
+
 
           <!-- PRIMARY CTA BUTTON -->
           <a href="#custom-studio" id="mainCtaBtn" class="btn-bouncy bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-cute px-3.5 py-2 rounded-full text-xs font-bold shadow-xs hidden xl:flex items-center gap-1.5 whitespace-nowrap">
@@ -316,10 +320,6 @@
         <a href="tracking.html" class="flex items-center justify-between p-2.5 rounded-xl bg-sky-50 text-sky-700 font-bold border border-sky-200">
           <span class="flex items-center gap-1.5"><i data-lucide="truck" class="w-4 h-4"></i> Lacak Status Pesanan (Live)</span>
           <i data-lucide="chevron-right" class="w-4 h-4"></i>
-        </a>
-        <a href="admin.html" target="_blank" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-100 text-slate-800 font-bold">
-          <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4"></i> Admin Studio Hub</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
         </a>
       </div>
     </header>
@@ -558,31 +558,37 @@
             <button onclick="changeProductImg('keycap', 'assets/keycap.jpg', this)" class="thumb-btn thumb-active w-8 h-8 rounded-lg overflow-hidden">
               <img src="assets/keycap.jpg" class="w-full h-full object-cover">
             </button>
+            <button onclick="changeProductImg('keycap', 'assets/alphabet_clicker_tokopedia.png', this)" class="thumb-btn w-8 h-8 rounded-lg overflow-hidden">
+              <img src="assets/alphabet_clicker_tokopedia.png" class="w-full h-full object-cover">
+            </button>
             <button onclick="changeProductImg('keycap', 'assets/keycap_gameboy.jpg', this)" class="thumb-btn w-8 h-8 rounded-lg overflow-hidden">
               <img src="assets/keycap_gameboy.jpg" class="w-full h-full object-cover">
             </button>
             <button onclick="changeProductImg('keycap', 'assets/keycap_name.jpg', this)" class="thumb-btn w-8 h-8 rounded-lg overflow-hidden">
               <img src="assets/keycap_name.jpg" class="w-full h-full object-cover">
             </button>
-            <span class="text-[10px] text-slate-400 font-cute ml-1">3 Pilihan Cap</span>
+            <span class="text-[10px] text-slate-400 font-cute ml-1">4 Pilihan Model</span>
           </div>
 
-          <h3 class="font-cute text-base font-bold text-slate-900 mb-1">Mechanical Keycap Clicker Charm</h3>
+          <h3 class="font-cute text-base font-bold text-slate-900 mb-1">Alphabet Clicker & Bag Charm</h3>
           <p class="text-xs text-slate-500 leading-relaxed mb-3">
-            Gantungan kunci switch Outemu Blue asli + keycap custom (Gameboy/Cakar Kucing/Nama). Suara klik renyah memuaskan!
+            Gantungan tas Y2K switch Outemu + tali paracord motif / custom nama inisial. Suara klik renyah memuaskan & estetik!
           </p>
         </div>
 
         <div class="border-t border-slate-100 pt-3">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs text-slate-400 font-cute">Mulai dari</span>
-            <span class="font-cute font-bold text-base text-purple-600">Rp 29.000</span>
+            <div>
+              <span class="font-cute font-bold text-base text-purple-600">Rp 15.000</span>
+              <span class="text-[10px] text-slate-400"> (1-5 Huruf)</span>
+            </div>
           </div>
           <div class="grid grid-cols-2 gap-2">
-            <button onclick="addToCart('Mechanical Keycap Clicker Charm', 29000, 'assets/keycap.jpg')" class="btn-bouncy w-full py-2 rounded-xl bg-slate-50 hover:bg-purple-50 text-purple-600 font-cute text-xs font-bold border border-purple-200">
+            <button onclick="addToCart('Alphabet Bag Charm (Custom Nama + Tali)', 35000, 'assets/alphabet_clicker_tokopedia.png')" class="btn-bouncy w-full py-2 rounded-xl bg-slate-50 hover:bg-purple-50 text-purple-600 font-cute text-xs font-bold border border-purple-200">
               + Keranjang
             </button>
-            <button onclick="orderViaWA('Mechanical Keycap Clicker Charm (Rp 29.000)')" class="btn-bouncy w-full py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-cute text-xs font-bold shadow-xs">
+            <button onclick="orderViaWA('Alphabet Bag Charm (Custom Nama + Tali Paracord)')" class="btn-bouncy w-full py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-cute text-xs font-bold shadow-xs">
               Beli via WA
             </button>
           </div>
@@ -708,7 +714,7 @@
             <span class="font-cute font-bold text-base text-amber-600">Rp 25.000</span>
           </div>
           <div class="grid grid-cols-2 gap-2">
-            <a href="#custom-studio" class="btn-bouncy w-full py-2 rounded-xl bg-slate-50 hover:bg-amber-50 text-amber-700 font-cute text-xs font-bold border border-amber-200 text-center block">
+            <a href="#custom-studio" onclick="selectCustomStlMode()" class="btn-bouncy w-full py-2 rounded-xl bg-slate-50 hover:bg-amber-50 text-amber-700 font-cute text-xs font-bold border border-amber-200 text-center block">
               Hitung Biaya
             </a>
             <button onclick="orderViaWA('Tanya Jasa Cetak File 3D Sendiri')" class="btn-bouncy w-full py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-cute text-xs font-bold shadow-xs">
@@ -724,183 +730,430 @@
   <!-- ========================================== -->
   <!-- 4. INTERACTIVE 3D CUSTOM STUDIO (#custom-studio) -->
   <!-- ========================================== -->
-  <section id="custom-studio" class="py-16 bg-white border-y border-slate-200/60">
+  <section id="custom-studio" class="py-16 bg-white border-y border-slate-200/60 scroll-mt-14">
     <div class="max-w-6xl mx-auto px-4">
       
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-cute font-bold text-pink-600 uppercase tracking-wider bg-pink-50 px-3.5 py-1 rounded-full border border-pink-200">
-          ✨ Interactive Studio Kustom ✨
-        </span>
-        <h2 class="font-cute text-3xl sm:text-4xl font-bold text-slate-900 mt-2">
-          Putar 3D 360°, Pilih Warna & Kirim File
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 border border-pink-200 text-pink-600 text-xs font-cute font-bold shadow-xs mb-3">
+          <span>✨</span>
+          <span>Bambu Lab Slicer & Studio 3D Interaktif</span>
+          <span>⚡</span>
+        </div>
+        <h2 class="font-cute text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
+          Putar 3D 360°, Pilih Part & <span class="bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600 bg-clip-text text-transparent underline decoration-pink-300 decoration-wavy">Jadikan Gambarmu 3D ✨</span>
         </h2>
-        <p class="text-xs sm:text-sm text-slate-500 mt-1">
-          Pilih material dan warna filamen di sebelah kiri, lalu lampirkan konsep foto/rute kamu di sebelah kanan untuk langsung diproses!
+        <p class="text-xs sm:text-sm text-slate-500 mt-2 max-w-xl mx-auto leading-relaxed">
+          Preview multi-part dengan grid Bambu Lab, wireframe selector, simulasi multi-color AMS, dan instant 3D photo heightmap!
         </p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        <!-- LEFT: 3D INTERACTIVE VIEWER & COLOR PICKER (7 COLS) -->
-        <div class="lg:col-span-7 bg-slate-50/80 rounded-3xl p-5 sm:p-6 border border-slate-200 space-y-4">
+        <!-- LEFT: 3D SLICER VIEWER & MULTI-PART CANVAS (7 COLS) -->
+        <div class="lg:col-span-7 bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-3.5">
           
-          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-            <div>
-              <h3 class="font-cute text-sm font-bold text-slate-900">1. Preview 3D Real-Time</h3>
-              <span class="text-[10px] text-slate-400">Tarik kursor untuk rotasi 360°</span>
+          <!-- Canvas Top Bar Controls -->
+          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <div>
+                <h3 class="font-cute text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <span>1. Preview 3D Bambu Slicer</span>
+                  <span id="currentModelBadge" class="bg-pink-100 text-pink-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Alphabet Clicker</span>
+                </h3>
+                <span class="text-[10px] text-slate-400 font-poppins">Klik bagian 3D untuk ganti warna & bongkar pasang</span>
+              </div>
             </div>
-            <button id="toggleRotateBtn" onclick="toggleAutoRotate()" class="btn-bouncy bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-3 py-1 rounded-xl text-xs font-cute font-bold flex items-center gap-1.5 shadow-xs">
-              <i data-lucide="play" id="rotateIcon" class="w-3.5 h-3.5"></i>
-              <span id="rotateBtnLabel">Pause</span>
-            </button>
-          </div>
 
-          <!-- Canvas Container -->
-          <div class="relative h-64 sm:h-80 rounded-2xl overflow-hidden bg-gradient-to-b from-slate-100 via-slate-200/60 to-slate-300/40 border border-slate-200 flex items-center justify-center shadow-inner" id="threeCanvasContainer">
-            <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-[10px] font-cute text-slate-600 border border-slate-200 shadow-xs pointer-events-none flex items-center gap-1 z-10">
-              <i data-lucide="move" class="w-3 h-3 text-pink-500"></i> Tarik untuk putar 360°
-            </div>
-          </div>
+            <!-- Perspective Angles & Tools -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <div class="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-cute">
+                <button onclick="setCameraAngle('persp')" id="btnAnglePersp" class="px-2 py-1 rounded-lg font-bold bg-white text-slate-800 shadow-xs">3D</button>
+                <button onclick="setCameraAngle('front')" id="btnAngleFront" class="px-2 py-1 rounded-lg font-semibold text-slate-500 hover:text-slate-800">Depan</button>
+                <button onclick="setCameraAngle('top')" id="btnAngleTop" class="px-2 py-1 rounded-lg font-semibold text-slate-500 hover:text-slate-800">Atas</button>
+              </div>
 
-          <!-- Model Switcher Buttons -->
-          <div>
-            <label class="block font-cute text-xs font-bold text-slate-700 mb-1.5">Pilih Sampel Model 3D:</label>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              <button onclick="switch3DModel('chibi')" id="mbtn-chibi" class="model-btn active p-2 rounded-xl border-2 border-pink-500 bg-pink-50 font-cute text-xs font-bold text-pink-600 text-left flex items-center gap-1.5">
-                <span>🎨</span> <span>Chibi Doll</span>
+              <!-- Action buttons -->
+              <button onclick="toggleAutoRotate()" id="toggleRotateBtn" class="p-1.5 rounded-xl bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 border border-slate-200 transition-colors" title="Putar Otomatis">
+                <i data-lucide="play" id="rotateIcon" class="w-3.5 h-3.5"></i>
               </button>
-              <button onclick="switch3DModel('trophy')" id="mbtn-trophy" class="model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex items-center gap-1.5 hover:border-slate-300">
-                <span>🏆</span> <span>Piala Trophy</span>
+              <button onclick="reset3DCamera()" class="p-1.5 rounded-xl bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 border border-slate-200 transition-colors" title="Reset Kamera">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
               </button>
-              <button onclick="switch3DModel('topo')" id="mbtn-topo" class="model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex items-center gap-1.5 hover:border-slate-300">
-                <span>🏔️</span> <span>Peta Gunung</span>
-              </button>
-              <button onclick="switch3DModel('keycap')" id="mbtn-keycap" class="model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex items-center gap-1.5 hover:border-slate-300">
-                <span>⌨️</span> <span>Keycap</span>
+              <button onclick="capture3DScreenshot()" class="p-1.5 rounded-xl bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 border border-slate-200 transition-colors" title="Simpan Gambar 3D">
+                <i data-lucide="camera" class="w-3.5 h-3.5"></i>
               </button>
             </div>
           </div>
 
-          <!-- Color Filament Picker -->
-          <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="font-cute text-xs font-bold text-slate-700">Pilih Warna Filamen:</label>
-              <span id="selectedColorName" class="text-pink-600 text-xs font-cute font-bold">Sakura Pink</span>
+          <!-- Main 3D Canvas Container (Els Studio & Bambu Lab Slicer Inspired) -->
+          <div class="relative h-72 sm:h-88 md:h-[430px] rounded-2xl overflow-hidden border border-slate-200/90 shadow-inner flex items-center justify-center select-none" id="threeCanvasContainer" style="background: radial-gradient(circle at 50% 35%, #FFF0F5 0%, #F5EEFD 45%, #FAF7F2 100%); cursor: grab;">
+            
+            <!-- Top Left Floating Badge (Els Studio style) -->
+            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-cute font-bold text-slate-700 border border-slate-200 shadow-xs pointer-events-none flex items-center gap-1.5 z-10">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Preview 3D</span>
             </div>
-            <div class="flex items-center gap-2.5">
-              <button onclick="set3DColor('#FF85A1', 'Sakura Pink', 0.2, 0.4)" class="color-btn w-8 h-8 rounded-full bg-[#FF85A1] border-2 border-white shadow-sm ring-2 ring-pink-500 transition-all transform scale-105" title="Sakura Pink"></button>
-              <button onclick="set3DColor('#B388EB', 'Matte Lavender', 0.1, 0.5)" class="color-btn w-8 h-8 rounded-full bg-[#B388EB] border-2 border-white shadow-sm ring-1 ring-transparent hover:scale-105 transition-all" title="Matte Lavender"></button>
-              <button onclick="set3DColor('#00F0FF', 'Cyber Cyan', 0.4, 0.3)" class="color-btn w-8 h-8 rounded-full bg-[#00F0FF] border-2 border-white shadow-sm ring-1 ring-transparent hover:scale-105 transition-all" title="Cyber Cyan"></button>
-              <button onclick="set3DColor('#FFD700', 'Silk Gold Metallic', 0.9, 0.2)" class="color-btn w-8 h-8 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-300 border-2 border-white shadow-sm ring-1 ring-transparent hover:scale-105 transition-all" title="Silk Gold"></button>
-              <button onclick="set3DColor('#6EE7B7', 'Glow Neon Mint', 0.3, 0.4)" class="color-btn w-8 h-8 rounded-full bg-[#6EE7B7] border-2 border-white shadow-sm ring-1 ring-transparent hover:scale-105 transition-all" title="Glow Mint"></button>
+
+            <!-- Top Right Floating Pill: Utuh vs Lihat Bagian (Els Studio style) -->
+            <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md p-1 rounded-2xl flex items-center border border-slate-200 shadow-sm z-10">
+              <button type="button" onclick="setExplodedMode(false)" id="btnViewUtuh" class="px-3 py-1 rounded-xl text-xs font-cute font-bold transition-all bg-pink-500 text-white shadow-xs">
+                Utuh
+              </button>
+              <button type="button" onclick="setExplodedMode(true)" id="btnViewBagian" class="px-3 py-1 rounded-xl text-xs font-cute font-bold transition-all text-slate-600 hover:text-pink-600">
+                Lihat Bagian
+              </button>
             </div>
+
+            <!-- Top Center Prompt Bubble -->
+            <div id="partPromptOverlay" class="absolute top-12 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-cute font-bold text-slate-700 border border-pink-200 shadow-sm pointer-events-none flex items-center gap-1.5 z-10 transition-all">
+              <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+              <span id="partPromptText">Tap bagian 3D untuk ganti warna & kustomisasi</span>
+            </div>
+
+            <!-- Bottom Left Drag Hint -->
+            <div class="absolute bottom-3 left-3 bg-white/85 backdrop-blur-md px-2.5 py-1 rounded-xl text-[10px] font-cute text-slate-500 border border-slate-200 shadow-xs pointer-events-none flex items-center gap-1 z-10">
+              <i data-lucide="move" class="w-3 h-3 text-pink-500"></i>
+              <span>Tarik putar 360° · Scroll zoom</span>
+            </div>
+
+            <!-- Bottom Center Dimension Tag (like Els Studio) -->
+            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl text-[10px] font-mono text-slate-600 border border-slate-200 shadow-xs pointer-events-none z-10 whitespace-nowrap">
+              <span>Ukuran jadi : </span>
+              <strong id="dimensionTag" class="text-pink-600 font-bold">35.8 × 40.9 × 21.7 mm</strong>
+            </div>
+
+            <!-- Bottom Right Active Part Indicator -->
+            <div class="absolute bottom-3 right-3 bg-white/85 backdrop-blur-md px-2.5 py-1 rounded-xl text-[10px] font-cute text-slate-600 border border-slate-200 shadow-xs pointer-events-none z-10 flex items-center gap-1">
+              <span class="text-slate-400">Bagian:</span>
+              <span id="activePartNameTag" class="font-bold text-pink-600">Plat Dasar</span>
+            </div>
+          </div>
+
+          <!-- Model Switcher Toolbar -->
+          <div class="space-y-1.5 pt-1">
+            <div class="flex items-center justify-between">
+              <label class="block font-cute text-xs font-bold text-slate-700">Pilih Model 3D:</label>
+              <span class="text-[10px] font-cute text-slate-400">Klik model untuk reload</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
+              <button onclick="switch3DModel('clicker')" id="mbtn-clicker" class="model-btn active p-2 rounded-xl border-2 border-pink-500 bg-pink-50 font-cute text-xs font-bold text-pink-600 text-left flex flex-col gap-0.5 transition-all">
+                <span class="text-base">⌨️</span>
+                <span class="truncate">Alphabet Clicker</span>
+              </button>
+              <button onclick="switch3DModel('chibi')" id="mbtn-chibi" class="model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex flex-col gap-0.5 hover:border-slate-300 transition-all">
+                <span class="text-base">🎨</span>
+                <span class="truncate">Chibi Doll DIY</span>
+              </button>
+              <button onclick="switch3DModel('topo')" id="mbtn-topo" class="model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex flex-col gap-0.5 hover:border-slate-300 transition-all">
+                <span class="text-base">🏃</span>
+                <span class="truncate">3D Strava / Topo</span>
+              </button>
+              <button onclick="switch3DModel('photocard')" id="mbtn-photocard" class="model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex flex-col gap-0.5 hover:border-slate-300 transition-all">
+                <span class="text-base">🎀</span>
+                <span class="truncate">Photocard Frame</span>
+              </button>
+              <button onclick="switch3DModel('trophy')" id="mbtn-trophy" class="model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex flex-col gap-0.5 hover:border-slate-300 transition-all">
+                <span class="text-base">🏆</span>
+                <span class="truncate">Piala Padel</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Instant Image-to-3D Relief Box -->
+          <div class="p-3 bg-gradient-to-r from-pink-50/60 to-purple-50/60 rounded-2xl border border-pink-200/80 flex items-center justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-pink-500 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                🖼️
+              </div>
+              <div>
+                <h4 class="font-cute text-xs font-bold text-slate-900">Ubah Gambarmu Jadi 3D Relief Timbul!</h4>
+                <p class="text-[10px] text-slate-500 font-poppins">Upload logo, foto siluet, atau icon — langsung muncul di plat 3D</p>
+              </div>
+            </div>
+            <label class="btn-bouncy bg-white hover:bg-pink-50 text-pink-600 border border-pink-300 px-3 py-1.5 rounded-xl font-cute text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0">
+              <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
+              <span>Upload Gambar 3D</span>
+              <input type="file" id="image3DInput" accept="image/png,image/jpeg,image/webp" class="hidden" onchange="handleImage3DUpload(event)">
+            </label>
           </div>
 
         </div>
 
         <!-- RIGHT: SIMULASI SPESIFIKASI BIAYA & CUSTOM UPLOADER (5 COLS) -->
-        <div class="lg:col-span-5 bg-slate-50/80 rounded-3xl p-5 sm:p-6 border border-slate-200 space-y-3.5">
+        <div class="lg:col-span-5 bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-3.5">
           
-          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+          <!-- Panel Header -->
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded-xl bg-pink-500 text-white flex items-center justify-center text-xs font-bold font-cute">2</span>
+              <span class="w-6 h-6 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 text-white flex items-center justify-center text-xs font-bold font-cute">2</span>
               <div>
-                <h3 class="font-cute text-sm font-bold text-slate-900">Simulasi Biaya & Konsep Kustom</h3>
-                <span class="text-[10px] text-slate-400">Pilih opsi & hitung harga otomatis</span>
+                <h3 class="font-cute text-sm font-bold text-slate-900">Konfigurasi Studio & AMS</h3>
+                <span class="text-[10px] text-slate-400">Atur warna layer, ukuran & finishing</span>
               </div>
             </div>
-            <span class="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Rp 500/g Base</span>
+            <span class="text-[10px] font-mono font-bold text-pink-700 bg-pink-50 border border-pink-200 px-2 py-0.5 rounded-full">Multi-Color AMS</span>
           </div>
 
-          <!-- Pilihan Produk -->
-          <div>
-            <label class="block font-cute text-xs font-bold text-slate-700 mb-1">Pilih Jenis Produk:</label>
-            <select id="calcProductSelect" onchange="calcSimulationCost()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
-              <option value="95000" data-name="Miniatur Chibi Custom DIY Kit" data-img="assets/chibi.jpg">🎨 Miniatur Chibi Custom DIY Kit — Rp 95.000</option>
-              <option value="95000" data-name="3D Topo Terrain / Strava Route" data-img="assets/strava.jpg">🏃 3D Topo Terrain / Strava Route — Rp 95.000</option>
-              <option value="29000" data-name="Mechanical Keycap Clicker Charm" data-img="assets/keycap.jpg">⌨️ Mechanical Keycap Clicker Charm — Rp 29.000</option>
-              <option value="49000" data-name="3D Embossed Photocard Frame" data-img="assets/photocard.jpg">🎀 3D Embossed Photocard Frame — Rp 49.000</option>
-              <option value="65000" data-name="Flexi Articulated Toy" data-img="assets/fidget.jpg">🐉 Flexi Articulated Toy — Rp 65.000</option>
-              <option value="25000" data-name="Jasa Cetak File 3D Sendiri (50g)" data-img="assets/trophy_padel.jpg">🚀 Jasa Cetak File 3D Sendiri (50g) — Rp 25.000</option>
-            </select>
+          <!-- Studio Tabs: Warna vs Bentuk vs Gambar 3D -->
+          <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl border border-slate-200">
+            <button onclick="switchStudioTab('warna')" id="tabBtnWarna" class="flex-1 py-1.5 rounded-xl text-xs font-cute font-bold transition-all bg-white text-pink-600 shadow-xs flex items-center justify-center gap-1">
+              <span>🎨</span> <span>Warna AMS</span>
+            </button>
+            <button onclick="switchStudioTab('bentuk')" id="tabBtnBentuk" class="flex-1 py-1.5 rounded-xl text-xs font-cute font-bold transition-all text-slate-600 hover:text-pink-600 flex items-center justify-center gap-1">
+              <span>📐</span> <span>Bentuk & Opsi</span>
+            </button>
+            <button onclick="switchStudioTab('gambar')" id="tabBtnGambar" class="flex-1 py-1.5 rounded-xl text-xs font-cute font-bold transition-all text-slate-600 hover:text-pink-600 flex items-center justify-center gap-1">
+              <span>🖼️</span> <span>Relief 3D</span>
+            </button>
           </div>
 
-          <!-- Pilihan Material & Finishing -->
-          <div class="grid grid-cols-2 gap-2">
+          <!-- TAB CONTENT 1: WARNA AMS (Multi-Color Layer System) -->
+          <div id="tabContentWarna" class="space-y-3">
             <div>
-              <label class="block font-cute text-[11px] font-bold text-slate-700 mb-1">Material Filamen:</label>
-              <select id="calcMaterialSelect" onchange="calcSimulationCost()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
-                <option value="0">Matte Pastel (+Rp 0)</option>
-                <option value="10000">Silk Metallic (+Rp 10.000)</option>
-                <option value="15000">Glow-in-the-Dark (+Rp 15.000)</option>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="font-cute text-xs font-bold text-slate-700">Daftar Bagian Model (Klik untuk pilih):</label>
+                <span class="text-[10px] text-slate-400">Ganti warna per bagian</span>
+              </div>
+              <div class="space-y-1.5" id="partsListContainer">
+                <!-- Injected dynamically by JS based on active model -->
+              </div>
+            </div>
+
+            <!-- Filament Palette Selector -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="font-cute text-xs font-bold text-slate-700">Pilih Warna Filamen Bagian Ini:</label>
+                <span id="selectedColorName" class="text-pink-600 text-xs font-cute font-bold">Sakura Pink</span>
+              </div>
+              <div class="flex items-center gap-2 flex-wrap" id="filamentPaletteContainer">
+                <!-- Color swatches injected by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 2: BENTUK & OPSI -->
+          <div id="tabContentBentuk" class="space-y-3 hidden">
+            <!-- Pilihan Produk -->
+            <div>
+              <label class="block font-cute text-xs font-bold text-slate-700 mb-1">Katalog Produk Terkait:</label>
+              <select id="calcProductSelect" onchange="handleProductSelectChange()" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
+                <option value="29000" data-model="clicker" data-name="Alphabet Clicker & Bag Charm" data-img="assets/alphabet_clicker_tokopedia.png">⌨️ Alphabet Clicker & Bag Charm — Rp 29.000</option>
+                <option value="95000" data-model="chibi" data-name="Miniatur Chibi Custom DIY Kit" data-img="assets/chibi.jpg">🎨 Miniatur Chibi Custom DIY Kit — Rp 95.000</option>
+                <option value="95000" data-model="topo" data-name="3D Topo Terrain / Strava Route" data-img="assets/strava.jpg">🏃 3D Topo Terrain / Strava Route — Rp 95.000</option>
+                <option value="49000" data-model="photocard" data-name="3D Embossed Photocard Frame" data-img="assets/photocard.jpg">🎀 3D Embossed Photocard Frame — Rp 49.000</option>
+                <option value="180000" data-model="trophy" data-name="Piala Custom Turnamen Padel (22cm)" data-img="assets/trophy_padel.jpg">🏆 Piala Custom Turnamen Padel (22cm) — Rp 180.000</option>
+                <option value="65000" data-model="chibi" data-name="Flexi Articulated Toy" data-img="assets/fidget.jpg">🐉 Flexi Articulated Toy — Rp 65.000</option>
+                <option value="29000" data-model="clicker" data-name="Gacha Blind Bag Mystery Charm" data-img="assets/chibi.jpg">🎪 Gacha Blind Bag Mystery Charm — Rp 29.000</option>
+                <option value="custom_stl" data-model="topo" data-name="Jasa Cetak File 3D Sendiri (Custom Gram)" data-img="assets/trophy_padel.jpg">🚀 Jasa Cetak File 3D Sendiri (Live Gram: Rp 500/g Base)</option>
               </select>
             </div>
-            <div>
-              <label class="block font-cute text-[11px] font-bold text-slate-700 mb-1">Ukuran / Skala:</label>
-              <select id="calcScaleSelect" onchange="calcSimulationCost()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
-                <option value="1">Standar (100%)</option>
-                <option value="1.25">Large 125% (+25%)</option>
-                <option value="1.5">Jumbo 150% (+50%)</option>
-              </select>
+
+            <!-- Simulator Berat Filamen STL (Kalkulator Live Gram) -->
+            <div id="customWeightContainer" class="hidden p-3 bg-pink-50/70 rounded-2xl border border-pink-200/80 space-y-2">
+              <div class="flex items-center justify-between">
+                <label class="block font-cute text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                  <i data-lucide="scale" class="w-4 h-4 text-pink-500"></i>
+                  <span>Berat File STL / 3D (Gram):</span>
+                </label>
+                <div class="flex items-center gap-1">
+                  <input type="number" id="customWeightInput" min="10" max="1000" value="50" oninput="updateCustomGramWeight(this.value)" class="w-16 bg-white border border-pink-300 rounded-lg px-2 py-0.5 text-xs font-mono font-bold text-pink-600 text-center focus:outline-none focus:border-pink-500">
+                  <span class="font-cute text-xs text-slate-500 font-bold">g</span>
+                </div>
+              </div>
+              <input type="range" id="customWeightRange" min="10" max="1000" step="5" value="50" oninput="updateCustomGramWeight(this.value)" class="w-full h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer accent-pink-500">
+              <div class="flex justify-between text-[10px] font-mono text-slate-400">
+                <span>Min: 10g</span>
+                <span class="text-pink-600 font-bold">Tarif Dasar: Rp 500 / gram</span>
+                <span>Max: 1.000g (1 Kg)</span>
+              </div>
+            </div>
+
+            <!-- Pilihan Material & Finishing -->
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-cute text-[11px] font-bold text-slate-700 mb-1">Material Filamen:</label>
+                <select id="calcMaterialSelect" onchange="calcSimulationCost()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
+                  <option value="0" data-rate="500" data-mov="15000">Matte Pastel (+Rp 0)</option>
+                  <option value="10000" data-rate="800" data-mov="25000">Silk Metallic (+Rp 10.000)</option>
+                  <option value="15000" data-rate="800" data-mov="25000">Glow-in-the-Dark (+Rp 15.000)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-cute text-[11px] font-bold text-slate-700 mb-1">Ukuran / Skala:</label>
+                <select id="calcScaleSelect" onchange="onScaleSelectChange()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
+                  <option value="1">Standar (100%)</option>
+                  <option value="1.25">Large 125% (+25%)</option>
+                  <option value="1.5">Jumbo 150% (+50%)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Addon Checkboxes -->
+            <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 space-y-1.5 text-[11px] font-cute">
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
+                <input type="checkbox" id="addonPaintKit" onchange="calcSimulationCost()" class="rounded text-pink-500 w-3.5 h-3.5">
+                <span>🎨 Tambah Paint Kit Akrilik 6 Warna (+Rp 15.000)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
+                <input type="checkbox" id="addonGiftBox" onchange="calcSimulationCost()" class="rounded text-pink-500 w-3.5 h-3.5">
+                <span>🎁 Packaging Gift Box Pita Kirei (+Rp 10.000)</span>
+              </label>
             </div>
           </div>
 
-          <!-- Addon Checkboxes -->
-          <div class="bg-white p-2.5 rounded-2xl border border-slate-200 space-y-1.5 text-[11px] font-cute">
-            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
-              <input type="checkbox" id="addonPaintKit" onchange="calcSimulationCost()" class="rounded text-pink-500 w-3.5 h-3.5">
-              <span>🎨 Tambah Paint Kit Akrilik 6 Warna (+Rp 15.000)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
-              <input type="checkbox" id="addonGiftBox" onchange="calcSimulationCost()" class="rounded text-pink-500 w-3.5 h-3.5">
-              <span>🎁 Packaging Gift Box Pita Kirei (+Rp 10.000)</span>
-            </label>
+          <!-- TAB CONTENT 3: RELIEF 3D DARI GAMBAR (FASE 2: VECTOR EXTRUDE) -->
+          <div id="tabContentGambar" class="space-y-3 hidden">
+            
+            <!-- Mode Extrude Switcher -->
+            <div>
+              <label class="block font-cute text-xs font-bold text-slate-700 mb-1">Mode 3D Gambar:</label>
+              <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-cute font-bold">
+                <button type="button" onclick="setRelief3DMode('solid')" id="btnModeSolid" class="py-1.5 rounded-lg bg-white text-pink-600 shadow-xs transition-all text-center flex items-center justify-center gap-1">
+                  <span>✨</span> <span>Solid Vektor (Mulus)</span>
+                </button>
+                <button type="button" onclick="setRelief3DMode('litofan')" id="btnModeLitofan" class="py-1.5 rounded-lg text-slate-600 hover:text-pink-600 transition-all text-center flex items-center justify-center gap-1">
+                  <span>🏔️</span> <span>Emboss Litofan</span>
+                </button>
+              </div>
+              <span class="text-[10px] text-slate-400 font-poppins block mt-1">
+                *Mode <strong>Solid Vektor</strong> menghasilkan plastik rata licin persis cetakan FDM Bambu Lab!
+              </span>
+            </div>
+
+            <!-- Warna Filamen Relief Timbul (1-Klik Ganti Warna Relief) -->
+            <div class="p-2.5 bg-slate-50 rounded-2xl border border-slate-200">
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="block font-cute text-xs font-bold text-slate-700">Warna Filamen Relief:</label>
+                <span id="reliefColorNameDisplay" class="text-pink-600 text-xs font-cute font-bold">Silk Gold</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-wrap" id="reliefPaletteContainer">
+                <!-- Injected dynamically by JS -->
+              </div>
+            </div>
+
+            <!-- Quick Preset Shapes (1-Klik Coba Langsung) -->
+            <div>
+              <label class="block font-cute text-xs font-bold text-slate-700 mb-1">Coba Contoh Bentuk Vektor:</label>
+              <div class="grid grid-cols-5 gap-1 text-[11px] font-cute font-bold">
+                <button type="button" onclick="applyPresetShape('star')" class="p-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex flex-col items-center gap-0.5 transition-colors">
+                  <span class="text-sm">⭐</span> <span>Star</span>
+                </button>
+                <button type="button" onclick="applyPresetShape('heart')" class="p-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex flex-col items-center gap-0.5 transition-colors">
+                  <span class="text-sm">❤️</span> <span>Heart</span>
+                </button>
+                <button type="button" onclick="applyPresetShape('bolt')" class="p-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex flex-col items-center gap-0.5 transition-colors">
+                  <span class="text-sm">⚡</span> <span>Bolt</span>
+                </button>
+                <button type="button" onclick="applyPresetShape('ribbon')" class="p-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex flex-col items-center gap-0.5 transition-colors">
+                  <span class="text-sm">🎀</span> <span>Pita</span>
+                </button>
+                <button type="button" onclick="applyPresetShape('initial')" class="p-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl flex flex-col items-center gap-0.5 transition-colors">
+                  <span class="text-sm">🔤</span> <span>Teks</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Setting Sliders -->
+            <div class="p-3 bg-pink-50/50 rounded-2xl border border-pink-200 space-y-2.5">
+              
+              <!-- Toleransi Potong Background -->
+              <div>
+                <div class="flex items-center justify-between text-xs font-cute font-bold mb-1">
+                  <span class="text-slate-800 flex items-center gap-1">
+                    <i data-lucide="scissors" class="w-3.5 h-3.5 text-pink-500"></i>
+                    <span>Toleransi Hapus Background:</span>
+                  </span>
+                  <span id="bgThresholdLabel" class="font-mono text-pink-600">80%</span>
+                </div>
+                <input type="range" id="bgThresholdSlider" min="20" max="95" step="5" value="80" oninput="onBgThresholdChange(this.value)" class="w-full h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer accent-pink-500">
+                <span class="text-[9px] text-slate-400 block mt-0.5 font-poppins">Geser jika background foto masih terlihat ikut timbul</span>
+              </div>
+
+              <!-- Tinggi Timbul 3D -->
+              <div>
+                <div class="flex items-center justify-between text-xs font-cute font-bold mb-1">
+                  <span class="text-slate-800 flex items-center gap-1">
+                    <i data-lucide="layers" class="w-3.5 h-3.5 text-pink-500"></i>
+                    <span>Tinggi Timbul 3D:</span>
+                  </span>
+                  <span id="reliefDepthLabel" class="font-mono text-pink-600">3.5 mm</span>
+                </div>
+                <input type="range" id="reliefDepthSlider" min="1" max="8" step="0.5" value="3.5" oninput="onReliefDepthChange(this.value)" class="w-full h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer accent-pink-500">
+              </div>
+
+              <!-- Invert Checkbox -->
+              <div class="pt-0.5">
+                <label class="flex items-center gap-2 text-xs font-cute font-bold text-slate-700 cursor-pointer">
+                  <input type="checkbox" id="invertReliefCheck" onchange="onInvertReliefChange(this.checked)" class="rounded text-pink-500 w-3.5 h-3.5">
+                  <span>Invert Siluet (Cekung / Timbul Terbalik)</span>
+                </label>
+              </div>
+
+            </div>
+
+            <!-- Custom Text Input for 3D Keycap/Plate -->
+            <div>
+              <label class="block font-cute text-xs font-bold text-slate-700 mb-1">Kustom Inisial / Teks Timbul:</label>
+              <div class="flex items-center gap-2">
+                <input type="text" id="custom3DTextInput" maxlength="8" value="KIREI" placeholder="Maks. 8 huruf" oninput="onCustom3DTextChange(this.value)" class="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-cute font-bold uppercase tracking-widest focus:outline-none focus:border-pink-500 shadow-xs">
+                <button type="button" onclick="applyCustom3DText()" class="px-3 py-2 bg-pink-50 text-pink-600 hover:bg-pink-100 border border-pink-200 rounded-xl text-xs font-cute font-bold transition-colors">
+                  Terapkan
+                </button>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Form Identitas & File -->
-          <div class="space-y-2 pt-1 border-t border-slate-200">
+          <!-- Form Identitas & Order Actions -->
+          <div class="space-y-2 pt-2 border-t border-slate-100">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
                 <label class="block font-cute text-[11px] font-bold text-slate-700 mb-0.5">Nama Pemesan:</label>
-                <input type="text" id="custName" placeholder="Contoh: Dimitri" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
+                <input type="text" id="custName" placeholder="Contoh: Dimitri" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 focus:bg-white shadow-xs">
               </div>
               <div>
-                <label class="block font-cute text-[11px] font-bold text-slate-700 mb-0.5">Upload Foto/GPX:</label>
-                <div class="border border-dashed border-slate-300 rounded-xl px-2 py-1.5 text-center bg-white hover:bg-slate-50 cursor-pointer relative">
+                <label class="block font-cute text-[11px] font-bold text-slate-700 mb-0.5">Upload Lampiran (Foto/GPX):</label>
+                <div class="border border-dashed border-slate-300 rounded-xl px-2 py-1.5 text-center bg-slate-50 hover:bg-white cursor-pointer relative">
                   <input type="file" id="fileInput" accept="image/*,.gpx,.kml" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onchange="previewUpload(event)">
                   <span id="uploadLabel" class="font-cute text-[11px] text-slate-600 font-bold block truncate">📷 Pilih File / Foto</span>
                 </div>
               </div>
             </div>
 
-            <div id="imagePreviewContainer" class="hidden p-1.5 bg-white rounded-xl border border-slate-200 flex items-center gap-2">
+            <div id="imagePreviewContainer" class="hidden p-1.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-2">
               <img id="imagePreview" src="#" alt="Preview" class="w-8 h-8 object-cover rounded-lg">
               <span id="fileNameDisplay" class="text-[11px] font-cute font-bold truncate max-w-[180px]">file.jpg</span>
             </div>
 
             <div>
-              <label class="block font-cute text-[11px] font-bold text-slate-700 mb-0.5">Catatan Khusus / Tulisan Plakat:</label>
-              <input type="text" id="custNotes" placeholder="Contoh: Tulisan grafir 'Finisher 21K' atau warna baju pink." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 shadow-xs">
-            </div>
-          </div>
-
-          <!-- Total Price Display & Actions -->
-          <div class="bg-white p-3.5 rounded-2xl border border-pink-200/90 shadow-xs space-y-2">
-            <div class="flex items-center justify-between font-cute">
-              <span class="text-xs text-slate-500">Estimasi Total Biaya:</span>
-              <span id="calcTotalDisplay" class="font-bold text-lg text-pink-600">Rp 95.000</span>
+              <label class="block font-cute text-[11px] font-bold text-slate-700 mb-0.5">Catatan Khusus / Grafir Nama:</label>
+              <input type="text" id="custNotes" placeholder="Contoh: Nama 'ALEX', gantungan tali hitam, atau grafir khusus." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-cute focus:outline-none focus:border-pink-500 focus:bg-white shadow-xs">
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="addCustomSimulationToCart()" class="btn-bouncy w-full bg-slate-100 hover:bg-pink-50 text-pink-600 font-cute py-2 rounded-xl text-xs font-bold border border-pink-200 flex items-center justify-center gap-1">
-                <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
-                <span>+ Keranjang</span>
-              </button>
-              <button onclick="submitCustomOrder()" class="btn-bouncy w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-cute py-2 rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-1">
-                <i data-lucide="send" class="w-3.5 h-3.5"></i>
-                <span>Order via WA</span>
-              </button>
+            <!-- Price & Submit -->
+            <div class="bg-gradient-to-br from-pink-50 via-purple-50 to-pink-50 p-3.5 rounded-2xl border border-pink-200/90 shadow-xs space-y-2 mt-2">
+              <div class="flex items-center justify-between font-cute">
+                <div>
+                  <span class="text-[11px] text-slate-500 block">Estimasi Total Biaya:</span>
+                  <span class="text-[10px] text-slate-400">*Belum termasuk ongkir</span>
+                </div>
+                <span id="calcTotalDisplay" class="font-bold text-xl text-pink-600">Rp 29.000</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="addCustomSimulationToCart()" class="btn-bouncy w-full bg-white hover:bg-pink-50 text-pink-600 font-cute py-2 rounded-xl text-xs font-bold border border-pink-200 flex items-center justify-center gap-1 shadow-xs">
+                  <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                  <span>+ Keranjang</span>
+                </button>
+                <button onclick="submitCustomOrder()" class="btn-bouncy w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-cute py-2 rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-1">
+                  <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                  <span>Order via WA</span>
+                </button>
+              </div>
             </div>
+
           </div>
 
         </div>
@@ -1534,8 +1787,8 @@
             <span>Apakah hasil cetak 3D FDM kuat dan aman?</span>
             <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
           </button>
-          <div class="faq-content bg-white px-4 text-xs text-slate-600 leading-relaxed">
-            <div class="py-3">
+          <div class="faq-content bg-white text-xs text-slate-600 leading-relaxed">
+            <div class="px-4 py-3 border-t border-slate-100/80">
               <strong>Sangat kuat dan aman!</strong> Kami menggunakan filamen PLA premium berstandar industri (biodegradable & non-toxic) yang dicetak dengan armada Bambu Lab noozle 0.4mm berkecepatan tinggi dengan bonding antar layer yang sangat rapat.
             </div>
           </div>
@@ -1546,8 +1799,8 @@
             <span>Berapa lama proses pembuatan pesanan custom?</span>
             <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
           </button>
-          <div class="faq-content bg-white px-4 text-xs text-slate-600 leading-relaxed">
-            <div class="py-3">
+          <div class="faq-content bg-white text-xs text-slate-600 leading-relaxed">
+            <div class="px-4 py-3 border-t border-slate-100/80">
               Rata-rata pengerjaan pesanan satuan adalah <strong>2 hingga 3 hari kerja</strong>. Kamu bisa memantau progres cetak secara live di halaman <a href="tracking.html" class="text-sky-600 font-bold underline">Portal Lacak</a>!
             </div>
           </div>
@@ -1558,8 +1811,8 @@
             <span>Apakah ada diskon jika pesan untuk event / souvenir kantor?</span>
             <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
           </button>
-          <div class="faq-content bg-white px-4 text-xs text-slate-600 leading-relaxed">
-            <div class="py-3">
+          <div class="faq-content bg-white text-xs text-slate-600 leading-relaxed">
+            <div class="px-4 py-3 border-t border-slate-100/80">
               Tentu ada! Kami memiliki tier diskon volume hingga <strong>35%</strong> untuk pesanan partai besar. Silakan kunjungi halaman <a href="b2b.html" class="text-purple-600 font-bold underline">B2B & Event Showroom</a> untuk meminta mini proposal resmi.
             </div>
           </div>
@@ -1592,7 +1845,6 @@
         <div><a href="#custom-studio" class="text-slate-400 hover:text-white transition-colors">Custom Studio 3D</a></div>
         <div><a href="b2b.html" class="text-slate-400 hover:text-purple-300 transition-colors">B2B & Event Partner ↗</a></div>
         <div><a href="tracking.html" class="text-slate-400 hover:text-sky-300 transition-colors">Lacak Status Pesanan 🚚</a></div>
-        <div><a href="admin.html" target="_blank" class="text-slate-400 hover:text-pink-300 transition-colors">Admin Studio Hub 🛡️</a></div>
       </div>
 
       <div class="space-y-2 font-cute">
@@ -1648,7 +1900,7 @@
 
         <!-- Voucher Code Input -->
         <div class="flex gap-2 mb-4">
-          <input type="text" id="voucherCodeInput" placeholder="KODE PROMO (misal: KIREI15)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono uppercase focus:outline-none focus:border-pink-500">
+          <input type="text" id="voucherCodeInput" placeholder="KODE PROMO / REFERRAL (misal: ALEX10)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono uppercase focus:outline-none focus:border-pink-500">
           <button onclick="applyVoucherCode()" id="voucherBtn" class="btn-bouncy px-3.5 py-2 bg-pink-50 text-pink-600 rounded-xl text-xs font-cute font-bold border border-pink-200">
             Pakai
           </button>
@@ -1924,46 +2176,234 @@
       btn.classList.add('thumb-active');
     }
 
-    // 4. THREE.JS 3D ENGINE
-    let scene, camera, renderer, currentMesh;
-    let currentModelType = 'chibi';
-    let currentActiveColor = '#FF85A1';
+    // 4. BAMBU LAB SLICER & ELS STUDIO STYLE 3D ENGINE
+    let scene, camera, renderer, controls, clock;
+    let currentMeshGroup = null;
+    let modelParts = {}; // key -> THREE.Mesh
+    let activePartKey = 'plate';
+    let isExploded = false;
     let isAutoRotating = true;
+    let wireframeOverlay = null;
+    let currentModelType = 'clicker';
+    let currentActiveColor = '#FF85A1';
+    let reliefDepthValue = 3.5;
+    let invertReliefValue = false;
+    let relief3DMode = 'solid'; // 'solid' (Extrude Vektor Mulus) vs 'litofan'
+    let bgThresholdSensitivity = 80; // 20 to 95 (%)
+    let activePresetShape = 'star'; // 'star', 'heart', 'bolt', 'ribbon', 'initial'
+    let custom3DTextValue = 'KIREI';
+    let currentScaleFactor = 1.0;
+    let heightmapTexture = null;
+    let gridFloor, shadowPlane;
+
+    // Palette Definitions
+    const STUDIO_PALETTES = [
+      { hex: '#FF85A1', name: 'Sakura Pink', type: 'pastel', metal: 0.15, rough: 0.4 },
+      { hex: '#B388EB', name: 'Matte Lavender', type: 'pastel', metal: 0.1, rough: 0.45 },
+      { hex: '#00F0FF', name: 'Cyber Cyan', type: 'silk', metal: 0.6, rough: 0.25 },
+      { hex: '#FFD700', name: 'Silk Gold', type: 'silk', metal: 0.85, rough: 0.18 },
+      { hex: '#6EE7B7', name: 'Glow Mint', type: 'glow', metal: 0.2, rough: 0.35 },
+      { hex: '#1E293B', name: 'Hitam Matte', type: 'matte', metal: 0.05, rough: 0.55 },
+      { hex: '#F8FAFC', name: 'Putih Bersih', type: 'matte', metal: 0.05, rough: 0.45 },
+      { hex: '#F87171', name: 'Crimson Coral', type: 'pastel', metal: 0.15, rough: 0.4 }
+    ];
+
+    // Model Architecture Metadata (Multi-Part Exploded Schema)
+    const MODEL_DEFINITIONS = {
+      clicker: {
+        name: 'Alphabet Clicker & Bag Charm',
+        badge: 'Alphabet Clicker',
+        dimension: '35.8 × 40.9 × 21.7 mm',
+        defaultPrice: 29000,
+        parts: [
+          { key: 'housing', label: 'Casing Bawah (Housing)', defaultColor: '#F8FAFC', defaultY: -0.4, explodedY: -0.9 },
+          { key: 'plate', label: 'Plat Dasar (Base)', defaultColor: '#1E293B', defaultY: 0.58, explodedY: 1.45 },
+          { key: 'relief', label: 'Relief Timbul / Inisial', defaultColor: '#FFD700', defaultY: 0.82, explodedY: 2.25 }
+        ]
+      },
+      chibi: {
+        name: 'Miniatur Chibi Custom DIY Kit',
+        badge: 'Chibi Doll DIY',
+        dimension: '45.0 × 42.0 × 75.0 mm',
+        defaultPrice: 95000,
+        parts: [
+          { key: 'pedestal', label: 'Plat Dudukan Bulat', defaultColor: '#1E293B', defaultY: -1.0, explodedY: -1.4 },
+          { key: 'body', label: 'Badan & Baju Chibi', defaultColor: '#38BDF8', defaultY: -0.25, explodedY: 0.2 },
+          { key: 'head', label: 'Kepala & Telinga Chibi', defaultColor: '#FF85A1', defaultY: 0.8, explodedY: 1.8 }
+        ]
+      },
+      topo: {
+        name: '3D Topo Terrain / Strava Route',
+        badge: '3D Strava / Topo',
+        dimension: '90.0 × 90.0 × 18.5 mm',
+        defaultPrice: 95000,
+        parts: [
+          { key: 'frame', label: 'Bingkai Kayu / Alas Plakat', defaultColor: '#8B5A2B', defaultY: -0.7, explodedY: -1.2 },
+          { key: 'terrain', label: 'Peta Kontur Elevasi', defaultColor: '#F8FAFC', defaultY: 0.05, explodedY: 0.5 },
+          { key: 'route', label: 'Jalur Rute Timbul Strava', defaultColor: '#FF5C8A', defaultY: 0.65, explodedY: 1.7 }
+        ]
+      },
+      photocard: {
+        name: '3D Embossed Photocard Frame',
+        badge: 'Photocard Frame',
+        dimension: '70.0 × 100.0 × 8.0 mm',
+        defaultPrice: 49000,
+        parts: [
+          { key: 'frame_outer', label: 'Bingkai Luar Pastel', defaultColor: '#FF85A1', defaultY: 0.0, explodedY: -0.5 },
+          { key: 'frame_inner', label: 'Toploader Holder', defaultColor: '#F8FAFC', defaultY: 0.0, explodedY: 0.6 },
+          { key: 'ornament', label: 'Ornamen Pita Timbul', defaultColor: '#B388EB', defaultY: 0.25, explodedY: 1.5 }
+        ]
+      },
+      trophy: {
+        name: 'Piala Custom Turnamen Padel (22cm)',
+        badge: 'Piala Padel',
+        dimension: '65.0 × 65.0 × 220.0 mm',
+        defaultPrice: 180000,
+        parts: [
+          { key: 'base', label: 'Pedestal Plakat Hitam', defaultColor: '#1E293B', defaultY: -1.0, explodedY: -1.5 },
+          { key: 'cup', label: 'Badan Piala Silk Gold', defaultColor: '#FFD700', defaultY: 0.1, explodedY: 0.8 },
+          { key: 'emblem', label: 'Emblem Mahkota / Raket', defaultColor: '#00F0FF', defaultY: 1.0, explodedY: 2.1 }
+        ]
+      }
+    };
+
+    // Persistent Color Storage across all parts and models
+    let modelColorState = {
+      clicker: { housing: '#F8FAFC', plate: '#1E293B', relief: '#FFD700' },
+      chibi: { pedestal: '#1E293B', body: '#38BDF8', head: '#FF85A1' },
+      topo: { frame: '#8B5A2B', terrain: '#F8FAFC', route: '#FF5C8A' },
+      photocard: { frame_outer: '#FF85A1', frame_inner: '#F8FAFC', ornament: '#B388EB' },
+      trophy: { base: '#1E293B', cup: '#FFD700', emblem: '#00F0FF' }
+    };
+
+    function getPartColor(modelKey, partKey, defaultHex) {
+      if (modelColorState[modelKey] && modelColorState[modelKey][partKey]) {
+        return modelColorState[modelKey][partKey];
+      }
+      return defaultHex;
+    }
+
+    function playClickSound() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1300, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(130, ctx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.06);
+      } catch (err) {}
+    }
 
     function init3DViewer() {
       const container = document.getElementById('threeCanvasContainer');
       if (!container) return;
 
+      clock = new THREE.Clock();
       scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-      camera.position.set(0, 1.5, 5);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.set(3.2, 4.0, 5.8);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.shadowMap.enabled = true;
-      container.appendChild(renderer.domElement);
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.25;
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+      while (container.firstChild && container.firstChild.nodeName === 'CANVAS') {
+        container.removeChild(container.firstChild);
+      }
+      container.insertBefore(renderer.domElement, container.firstChild);
+
+      if (typeof THREE.OrbitControls !== 'undefined') {
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.07;
+        controls.minDistance = 2.5;
+        controls.maxDistance = 14;
+        controls.maxPolarAngle = Math.PI / 2 + 0.05;
+        controls.target.set(0, 0.3, 0);
+      }
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
       scene.add(ambientLight);
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-      dirLight.position.set(5, 10, 7);
-      scene.add(dirLight);
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.15);
+      keyLight.position.set(6, 12, 8);
+      keyLight.castShadow = true;
+      keyLight.shadow.mapSize.width = 1024;
+      keyLight.shadow.mapSize.height = 1024;
+      keyLight.shadow.camera.near = 0.5;
+      keyLight.shadow.camera.far = 30;
+      keyLight.shadow.bias = -0.001;
+      scene.add(keyLight);
 
-      const backLight = new THREE.DirectionalLight(0xffb7c5, 0.4);
-      backLight.position.set(-5, -2, -5);
-      scene.add(backLight);
+      const fillLight = new THREE.DirectionalLight(0xE0F2FE, 0.45);
+      fillLight.position.set(-8, 5, -5);
+      scene.add(fillLight);
 
-      create3DGeometry(currentModelType, currentActiveColor);
-      setup3DDragControls(container);
+      const rimLight = new THREE.DirectionalLight(0xFDF2F8, 0.4);
+      rimLight.position.set(0, -6, -8);
+      scene.add(rimLight);
+
+      setupBambuGridFloor();
+      renderFilamentPalette();
+      buildModel3D(currentModelType);
+      setupCanvasRaycaster(container);
 
       function animate() {
         requestAnimationFrame(animate);
-        if (isAutoRotating && currentMesh) {
-          currentMesh.rotation.y += 0.008;
+        try {
+          const dt = clock.getDelta();
+          const elapsed = clock.getElapsedTime();
+
+          if (controls) controls.update();
+
+          if (currentMeshGroup) {
+            if (isAutoRotating) currentMeshGroup.rotation.y += 0.006;
+
+            Object.keys(modelParts).forEach(partKey => {
+              const mesh = modelParts[partKey];
+              if (mesh && mesh.userData) {
+                const targetY = isExploded ? mesh.userData.explodedY : mesh.userData.defaultY;
+                mesh.position.y += (targetY - mesh.position.y) * 0.12;
+              }
+            });
+
+            if (wireframeOverlay && activePartKey && modelParts[activePartKey]) {
+              const activeMesh = modelParts[activePartKey];
+              wireframeOverlay.position.copy(activeMesh.position);
+              wireframeOverlay.rotation.copy(activeMesh.rotation);
+              wireframeOverlay.scale.copy(activeMesh.scale);
+              const pulse = 0.65 + 0.25 * Math.sin(elapsed * 4);
+              if (wireframeOverlay.traverse) {
+                wireframeOverlay.traverse(child => {
+                  if (child.material) {
+                    child.material.opacity = pulse;
+                    child.material.transparent = true;
+                  }
+                });
+              } else if (wireframeOverlay.material) {
+                wireframeOverlay.material.opacity = pulse;
+              }
+            }
+          }
+          if (renderer && scene && camera) {
+            renderer.render(scene, camera);
+          }
+        } catch (err) {
+          console.warn("3D Render Loop Warning:", err);
         }
-        renderer.render(scene, camera);
       }
       animate();
 
@@ -1975,142 +2415,1454 @@
       });
     }
 
-    function create3DGeometry(type, colorHex) {
-      if (currentMesh) scene.remove(currentMesh);
+    function setupBambuGridFloor() {
+      if (gridFloor) scene.remove(gridFloor);
+      gridFloor = new THREE.GridHelper(16, 32, 0xF472B6, 0xE2E8F0);
+      gridFloor.position.y = -1.6;
+      gridFloor.material.opacity = 0.55;
+      gridFloor.material.transparent = true;
+      scene.add(gridFloor);
 
-      const group = new THREE.Group();
-      const material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(colorHex),
-        roughness: 0.35,
-        metalness: 0.2
-      });
+      if (shadowPlane) scene.remove(shadowPlane);
+      const floorGeo = new THREE.PlaneGeometry(16, 16);
+      const floorMat = new THREE.ShadowMaterial({ opacity: 0.12 });
+      shadowPlane = new THREE.Mesh(floorGeo, floorMat);
+      shadowPlane.rotation.x = -Math.PI / 2;
+      shadowPlane.position.y = -1.605;
+      shadowPlane.receiveShadow = true;
+      scene.add(shadowPlane);
+    }
 
-      if (type === 'trophy') {
-        const baseGeo = new THREE.CylinderGeometry(0.8, 1, 0.5, 32);
-        const base = new THREE.Mesh(baseGeo, new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.2 }));
-        base.position.y = -1;
-        group.add(base);
+    function buildModel3D(modelKey) {
+      currentModelType = modelKey;
+      const def = MODEL_DEFINITIONS[modelKey] || MODEL_DEFINITIONS.clicker;
 
-        const cupGeo = new THREE.CylinderGeometry(0.7, 0.3, 1.2, 32);
-        const cup = new THREE.Mesh(cupGeo, material);
-        cup.position.y = 0.1;
-        group.add(cup);
-
-        const crownGeo = new THREE.TorusGeometry(0.5, 0.1, 16, 32);
-        const crown = new THREE.Mesh(crownGeo, material);
-        crown.position.y = 0.9;
-        crown.rotation.x = Math.PI / 2;
-        group.add(crown);
-      } else if (type === 'topo') {
-        const terrainGeo = new THREE.ConeGeometry(1.3, 1.8, 7);
-        const terrain = new THREE.Mesh(terrainGeo, material);
-        terrain.position.y = -0.1;
-        group.add(terrain);
-
-        const baseGeo = new THREE.BoxGeometry(2.4, 0.25, 2.4);
-        const base = new THREE.Mesh(baseGeo, new THREE.MeshStandardMaterial({ color: 0x8B5A2B, roughness: 0.8 }));
-        base.position.y = -1;
-        group.add(base);
-      } else if (type === 'keycap') {
-        const capGeo = new THREE.BoxGeometry(1.4, 0.9, 1.4);
-        const cap = new THREE.Mesh(capGeo, material);
-        cap.position.y = 0.2;
-        group.add(cap);
-
-        const stemGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-        const stem = new THREE.Mesh(stemGeo, new THREE.MeshStandardMaterial({ color: 0x0284C7, roughness: 0.2 }));
-        stem.position.y = -0.5;
-        group.add(stem);
-      } else {
-        // Chibi Doll Default
-        const bodyGeo = new THREE.SphereGeometry(0.65, 32, 32);
-        const body = new THREE.Mesh(bodyGeo, material);
-        body.position.y = -0.3;
-        group.add(body);
-
-        const headGeo = new THREE.SphereGeometry(0.85, 32, 32);
-        const head = new THREE.Mesh(headGeo, material);
-        head.position.y = 0.75;
-        group.add(head);
-
-        const earGeo = new THREE.ConeGeometry(0.25, 0.4, 16);
-        const earL = new THREE.Mesh(earGeo, material);
-        earL.position.set(-0.5, 1.45, 0);
-        earL.rotation.z = 0.3;
-        group.add(earL);
-
-        const earR = new THREE.Mesh(earGeo, material);
-        earR.position.set(0.5, 1.45, 0);
-        earR.rotation.z = -0.3;
-        group.add(earR);
+      if (wireframeOverlay) {
+        if (wireframeOverlay.parent) wireframeOverlay.parent.remove(wireframeOverlay);
+        else scene.remove(wireframeOverlay);
+        wireframeOverlay.traverse(child => {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) child.material.dispose();
+        });
+        wireframeOverlay = null;
+      }
+      if (currentMeshGroup) {
+        scene.remove(currentMeshGroup);
+        currentMeshGroup.traverse(node => {
+          if (node.geometry) node.geometry.dispose();
+          if (node.material && !Array.isArray(node.material)) node.material.dispose();
+        });
       }
 
-      currentMesh = group;
-      scene.add(currentMesh);
+      currentMeshGroup = new THREE.Group();
+      modelParts = {};
+
+      const dimTag = document.getElementById('dimensionTag');
+      if (dimTag) dimTag.textContent = def.dimension;
+      const badge = document.getElementById('currentModelBadge');
+      if (badge) badge.textContent = def.badge;
+
+      if (modelKey === 'clicker') buildClickerGeometry(def);
+      else if (modelKey === 'chibi') buildChibiGeometry(def);
+      else if (modelKey === 'topo') buildTopoGeometry(def);
+      else if (modelKey === 'photocard') buildPhotocardGeometry(def);
+      else if (modelKey === 'trophy') buildTrophyGeometry(def);
+
+      scene.add(currentMeshGroup);
+      renderPartsList(def);
+      const initialPart = def.parts[1] ? def.parts[1].key : def.parts[0].key;
+      selectActivePart(initialPart);
+    }
+
+    function createClickerSquircleShape(w, h, r, withTab = true, tabW = 0.82, tabH = 0.58, holeR = 0.17) {
+      const shape = new THREE.Shape();
+      const hw = w / 2;
+      const hh = h / 2;
+      const cr = Math.min(r, hw * 0.45, hh * 0.45);
+
+      shape.moveTo(0, -hh);
+      shape.lineTo(hw - cr, -hh);
+      shape.quadraticCurveTo(hw, -hh, hw, -hh + cr);
+      shape.lineTo(hw, hh - cr);
+      shape.quadraticCurveTo(hw, hh, hw - cr, hh);
+
+      if (withTab) {
+        const halfTab = tabW / 2;
+        shape.lineTo(halfTab, hh);
+        shape.quadraticCurveTo(halfTab, hh + tabH * 0.35, halfTab * 0.95, hh + tabH * 0.7);
+        shape.absarc(0, hh + tabH * 0.7, halfTab * 0.95, 0, Math.PI, false);
+        shape.quadraticCurveTo(-halfTab, hh + tabH * 0.35, -halfTab, hh);
+        shape.lineTo(-hw + cr, hh);
+      } else {
+        shape.lineTo(-hw + cr, hh);
+      }
+
+      shape.quadraticCurveTo(-hw, hh, -hw, hh - cr);
+      shape.lineTo(-hw, -hh + cr);
+      shape.quadraticCurveTo(-hw, -hh, -hw + cr, -hh);
+      shape.closePath();
+
+      if (withTab && holeR > 0) {
+        const holePath = new THREE.Path();
+        const holeCenterY = hh + tabH * 0.7;
+        holePath.absarc(0, holeCenterY, holeR, 0, Math.PI * 2, true);
+        shape.holes.push(holePath);
+      }
+      return shape;
+    }
+
+    function createClickerHollowWallShape(w, h, r, wallThick, tabW, tabH, holeR) {
+      const outer = createClickerSquircleShape(w, h, r, true, tabW, tabH, holeR);
+      const innerCavity = new THREE.Path();
+      const inW = w - wallThick * 2;
+      const inH = h - wallThick * 2;
+      const inHw = inW / 2;
+      const inHh = inH / 2;
+      const inCr = Math.max(0.08, r - wallThick);
+
+      innerCavity.moveTo(0, -inHh);
+      innerCavity.lineTo(inHw - inCr, -inHh);
+      innerCavity.quadraticCurveTo(inHw, -inHh, inHw, -inHh + inCr);
+      innerCavity.lineTo(inHw, inHh - inCr);
+      innerCavity.quadraticCurveTo(inHw, inHh, inHw - inCr, inHh);
+      innerCavity.lineTo(-inHw + inCr, inHh);
+      innerCavity.quadraticCurveTo(-inHw, inHh, -inHw, inHh - inCr);
+      innerCavity.lineTo(-inHw, -inHh + inCr);
+      innerCavity.quadraticCurveTo(-inHw, -inHh, -inHw + inCr, -inHh);
+      innerCavity.closePath();
+
+      outer.holes.push(innerCavity);
+      return outer;
+    }
+
+    function buildClickerGeometry(def) {
+      const housingGroup = new THREE.Group();
+      housingGroup.userData = { key: 'housing', defaultY: -0.4, explodedY: -0.9 };
+
+      const housingColor = getPartColor('clicker', 'housing', def.parts[0].defaultColor);
+      const housingMat = createPartMaterial(housingColor, 0.05, 0.45);
+
+      // 1. Bottom Floor of Casing (Smooth rounded squircle)
+      const floorShape = createClickerSquircleShape(2.4, 2.4, 0.42, true, 0.82, 0.58, 0.17);
+      const floorGeo = new THREE.ExtrudeGeometry(floorShape, {
+        depth: 0.22,
+        bevelEnabled: true,
+        bevelThickness: 0.04,
+        bevelSize: 0.03,
+        bevelSegments: 3
+      });
+      floorGeo.rotateX(-Math.PI / 2);
+      floorGeo.translate(0, -0.6, 0);
+      const floorMesh = new THREE.Mesh(floorGeo, housingMat);
+      floorMesh.castShadow = true;
+      floorMesh.receiveShadow = true;
+      floorMesh.userData = { colorable: true, key: 'housing' };
+      housingGroup.add(floorMesh);
+
+      // 2. Hollow Perimeter Walls of Casing (Recessed pocket cavity)
+      const wallShape = createClickerHollowWallShape(2.4, 2.4, 0.42, 0.24, 0.82, 0.58, 0.17);
+      const wallGeo = new THREE.ExtrudeGeometry(wallShape, {
+        depth: 0.95,
+        bevelEnabled: true,
+        bevelThickness: 0.04,
+        bevelSize: 0.03,
+        bevelSegments: 3
+      });
+      wallGeo.rotateX(-Math.PI / 2);
+      wallGeo.translate(0, -0.38, 0);
+      const wallMesh = new THREE.Mesh(wallGeo, housingMat);
+      wallMesh.castShadow = true;
+      wallMesh.receiveShadow = true;
+      wallMesh.userData = { colorable: true, key: 'housing' };
+      housingGroup.add(wallMesh);
+
+      // 3. Realistic Mechanical Outemu Switch (Inside the cavity)
+      const switchGroup = new THREE.Group();
+      switchGroup.userData = { colorable: false };
+
+      // Switch Base (Charcoal Black)
+      const swBaseGeo = new THREE.BoxGeometry(1.36, 0.38, 1.36);
+      const swBaseMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6, metalness: 0.1 });
+      const swBase = new THREE.Mesh(swBaseGeo, swBaseMat);
+      swBase.position.y = -0.19;
+      swBase.userData = { colorable: false };
+      switchGroup.add(swBase);
+
+      // Switch Semi-Translucent Cover
+      const swCoverGeo = new THREE.BoxGeometry(1.24, 0.36, 1.24);
+      const swCoverMat = new THREE.MeshStandardMaterial({
+        color: 0x94A3B8,
+        roughness: 0.15,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 0.75
+      });
+      const swCover = new THREE.Mesh(swCoverGeo, swCoverMat);
+      swCover.position.y = 0.17;
+      swCover.userData = { colorable: false };
+      switchGroup.add(swCover);
+
+      // Switch Outemu Blue Stem with Cross Mount (+)
+      const stemColor = 0x0284C7;
+      const swStemMat = new THREE.MeshStandardMaterial({ color: stemColor, roughness: 0.25, metalness: 0.1 });
+      const swStemPillar = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.48, 0.38), swStemMat);
+      swStemPillar.position.y = 0.46;
+      swStemPillar.userData = { colorable: false };
+      switchGroup.add(swStemPillar);
+
+      const bar1 = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.20, 0.12), swStemMat);
+      bar1.position.y = 0.62;
+      bar1.userData = { colorable: false };
+      switchGroup.add(bar1);
+
+      const bar2 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.20, 0.44), swStemMat);
+      bar2.position.y = 0.62;
+      bar2.userData = { colorable: false };
+      switchGroup.add(bar2);
+
+      housingGroup.add(switchGroup);
+
+      housingGroup.position.y = housingGroup.userData.defaultY;
+      modelParts['housing'] = housingGroup;
+      currentMeshGroup.add(housingGroup);
+
+      // 4. Base Plate (Plat Dasar - matching squircle)
+      const plateColor = getPartColor('clicker', 'plate', def.parts[1].defaultColor);
+      const plateMat = createPartMaterial(plateColor, 0.1, 0.5);
+      const plateShape = createClickerSquircleShape(2.36, 2.36, 0.38, true, 0.76, 0.50, 0.17);
+      const plateGeo = new THREE.ExtrudeGeometry(plateShape, {
+        depth: 0.22,
+        bevelEnabled: true,
+        bevelThickness: 0.04,
+        bevelSize: 0.03,
+        bevelSegments: 3
+      });
+      plateGeo.rotateX(-Math.PI / 2);
+      const plateMesh = new THREE.Mesh(plateGeo, plateMat);
+      plateMesh.castShadow = true;
+      plateMesh.receiveShadow = true;
+      plateMesh.userData = {
+        key: 'plate',
+        colorable: true,
+        defaultY: 0.58,
+        explodedY: 1.45
+      };
+      plateMesh.position.y = plateMesh.userData.defaultY;
+      modelParts['plate'] = plateMesh;
+      currentMeshGroup.add(plateMesh);
+
+      // 5. Relief Timbul / Inisial Artwork
+      buildReliefMesh(plateMesh, def.parts[2]);
+    }
+
+    function createPresetShape(type) {
+      if (type === 'heart') {
+        const shape = new THREE.Shape();
+        const x = 0, y = 0;
+        shape.moveTo(x, y + 0.15);
+        shape.bezierCurveTo(x, y + 0.45, x - 0.55, y + 0.75, x - 0.8, y + 0.45);
+        shape.bezierCurveTo(x - 1.05, y + 0.15, x - 0.7, y - 0.35, x, y - 0.85);
+        shape.bezierCurveTo(x + 0.7, y - 0.35, x + 1.05, y + 0.15, x + 0.8, y + 0.45);
+        shape.bezierCurveTo(x + 0.55, y + 0.75, x, y + 0.45, x, y + 0.15);
+        return shape;
+      } else if (type === 'bolt') {
+        const shape = new THREE.Shape();
+        shape.moveTo(0.12, 0.85);
+        shape.lineTo(-0.5, 0.05);
+        shape.lineTo(-0.05, 0.05);
+        shape.lineTo(-0.25, -0.85);
+        shape.lineTo(0.5, -0.05);
+        shape.lineTo(0.05, -0.05);
+        shape.closePath();
+        return shape;
+      } else if (type === 'ribbon') {
+        const shape = new THREE.Shape();
+        shape.moveTo(0, 0.15);
+        shape.bezierCurveTo(-0.45, 0.65, -0.85, 0.3, -0.75, -0.2);
+        shape.bezierCurveTo(-0.65, -0.5, -0.2, -0.1, 0, 0);
+        shape.bezierCurveTo(0.2, -0.1, 0.65, -0.5, 0.75, -0.2);
+        shape.bezierCurveTo(0.85, 0.3, 0.45, 0.65, 0, 0.15);
+        return shape;
+      } else if (type === 'initial') {
+        const shape = new THREE.Shape();
+        const w = 0.75, h = 0.75, r = 0.18;
+        shape.moveTo(-w + r, -h);
+        shape.lineTo(w - r, -h);
+        shape.quadraticCurveTo(w, -h, w, -h + r);
+        shape.lineTo(w, h - r);
+        shape.quadraticCurveTo(w, h, w - r, h);
+        shape.lineTo(-w + r, h);
+        shape.quadraticCurveTo(-w, h, -w, h - r);
+        shape.lineTo(-w, -h + r);
+        shape.quadraticCurveTo(-w, -h, -w + r, -h);
+        return shape;
+      } else {
+        // Default: 5-pointed star
+        const arms = 5, rOuter = 0.82, rInner = 0.42;
+        const shape = new THREE.Shape();
+        const angleStep = Math.PI / arms;
+        for (let i = 0; i < arms * 2; i++) {
+          const r = i % 2 === 0 ? rOuter : rInner;
+          const angle = i * angleStep - Math.PI / 2;
+          const x = r * Math.cos(angle);
+          const y = r * Math.sin(angle);
+          if (i === 0) shape.moveTo(x, y);
+          else shape.lineTo(x, y);
+        }
+        shape.closePath();
+        return shape;
+      }
+    }
+
+    function traceBoundaryContour(ctx, width, height, thresholdPercent, invert) {
+      const imgData = ctx.getImageData(0, 0, width, height).data;
+      const cutoff = (thresholdPercent / 100) * 255;
+      const grid = new Uint8Array(width * height);
+      let solidCount = 0;
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const idx = (y * width + x) * 4;
+          const r = imgData[idx];
+          const g = imgData[idx + 1];
+          const b = imgData[idx + 2];
+          const a = imgData[idx + 3];
+
+          let isBg = a < 80;
+          if (!isBg && r > cutoff && g > cutoff && b > cutoff) {
+            isBg = true;
+          }
+
+          let isSolid = !isBg;
+          if (invert) isSolid = !isSolid;
+
+          if (x === 0 || y === 0 || x === width - 1 || y === height - 1) {
+            isSolid = false;
+          }
+
+          if (isSolid) {
+            grid[y * width + x] = 1;
+            solidCount++;
+          } else {
+            grid[y * width + x] = 0;
+          }
+        }
+      }
+
+      if (solidCount < 16) return null;
+
+      let startX = -1, startY = -1;
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+          if (grid[y * width + x] === 1) {
+            startX = x;
+            startY = y;
+            break;
+          }
+        }
+        if (startX !== -1) break;
+      }
+
+      if (startX === -1) return null;
+
+      const dx = [0, 1, 1, 1, 0, -1, -1, -1];
+      const dy = [-1, -1, 0, 1, 1, 1, 0, -1];
+      const rawPoints = [];
+      let currX = startX;
+      let currY = startY;
+      let backtrackDir = 0;
+      let maxSteps = width * height;
+      let steps = 0;
+
+      rawPoints.push({ x: currX, y: currY });
+
+      while (steps < maxSteps) {
+        steps++;
+        let foundNext = false;
+        let searchDir = (backtrackDir + 6) % 8;
+
+        for (let i = 0; i < 8; i++) {
+          const dir = (searchDir + i) % 8;
+          const nx = currX + dx[dir];
+          const ny = currY + dy[dir];
+
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height && grid[ny * width + nx] === 1) {
+            currX = nx;
+            currY = ny;
+            backtrackDir = dir;
+            rawPoints.push({ x: currX, y: currY });
+            foundNext = true;
+            break;
+          }
+        }
+
+        if (!foundNext) break;
+        if (currX === startX && currY === startY && rawPoints.length > 5) {
+          break;
+        }
+      }
+
+      if (rawPoints.length < 5) return null;
+
+      const stepInterval = Math.max(1, Math.floor(rawPoints.length / 75));
+      const sampled = [];
+      for (let i = 0; i < rawPoints.length; i += stepInterval) {
+        sampled.push(rawPoints[i]);
+      }
+
+      for (let pass = 0; pass < 2; pass++) {
+        const len = sampled.length;
+        for (let i = 0; i < len; i++) {
+          const prev = sampled[(i - 1 + len) % len];
+          const curr = sampled[i];
+          const next = sampled[(i + 1) % len];
+          sampled[i] = {
+            x: 0.25 * prev.x + 0.5 * curr.x + 0.25 * next.x,
+            y: 0.25 * prev.y + 0.5 * curr.y + 0.25 * next.y
+          };
+        }
+      }
+
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      sampled.forEach(p => {
+        if (p.x < minX) minX = p.x;
+        if (p.x > maxX) maxX = p.x;
+        if (p.y < minY) minY = p.y;
+        if (p.y > maxY) maxY = p.y;
+      });
+
+      const spanX = Math.max(1, maxX - minX);
+      const spanY = Math.max(1, maxY - minY);
+      const maxSpan = Math.max(spanX, spanY);
+      const targetSize = 1.65;
+
+      const centerX = (minX + maxX) / 2;
+      const centerY = (minY + maxY) / 2;
+
+      const shape = new THREE.Shape();
+      const firstX = ((sampled[0].x - centerX) / maxSpan) * targetSize;
+      const firstY = -((sampled[0].y - centerY) / maxSpan) * targetSize;
+      shape.moveTo(firstX, firstY);
+
+      for (let i = 1; i < sampled.length; i++) {
+        const px = ((sampled[i].x - centerX) / maxSpan) * targetSize;
+        const py = -((sampled[i].y - centerY) / maxSpan) * targetSize;
+        shape.lineTo(px, py);
+      }
+      shape.closePath();
+
+      return shape;
+    }
+
+    function buildReliefMesh(parentPlate, partDef) {
+      if (modelParts['relief']) {
+        currentMeshGroup.remove(modelParts['relief']);
+        if (modelParts['relief'].geometry) modelParts['relief'].geometry.dispose();
+      }
+
+      let reliefGeo;
+
+      if (relief3DMode === 'solid') {
+        // FASE 2: ULTRA-CRISP VECTOR EXTRUSION (EL-STUDIO & BAMBU LAB GRADE)
+        let shape = null;
+        if (heightmapTexture && heightmapTexture.displacementCanvas) {
+          shape = traceBoundaryContour(
+            heightmapTexture.displacementCanvas.getContext('2d'),
+            heightmapTexture.displacementCanvas.width,
+            heightmapTexture.displacementCanvas.height,
+            bgThresholdSensitivity,
+            invertReliefValue
+          );
+        }
+
+        if (!shape) {
+          shape = createPresetShape(activePresetShape);
+        }
+
+        const extrudeSettings = {
+          depth: Math.max(0.12, reliefDepthValue * 0.12),
+          bevelEnabled: true,
+          bevelThickness: 0.04,
+          bevelSize: 0.03,
+          bevelSegments: 3
+        };
+
+        reliefGeo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        reliefGeo.rotateX(-Math.PI / 2);
+
+      } else {
+        // LITOFAN EMBOSS MODE (Continuous heightmap)
+        if (heightmapTexture && heightmapTexture.displacementCanvas) {
+          const segs = 64;
+          reliefGeo = new THREE.PlaneGeometry(1.85, 1.85, segs, segs);
+          const pos = reliefGeo.attributes.position;
+          const ctx = heightmapTexture.displacementCanvas.getContext('2d');
+          const imgData = ctx.getImageData(0, 0, segs + 1, segs + 1).data;
+          const depth = reliefDepthValue * 0.14;
+
+          for (let i = 0; i < pos.count; i++) {
+            const pxIdx = i * 4;
+            const r = imgData[pxIdx];
+            const g = imgData[pxIdx + 1];
+            const b = imgData[pxIdx + 2];
+            const alpha = imgData[pxIdx + 3] / 255;
+            let rawLum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            if (invertReliefValue) rawLum = 1.0 - rawLum;
+
+            let finalLum = 0;
+            if (alpha < 0.25) {
+              finalLum = 0;
+            } else {
+              const enhanced = Math.pow(rawLum, 1.35);
+              finalLum = enhanced > 0.35 ? (enhanced > 0.7 ? 1.0 : 0.65) : 0.05;
+            }
+            pos.setZ(i, finalLum * depth);
+          }
+          reliefGeo.computeVertexNormals();
+          reliefGeo.rotateX(-Math.PI / 2);
+        } else {
+          reliefGeo = new THREE.BoxGeometry(1.4, 0.45, 1.4);
+        }
+      }
+
+      const reliefColor = getPartColor(currentModelType, 'relief', partDef.defaultColor);
+      const reliefMat = createPartMaterial(reliefColor, 0.75, 0.2);
+      const reliefMesh = new THREE.Mesh(reliefGeo, reliefMat);
+      reliefMesh.castShadow = true;
+      reliefMesh.receiveShadow = true;
+      const basePlateY = parentPlate ? parentPlate.userData.defaultY : 0.58;
+      const expPlateY = parentPlate ? parentPlate.userData.explodedY : 1.45;
+      reliefMesh.userData = {
+        key: 'relief',
+        colorable: true,
+        defaultY: basePlateY + 0.24,
+        explodedY: expPlateY + 0.80
+      };
+      reliefMesh.position.y = reliefMesh.userData.defaultY;
+
+      if (activePresetShape === 'initial' && !heightmapTexture && relief3DMode === 'solid') {
+        const charPillGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.18, 16);
+        const charPill = new THREE.Mesh(charPillGeo, reliefMat);
+        charPill.position.y = 0.22;
+        charPill.userData = { colorable: true, key: 'relief' };
+        reliefMesh.add(charPill);
+      }
+
+      modelParts['relief'] = reliefMesh;
+      currentMeshGroup.add(reliefMesh);
+    }
+
+    function buildChibiGeometry(def) {
+      // 1. Pedestal Display Base (Beveled with accent ring)
+      const pedColor = getPartColor('chibi', 'pedestal', def.parts[0].defaultColor);
+      const pedGroup = new THREE.Group();
+      const pedBaseGeo = new THREE.CylinderGeometry(1.4, 1.5, 0.24, 32);
+      const pedBase = new THREE.Mesh(pedBaseGeo, createPartMaterial(pedColor, 0.1, 0.5));
+      pedBase.castShadow = true; pedBase.receiveShadow = true;
+      pedBase.userData = { key: 'pedestal', colorable: true };
+      pedGroup.add(pedBase);
+
+      const pedRingGeo = new THREE.TorusGeometry(1.38, 0.035, 8, 32);
+      const pedRing = new THREE.Mesh(pedRingGeo, createPartMaterial(pedColor, 0.4, 0.3));
+      pedRing.rotation.x = Math.PI / 2;
+      pedRing.position.y = 0.12;
+      pedRing.userData = { key: 'pedestal', colorable: true };
+      pedGroup.add(pedRing);
+
+      pedGroup.userData = { key: 'pedestal', colorable: true, defaultY: def.parts[0].defaultY, explodedY: def.parts[0].explodedY };
+      pedGroup.position.y = pedGroup.userData.defaultY;
+      modelParts['pedestal'] = pedGroup;
+      currentMeshGroup.add(pedGroup);
+
+      // 2. Chibi Body & Outfit (Torso, sleeves, hoodie paws)
+      const bodyColor = getPartColor('chibi', 'body', def.parts[1].defaultColor);
+      const bodyGroup = new THREE.Group();
+      const torsoGeo = new THREE.CylinderGeometry(0.52, 0.72, 0.85, 24);
+      const torso = new THREE.Mesh(torsoGeo, createPartMaterial(bodyColor, 0.2, 0.4));
+      torso.castShadow = true; torso.receiveShadow = true;
+      torso.userData = { key: 'body', colorable: true };
+      bodyGroup.add(torso);
+
+      // Cute paws / arms holding front
+      const armGeo = new THREE.SphereGeometry(0.18, 16, 12);
+      const armL = new THREE.Mesh(armGeo, createPartMaterial(bodyColor, 0.2, 0.4));
+      armL.position.set(-0.45, 0.1, 0.32);
+      armL.scale.set(0.9, 1.4, 0.9);
+      armL.rotation.z = 0.35;
+      armL.userData = { key: 'body', colorable: true };
+      bodyGroup.add(armL);
+
+      const armR = new THREE.Mesh(armGeo, createPartMaterial(bodyColor, 0.2, 0.4));
+      armR.position.set(0.45, 0.1, 0.32);
+      armR.scale.set(0.9, 1.4, 0.9);
+      armR.rotation.z = -0.35;
+      armR.userData = { key: 'body', colorable: true };
+      bodyGroup.add(armR);
+
+      // Shoes
+      const shoeGeo = new THREE.SphereGeometry(0.19, 14, 12);
+      const shoeMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.6 });
+      const shoeL = new THREE.Mesh(shoeGeo, shoeMat);
+      shoeL.position.set(-0.28, -0.42, 0.2);
+      shoeL.scale.set(1.1, 0.7, 1.4);
+      shoeL.userData = { colorable: false };
+      bodyGroup.add(shoeL);
+      const shoeR = new THREE.Mesh(shoeGeo, shoeMat);
+      shoeR.position.set(0.28, -0.42, 0.2);
+      shoeR.scale.set(1.1, 0.7, 1.4);
+      shoeR.userData = { colorable: false };
+      bodyGroup.add(shoeR);
+
+      bodyGroup.userData = { key: 'body', colorable: true, defaultY: def.parts[1].defaultY, explodedY: def.parts[1].explodedY };
+      bodyGroup.position.y = bodyGroup.userData.defaultY;
+      modelParts['body'] = bodyGroup;
+      currentMeshGroup.add(bodyGroup);
+
+      // 3. Cute Chibi Head (Rounded cheeks, bear/cat ears, eyes, blush)
+      const headColor = getPartColor('chibi', 'head', def.parts[2].defaultColor);
+      const headGroup = new THREE.Group();
+      const headGeo = new THREE.SphereGeometry(0.88, 32, 28);
+      const headMesh = new THREE.Mesh(headGeo, createPartMaterial(headColor, 0.15, 0.35));
+      headMesh.scale.set(1.05, 0.95, 1.02);
+      headMesh.castShadow = true;
+      headMesh.userData = { key: 'head', colorable: true };
+      headGroup.add(headMesh);
+
+      // Cute Bear/Cat Ears
+      const earOuterGeo = new THREE.SphereGeometry(0.28, 16, 16);
+      const earInnerGeo = new THREE.SphereGeometry(0.19, 14, 14);
+      const earInnerMat = new THREE.MeshStandardMaterial({ color: 0xFFB4C8, roughness: 0.5 });
+
+      [-0.62, 0.62].forEach((xPos, idx) => {
+        const earOut = new THREE.Mesh(earOuterGeo, createPartMaterial(headColor, 0.15, 0.35));
+        earOut.position.set(xPos, 0.72, 0.05);
+        earOut.scale.set(0.95, 1.1, 0.75);
+        earOut.userData = { key: 'head', colorable: true };
+        headGroup.add(earOut);
+
+        const earIn = new THREE.Mesh(earInnerGeo, earInnerMat);
+        earIn.position.set(xPos, 0.72, 0.15);
+        earIn.scale.set(0.8, 1.0, 0.5);
+        earIn.userData = { colorable: false };
+        headGroup.add(earIn);
+      });
+
+      // Cute Chibi Eyes (Dark with anime sparkle)
+      const eyeMat = new THREE.MeshBasicMaterial({ color: 0x1E293B });
+      const sparkleMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+      [-0.28, 0.28].forEach(xEye => {
+        const eye = new THREE.Mesh(new THREE.CircleGeometry(0.095, 20), eyeMat);
+        eye.position.set(xEye, 0.02, 0.89);
+        eye.userData = { colorable: false };
+        headGroup.add(eye);
+
+        const sparkle = new THREE.Mesh(new THREE.CircleGeometry(0.035, 16), sparkleMat);
+        sparkle.position.set(xEye + 0.03, 0.05, 0.90);
+        sparkle.userData = { colorable: false };
+        headGroup.add(sparkle);
+      });
+
+      // Cheerful Blush Cheeks
+      const blushMat = new THREE.MeshBasicMaterial({ color: 0xFB7185, transparent: true, opacity: 0.75 });
+      [-0.42, 0.42].forEach(xBlush => {
+        const blush = new THREE.Mesh(new THREE.CircleGeometry(0.08, 16), blushMat);
+        blush.position.set(xBlush, -0.12, 0.85);
+        blush.userData = { colorable: false };
+        headGroup.add(blush);
+      });
+
+      headGroup.userData = { key: 'head', colorable: true, defaultY: def.parts[2].defaultY, explodedY: def.parts[2].explodedY };
+      headGroup.position.y = headGroup.userData.defaultY;
+      modelParts['head'] = headGroup;
+      currentMeshGroup.add(headGroup);
+    }
+
+    function buildTopoGeometry(def) {
+      // 1. Framed Wood / Plaque Base (Beveled display stand)
+      const frameColor = getPartColor('topo', 'frame', def.parts[0].defaultColor);
+      const frameGroup = new THREE.Group();
+
+      const baseShape = new THREE.Shape();
+      const bw = 3.1, bh = 3.1, br = 0.22;
+      baseShape.moveTo(-bw/2 + br, -bh/2);
+      baseShape.lineTo(bw/2 - br, -bh/2);
+      baseShape.quadraticCurveTo(bw/2, -bh/2, bw/2, -bh/2 + br);
+      baseShape.lineTo(bw/2, bh/2 - br);
+      baseShape.quadraticCurveTo(bw/2, bh/2, bw/2 - br, bh/2);
+      baseShape.lineTo(-bw/2 + br, bh/2);
+      baseShape.quadraticCurveTo(-bw/2, bh/2, -bw/2, bh/2 - br);
+      baseShape.lineTo(-bw/2, -bh/2 + br);
+      baseShape.quadraticCurveTo(-bw/2, -bh/2, -bw/2 + br, -bh/2);
+
+      const frameGeo = new THREE.ExtrudeGeometry(baseShape, { depth: 0.32, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.08, bevelThickness: 0.08 });
+      const frameMesh = new THREE.Mesh(frameGeo, createPartMaterial(frameColor, 0.1, 0.65));
+      frameMesh.rotation.x = Math.PI / 2;
+      frameMesh.castShadow = true; frameMesh.receiveShadow = true;
+      frameMesh.userData = { key: 'frame', colorable: true };
+      frameGroup.add(frameMesh);
+
+      // Metallic Plaque Plate ("Kirei3D Elevation Art")
+      const plateGeo = new THREE.BoxGeometry(1.6, 0.18, 0.04);
+      const plateMat = new THREE.MeshStandardMaterial({ color: 0xFBBF24, metalness: 0.85, roughness: 0.25 });
+      const plaque = new THREE.Mesh(plateGeo, plateMat);
+      plaque.position.set(0, -0.05, 1.58);
+      plaque.userData = { colorable: false };
+      frameGroup.add(plaque);
+
+      frameGroup.userData = { key: 'frame', colorable: true, defaultY: def.parts[0].defaultY, explodedY: def.parts[0].explodedY };
+      frameGroup.position.y = frameGroup.userData.defaultY;
+      modelParts['frame'] = frameGroup;
+      currentMeshGroup.add(frameGroup);
+
+      // 2. Realistic Stepped Contour Mountain Terrain (Multi-layer terraces)
+      const terrainColor = getPartColor('topo', 'terrain', def.parts[1].defaultColor);
+      const terrainGroup = new THREE.Group();
+
+      const layers = [
+        { w: 2.6, d: 2.6, h: 0.16, y: 0.08, r: 0.15 },
+        { w: 2.2, d: 2.1, h: 0.16, y: 0.24, r: 0.18 },
+        { w: 1.7, d: 1.6, h: 0.16, y: 0.40, r: 0.22 },
+        { w: 1.2, d: 1.1, h: 0.16, y: 0.56, r: 0.25 }
+      ];
+
+      layers.forEach((l, idx) => {
+        const layerGeo = new THREE.CylinderGeometry(l.w * 0.5, l.w * 0.55, l.h, 16);
+        const layerMesh = new THREE.Mesh(layerGeo, createPartMaterial(terrainColor, 0.1, 0.45));
+        layerMesh.position.y = l.y;
+        layerMesh.scale.set(1.0, 1.0, l.d / l.w);
+        layerMesh.castShadow = true; layerMesh.receiveShadow = true;
+        layerMesh.userData = { key: 'terrain', colorable: true };
+        terrainGroup.add(layerMesh);
+      });
+
+      // Twin Peak Summits
+      const peak1Geo = new THREE.ConeGeometry(0.55, 0.45, 12);
+      const peak1 = new THREE.Mesh(peak1Geo, createPartMaterial(terrainColor, 0.1, 0.45));
+      peak1.position.set(-0.25, 0.85, -0.15);
+      peak1.castShadow = true;
+      peak1.userData = { key: 'terrain', colorable: true };
+      terrainGroup.add(peak1);
+
+      const peak2Geo = new THREE.ConeGeometry(0.42, 0.36, 10);
+      const peak2 = new THREE.Mesh(peak2Geo, createPartMaterial(terrainColor, 0.1, 0.45));
+      peak2.position.set(0.38, 0.78, 0.22);
+      peak2.castShadow = true;
+      peak2.userData = { key: 'terrain', colorable: true };
+      terrainGroup.add(peak2);
+
+      terrainGroup.userData = { key: 'terrain', colorable: true, defaultY: def.parts[1].defaultY, explodedY: def.parts[1].explodedY };
+      terrainGroup.position.y = terrainGroup.userData.defaultY;
+      modelParts['terrain'] = terrainGroup;
+      currentMeshGroup.add(terrainGroup);
+
+      // 3. Organic Strava GPS Route Line (Winding 3D pipe track + Start/Finish pins)
+      const routeColor = getPartColor('topo', 'route', def.parts[2].defaultColor);
+      const routeGroup = new THREE.Group();
+
+      const trackPoints = [
+        new THREE.Vector3(-1.05, 0.18, 1.05),
+        new THREE.Vector3(-0.75, 0.32, 0.65),
+        new THREE.Vector3(-0.45, 0.48, 0.25),
+        new THREE.Vector3(-0.25, 0.72, -0.05),
+        new THREE.Vector3(0.12, 0.82, 0.08),
+        new THREE.Vector3(0.38, 0.68, 0.22),
+        new THREE.Vector3(0.65, 0.45, 0.55),
+        new THREE.Vector3(0.95, 0.22, 0.85)
+      ];
+      const routeCurve = new THREE.CatmullRomCurve3(trackPoints);
+      const tubeGeo = new THREE.TubeGeometry(routeCurve, 48, 0.048, 8, false);
+      const routeMesh = new THREE.Mesh(tubeGeo, createPartMaterial(routeColor, 0.7, 0.2));
+      routeMesh.castShadow = true;
+      routeMesh.userData = { key: 'route', colorable: true };
+      routeGroup.add(routeMesh);
+
+      // Green START Pin
+      const pinStart = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), new THREE.MeshStandardMaterial({ color: 0x10B981, roughness: 0.3 }));
+      pinStart.position.copy(trackPoints[0]);
+      pinStart.userData = { colorable: false };
+      routeGroup.add(pinStart);
+
+      // Checkered / Red FINISH Pin
+      const pinFinish = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), new THREE.MeshStandardMaterial({ color: 0xEF4444, roughness: 0.3 }));
+      pinFinish.position.copy(trackPoints[trackPoints.length - 1]);
+      pinFinish.userData = { colorable: false };
+      routeGroup.add(pinFinish);
+
+      routeGroup.userData = { key: 'route', colorable: true, defaultY: def.parts[2].defaultY, explodedY: def.parts[2].explodedY };
+      routeGroup.position.y = routeGroup.userData.defaultY;
+      modelParts['route'] = routeGroup;
+      currentMeshGroup.add(routeGroup);
+    }
+
+    function buildPhotocardGeometry(def) {
+      // 1. Outer Frame with filleted corners & beaded rim
+      const outerColor = getPartColor('photocard', 'frame_outer', def.parts[0].defaultColor);
+      const outerGroup = new THREE.Group();
+
+      const frameShape = createClickerSquircleShape(2.4, 3.3, 0.28, true, 0.6, 0.42, 0.15);
+      const outerGeo = new THREE.ExtrudeGeometry(frameShape, { depth: 0.24, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.06, bevelThickness: 0.06 });
+      const outerMesh = new THREE.Mesh(outerGeo, createPartMaterial(outerColor, 0.15, 0.4));
+      outerMesh.rotation.x = Math.PI / 2;
+      outerMesh.castShadow = true;
+      outerMesh.userData = { key: 'frame_outer', colorable: true };
+      outerGroup.add(outerMesh);
+
+      outerGroup.userData = { key: 'frame_outer', colorable: true, defaultY: def.parts[0].defaultY, explodedY: def.parts[0].explodedY };
+      outerGroup.position.y = outerGroup.userData.defaultY;
+      modelParts['frame_outer'] = outerGroup;
+      currentMeshGroup.add(outerGroup);
+
+      // 2. Inner Toploader & Idol Card Window
+      const innerColor = getPartColor('photocard', 'frame_inner', def.parts[1].defaultColor);
+      const innerGroup = new THREE.Group();
+
+      const cardGeo = new THREE.BoxGeometry(1.7, 2.5, 0.08);
+      const cardMat = createPartMaterial(innerColor, 0.3, 0.25);
+      const cardMesh = new THREE.Mesh(cardGeo, cardMat);
+      cardMesh.rotation.x = Math.PI / 2;
+      cardMesh.position.set(0, 0.06, -0.05);
+      cardMesh.userData = { key: 'frame_inner', colorable: true };
+      innerGroup.add(cardMesh);
+
+      // Holographic Idol Mock Foil Insert
+      const holoGeo = new THREE.PlaneGeometry(1.5, 2.3);
+      const holoMat = new THREE.MeshStandardMaterial({
+        color: 0xFDF2F8,
+        metalness: 0.85,
+        roughness: 0.2,
+        transparent: true,
+        opacity: 0.95
+      });
+      const holoPlane = new THREE.Mesh(holoGeo, holoMat);
+      holoPlane.rotation.x = -Math.PI / 2;
+      holoPlane.position.set(0, 0.11, -0.05);
+      holoPlane.userData = { colorable: false };
+      innerGroup.add(holoPlane);
+
+      innerGroup.userData = { key: 'frame_inner', colorable: true, defaultY: def.parts[1].defaultY, explodedY: def.parts[1].explodedY };
+      innerGroup.position.y = innerGroup.userData.defaultY;
+      modelParts['frame_inner'] = innerGroup;
+      currentMeshGroup.add(innerGroup);
+
+      // 3. 3D Ribbon Bow Ornament (Top Left Accent)
+      const ornColor = getPartColor('photocard', 'ornament', def.parts[2].defaultColor);
+      const ornGroup = new THREE.Group();
+
+      const bowKnotGeo = new THREE.SphereGeometry(0.14, 16, 16);
+      const bowKnot = new THREE.Mesh(bowKnotGeo, createPartMaterial(ornColor, 0.5, 0.3));
+      bowKnot.userData = { key: 'ornament', colorable: true };
+      ornGroup.add(bowKnot);
+
+      const loopGeo = new THREE.TorusGeometry(0.24, 0.08, 12, 24);
+      const loopL = new THREE.Mesh(loopGeo, createPartMaterial(ornColor, 0.5, 0.3));
+      loopL.rotation.y = Math.PI / 4;
+      loopL.rotation.z = -Math.PI / 6;
+      loopL.position.set(-0.25, 0.05, 0);
+      loopL.userData = { key: 'ornament', colorable: true };
+      ornGroup.add(loopL);
+
+      const loopR = new THREE.Mesh(loopGeo, createPartMaterial(ornColor, 0.5, 0.3));
+      loopR.rotation.y = -Math.PI / 4;
+      loopR.rotation.z = Math.PI / 6;
+      loopR.position.set(0.25, 0.05, 0);
+      loopR.userData = { key: 'ornament', colorable: true };
+      ornGroup.add(loopR);
+
+      ornGroup.position.set(-0.65, 0.28, 1.25);
+      ornGroup.userData = { key: 'ornament', colorable: true, defaultY: def.parts[2].defaultY, explodedY: def.parts[2].explodedY };
+      ornGroup.position.y = ornGroup.userData.defaultY;
+      modelParts['ornament'] = ornGroup;
+      currentMeshGroup.add(ornGroup);
+    }
+
+    function buildTrophyGeometry(def) {
+      // 1. Pedestal Base with Championship Plaque
+      const baseColor = getPartColor('trophy', 'base', def.parts[0].defaultColor);
+      const baseGroup = new THREE.Group();
+
+      const bBottomGeo = new THREE.BoxGeometry(2.1, 0.32, 2.1);
+      const bBottom = new THREE.Mesh(bBottomGeo, createPartMaterial(baseColor, 0.15, 0.55));
+      bBottom.castShadow = true; bBottom.receiveShadow = true;
+      bBottom.userData = { key: 'base', colorable: true };
+      baseGroup.add(bBottom);
+
+      const bTopGeo = new THREE.BoxGeometry(1.6, 0.52, 1.6);
+      const bTop = new THREE.Mesh(bTopGeo, createPartMaterial(baseColor, 0.15, 0.55));
+      bTop.position.y = 0.38;
+      bTop.castShadow = true;
+      bTop.userData = { key: 'base', colorable: true };
+      baseGroup.add(bTop);
+
+      // Gold engraved winner badge
+      const plaqueGeo = new THREE.BoxGeometry(1.2, 0.28, 0.04);
+      const plaqueMat = new THREE.MeshStandardMaterial({ color: 0xFBBF24, metalness: 0.9, roughness: 0.2 });
+      const plaque = new THREE.Mesh(plaqueGeo, plaqueMat);
+      plaque.position.set(0, 0.38, 0.82);
+      plaque.userData = { colorable: false };
+      baseGroup.add(plaque);
+
+      baseGroup.userData = { key: 'base', colorable: true, defaultY: def.parts[0].defaultY, explodedY: def.parts[0].explodedY };
+      baseGroup.position.y = baseGroup.userData.defaultY;
+      modelParts['base'] = baseGroup;
+      currentMeshGroup.add(baseGroup);
+
+      // 2. Trophy Cup Chalice with Dual Handles
+      const cupColor = getPartColor('trophy', 'cup', def.parts[1].defaultColor);
+      const cupGroup = new THREE.Group();
+
+      const stemGeo = new THREE.CylinderGeometry(0.24, 0.65, 0.8, 24);
+      const stem = new THREE.Mesh(stemGeo, createPartMaterial(cupColor, 0.85, 0.18));
+      stem.position.y = 0.2;
+      stem.castShadow = true;
+      stem.userData = { key: 'cup', colorable: true };
+      cupGroup.add(stem);
+
+      const bowlGeo = new THREE.CylinderGeometry(0.95, 0.38, 1.3, 32);
+      const bowl = new THREE.Mesh(bowlGeo, createPartMaterial(cupColor, 0.85, 0.18));
+      bowl.position.y = 1.05;
+      bowl.castShadow = true;
+      bowl.userData = { key: 'cup', colorable: true };
+      cupGroup.add(bowl);
+
+      // Dual Handles
+      const handleGeo = new THREE.TorusGeometry(0.38, 0.06, 12, 24, Math.PI);
+      const hL = new THREE.Mesh(handleGeo, createPartMaterial(cupColor, 0.85, 0.18));
+      hL.rotation.z = -Math.PI / 2;
+      hL.position.set(-0.95, 1.15, 0);
+      hL.userData = { key: 'cup', colorable: true };
+      cupGroup.add(hL);
+
+      const hR = new THREE.Mesh(handleGeo, createPartMaterial(cupColor, 0.85, 0.18));
+      hR.rotation.z = Math.PI / 2;
+      hR.position.set(0.95, 1.15, 0);
+      hR.userData = { key: 'cup', colorable: true };
+      cupGroup.add(hR);
+
+      cupGroup.userData = { key: 'cup', colorable: true, defaultY: def.parts[1].defaultY, explodedY: def.parts[1].explodedY };
+      cupGroup.position.y = cupGroup.userData.defaultY;
+      modelParts['cup'] = cupGroup;
+      currentMeshGroup.add(cupGroup);
+
+      // 3. Custom 3D Padel Racket Emblem & Optic Ball
+      const emblemColor = getPartColor('trophy', 'emblem', def.parts[2].defaultColor);
+      const embGroup = new THREE.Group();
+
+      // Padel Racket Face
+      const rHeadGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.08, 28);
+      const rHead = new THREE.Mesh(rHeadGeo, createPartMaterial(emblemColor, 0.65, 0.28));
+      rHead.rotation.x = Math.PI / 2;
+      rHead.userData = { key: 'emblem', colorable: true };
+      embGroup.add(rHead);
+
+      // Handle
+      const rHandleGeo = new THREE.CylinderGeometry(0.07, 0.08, 0.65, 16);
+      const rHandle = new THREE.Mesh(rHandleGeo, createPartMaterial(emblemColor, 0.65, 0.28));
+      rHandle.position.set(0, -0.65, 0);
+      rHandle.userData = { key: 'emblem', colorable: true };
+      embGroup.add(rHandle);
+
+      // Optic Padel Ball
+      const ballGeo = new THREE.SphereGeometry(0.18, 16, 16);
+      const ballMat = new THREE.MeshStandardMaterial({ color: 0xCCFF00, roughness: 0.65 });
+      const ball = new THREE.Mesh(ballGeo, ballMat);
+      ball.position.set(0.42, 0.35, 0.12);
+      ball.userData = { colorable: false };
+      embGroup.add(ball);
+
+      embGroup.userData = { key: 'emblem', colorable: true, defaultY: def.parts[2].defaultY, explodedY: def.parts[2].explodedY };
+      embGroup.position.y = embGroup.userData.defaultY;
+      modelParts['emblem'] = embGroup;
+      currentMeshGroup.add(embGroup);
+    }
+
+    function createPartMaterial(hex, metal = 0.2, rough = 0.35) {
+      return new THREE.MeshStandardMaterial({
+        color: new THREE.Color(hex),
+        metalness: metal,
+        roughness: rough,
+        envMapIntensity: 1.2
+      });
+    }
+
+    function setMeshColor(obj, hex, metal = 0.2, rough = 0.35) {
+      if (!obj) return;
+      const color = new THREE.Color(hex);
+      if (obj.material) {
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach(m => {
+            m.color.copy(color);
+            m.metalness = metal;
+            m.roughness = rough;
+            m.needsUpdate = true;
+          });
+        } else {
+          obj.material.color.copy(color);
+          obj.material.metalness = metal;
+          obj.material.roughness = rough;
+          obj.material.needsUpdate = true;
+        }
+      }
+      obj.traverse(child => {
+        if (child.isMesh && child.userData && child.userData.colorable !== false && child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach(m => {
+              m.color.copy(color);
+              m.metalness = metal;
+              m.roughness = rough;
+              m.needsUpdate = true;
+            });
+          } else {
+            child.material.color.copy(color);
+            child.material.metalness = metal;
+            child.material.roughness = rough;
+            child.material.needsUpdate = true;
+          }
+        }
+      });
+    }
+
+    function updatePaletteHighlight(hex) {
+      document.querySelectorAll('#filamentPaletteContainer .color-btn, #reliefPaletteContainer .color-btn').forEach(btn => {
+        if (btn.getAttribute('data-hex')?.toLowerCase() === hex.toLowerCase()) {
+          btn.classList.add('ring-2', 'ring-pink-500', 'scale-110');
+        } else {
+          btn.classList.remove('ring-2', 'ring-pink-500', 'scale-110');
+        }
+      });
+    }
+
+    function renderFilamentPalette() {
+      const container = document.getElementById('filamentPaletteContainer');
+      if (container) {
+        container.innerHTML = '';
+        STUDIO_PALETTES.forEach((p) => {
+          const btn = document.createElement('button');
+          btn.setAttribute('data-hex', p.hex);
+          btn.className = 'color-btn w-7 h-7 rounded-full border-2 border-white shadow-xs transition-transform hover:scale-110 relative';
+          btn.style.backgroundColor = p.hex;
+          btn.title = `${p.name} (${p.type})`;
+          btn.onclick = () => applyColorToActivePart(p.hex, p.name, p.metal, p.rough);
+          container.appendChild(btn);
+        });
+      }
+
+      // Also render relief palette in Tab 3
+      const reliefContainer = document.getElementById('reliefPaletteContainer');
+      if (reliefContainer) {
+        reliefContainer.innerHTML = '';
+        STUDIO_PALETTES.forEach((p) => {
+          const btn = document.createElement('button');
+          btn.setAttribute('data-hex', p.hex);
+          btn.className = 'color-btn w-6 h-6 rounded-full border-2 border-white shadow-2xs transition-transform hover:scale-110 relative';
+          btn.style.backgroundColor = p.hex;
+          btn.title = `${p.name} (Relief)`;
+          btn.onclick = () => {
+            selectActivePart('relief');
+            applyColorToActivePart(p.hex, p.name, p.metal, p.rough);
+          };
+          reliefContainer.appendChild(btn);
+        });
+      }
+    }
+
+    function renderPartsList(def) {
+      const container = document.getElementById('partsListContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      def.parts.forEach(part => {
+        const item = document.createElement('div');
+        item.id = `part-item-${part.key}`;
+        const isActive = activePartKey === part.key;
+        item.className = `p-2.5 rounded-2xl border transition-all ${
+          isActive
+            ? 'border-pink-500 bg-pink-50/90 ring-1 ring-pink-400'
+            : 'border-slate-200 bg-slate-50 hover:border-pink-300'
+        }`;
+
+        const currentColor = getPartColor(currentModelType, part.key, part.defaultColor);
+
+        let html = `
+          <div class="flex items-center justify-between cursor-pointer mb-2" onclick="selectActivePart('${part.key}')">
+            <div class="flex items-center gap-2">
+              <span id="part-color-dot-${part.key}" class="w-4 h-4 rounded-full border border-slate-300 shadow-xs shrink-0" style="background-color: ${currentColor}"></span>
+              <span class="font-cute text-xs font-bold text-slate-800">${part.label}</span>
+            </div>
+            <span class="text-[10px] font-mono ${isActive ? 'bg-pink-500 text-white' : 'bg-white text-pink-600 border border-slate-200'} font-bold px-2 py-0.5 rounded-md">
+              ${isActive ? '✓ Aktif' : 'Pilih'}
+            </span>
+          </div>
+          <!-- 1-Click Inline Swatches per Part -->
+          <div class="flex items-center gap-1.5 flex-wrap pt-1 border-t border-slate-200/60" id="part-swatches-${part.key}">
+        `;
+
+        STUDIO_PALETTES.forEach(p => {
+          const isSelected = p.hex.toLowerCase() === currentColor.toLowerCase();
+          html += `
+            <button type="button"
+              data-hex="${p.hex}"
+              onclick="event.stopPropagation(); selectActivePart('${part.key}'); applyColorToActivePart('${p.hex}', '${p.name}', ${p.metal}, ${p.rough});"
+              class="w-5 h-5 rounded-full border-2 border-white shadow-2xs transition-transform hover:scale-125 relative ${isSelected ? 'ring-2 ring-pink-500 scale-110' : ''}"
+              style="background-color: ${p.hex}"
+              title="${p.name} (${part.label})">
+            </button>
+          `;
+        });
+
+        html += `</div>`;
+        item.innerHTML = html;
+        container.appendChild(item);
+      });
+    }
+
+    function selectActivePart(key) {
+      if (!modelParts[key]) return;
+      activePartKey = key;
+      const def = MODEL_DEFINITIONS[currentModelType] || MODEL_DEFINITIONS.clicker;
+      const partDef = def.parts.find(p => p.key === key);
+      const label = partDef ? partDef.label : key;
+
+      const partTag = document.getElementById('activePartNameTag');
+      if (partTag) partTag.textContent = label;
+      const promptText = document.getElementById('partPromptText');
+      if (promptText) promptText.textContent = `Bagian aktif: ${label}`;
+
+      document.querySelectorAll('#partsListContainer > div').forEach(el => {
+        el.classList.remove('border-pink-500', 'bg-pink-50/90', 'ring-1', 'ring-pink-400');
+        el.classList.add('border-slate-200', 'bg-slate-50');
+      });
+      const activeEl = document.getElementById(`part-item-${key}`);
+      if (activeEl) {
+        activeEl.classList.remove('border-slate-200', 'bg-slate-50');
+        activeEl.classList.add('border-pink-500', 'bg-pink-50/90', 'ring-1', 'ring-pink-400');
+      }
+
+      const currentColor = getPartColor(currentModelType, key, partDef ? partDef.defaultColor : '#FF85A1');
+      updatePaletteHighlight(currentColor);
+      const activeSwatch = STUDIO_PALETTES.find(p => p.hex.toLowerCase() === currentColor.toLowerCase());
+      const nameEl = document.getElementById('selectedColorName');
+      if (nameEl) nameEl.textContent = activeSwatch ? activeSwatch.name : 'Kustom';
+      const reliefNameEl = document.getElementById('reliefColorNameDisplay');
+      if (reliefNameEl && key === 'relief') reliefNameEl.textContent = activeSwatch ? activeSwatch.name : 'Kustom';
+
+      updateWireframeHighlight(key);
+    }
+
+    function updateWireframeHighlight(key) {
+      if (wireframeOverlay) {
+        if (wireframeOverlay.parent) wireframeOverlay.parent.remove(wireframeOverlay);
+        wireframeOverlay.traverse(child => {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) child.material.dispose();
+        });
+        wireframeOverlay = null;
+      }
+
+      const targetMesh = modelParts[key];
+      if (!targetMesh) return;
+
+      const group = new THREE.Group();
+      targetMesh.traverse(child => {
+        if (child.isMesh && child.geometry && (!child.userData || child.userData.colorable !== false)) {
+          const edges = new THREE.EdgesGeometry(child.geometry, 22);
+          const lineMat = new THREE.LineBasicMaterial({
+            color: 0x00F0FF,
+            linewidth: 2,
+            transparent: true,
+            opacity: 0.85
+          });
+          const lines = new THREE.LineSegments(edges, lineMat);
+          if (child === targetMesh) {
+            lines.position.set(0, 0, 0);
+            lines.rotation.set(0, 0, 0);
+            lines.scale.set(1, 1, 1);
+          } else {
+            lines.position.copy(child.position);
+            lines.rotation.copy(child.rotation);
+            lines.scale.copy(child.scale);
+          }
+          group.add(lines);
+        }
+      });
+
+      if (group.children.length > 0) {
+        wireframeOverlay = group;
+        wireframeOverlay.position.copy(targetMesh.position);
+        wireframeOverlay.rotation.copy(targetMesh.rotation);
+        wireframeOverlay.scale.copy(targetMesh.scale);
+        currentMeshGroup.add(wireframeOverlay);
+      }
+    }
+
+    function applyColorToActivePart(hex, name, metal = 0.2, rough = 0.35) {
+      if (!activePartKey) return;
+      if (!modelColorState[currentModelType]) modelColorState[currentModelType] = {};
+      modelColorState[currentModelType][activePartKey] = hex;
+      currentActiveColor = hex;
+
+      const targetMesh = modelParts[activePartKey];
+      if (targetMesh) {
+        setMeshColor(targetMesh, hex, metal, rough);
+      }
+
+      const dot = document.getElementById(`part-color-dot-${activePartKey}`);
+      if (dot) dot.style.backgroundColor = hex;
+
+      const nameEl = document.getElementById('selectedColorName');
+      if (nameEl) nameEl.textContent = name;
+
+      const reliefNameEl = document.getElementById('reliefColorNameDisplay');
+      if (reliefNameEl && activePartKey === 'relief') reliefNameEl.textContent = name;
+
+      updatePaletteHighlight(hex);
+
+      // Update active ring on part-specific swatches
+      const partSwatches = document.getElementById(`part-swatches-${activePartKey}`);
+      if (partSwatches) {
+        partSwatches.querySelectorAll('button').forEach(btn => {
+          if (btn.getAttribute('data-hex')?.toLowerCase() === hex.toLowerCase()) {
+            btn.classList.add('ring-2', 'ring-pink-500', 'scale-110');
+          } else {
+            btn.classList.remove('ring-2', 'ring-pink-500', 'scale-110');
+          }
+        });
+      }
+
+      playClickSound();
+      calcSimulationCost();
+    }
+
+    function setExplodedMode(exploded) {
+      isExploded = exploded;
+      const btnUtuh = document.getElementById('btnViewUtuh');
+      const btnBagian = document.getElementById('btnViewBagian');
+      if (btnUtuh && btnBagian) {
+        if (isExploded) {
+          btnBagian.className = 'px-3 py-1 rounded-xl text-xs font-cute font-bold transition-all bg-pink-500 text-white shadow-xs';
+          btnUtuh.className = 'px-3 py-1 rounded-xl text-xs font-cute font-bold transition-all text-slate-600 hover:text-pink-600';
+        } else {
+          btnUtuh.className = 'px-3 py-1 rounded-xl text-xs font-cute font-bold transition-all bg-pink-500 text-white shadow-xs';
+          btnBagian.className = 'px-3 py-1 rounded-xl text-xs font-cute font-bold transition-all text-slate-600 hover:text-pink-600';
+          playClickSound();
+        }
+      }
+    }
+
+    function setCameraAngle(angle) {
+      if (!camera || !controls) return;
+      ['btnAnglePersp', 'btnAngleFront', 'btnAngleTop'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.className = 'px-2 py-1 rounded-lg font-semibold text-slate-500 hover:text-slate-800';
+      });
+      if (angle === 'persp') {
+        camera.position.set(3.2, 4.0, 5.8);
+        controls.target.set(0, 0.3, 0);
+        const el = document.getElementById('btnAnglePersp');
+        if (el) el.className = 'px-2 py-1 rounded-lg font-bold bg-white text-slate-800 shadow-xs';
+      } else if (angle === 'front') {
+        camera.position.set(0, 0.3, 7.0);
+        controls.target.set(0, 0.3, 0);
+        const el = document.getElementById('btnAngleFront');
+        if (el) el.className = 'px-2 py-1 rounded-lg font-bold bg-white text-slate-800 shadow-xs';
+      } else if (angle === 'top') {
+        camera.position.set(0, 8.0, 0.1);
+        controls.target.set(0, 0, 0);
+        const el = document.getElementById('btnAngleTop');
+        if (el) el.className = 'px-2 py-1 rounded-lg font-bold bg-white text-slate-800 shadow-xs';
+      }
+      controls.update();
+    }
+
+    function reset3DCamera() { setCameraAngle('persp'); }
+
+    function capture3DScreenshot() {
+      if (!renderer || !scene || !camera) return;
+      renderer.render(scene, camera);
+      const link = document.createElement('a');
+      link.download = `kirei3d-slicer-${currentModelType}.png`;
+      link.href = renderer.domElement.toDataURL('image/png');
+      link.click();
+    }
+
+    function handleImage3DUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const offCanvas = document.createElement('canvas');
+          const res = 64;
+          offCanvas.width = res + 1;
+          offCanvas.height = res + 1;
+          const offCtx = offCanvas.getContext('2d');
+          offCtx.imageSmoothingEnabled = true;
+          offCtx.imageSmoothingQuality = 'high';
+          offCtx.drawImage(img, 0, 0, offCanvas.width, offCanvas.height);
+          heightmapTexture = { src: e.target.result, displacementCanvas: offCanvas };
+          if (currentModelType !== 'clicker' && currentModelType !== 'topo') switch3DModel('clicker');
+          else buildModel3D(currentModelType);
+          switchStudioTab('gambar');
+          confetti({ particleCount: 40, spread: 60, origin: { y: 0.5 } });
+          const promptText = document.getElementById('partPromptText');
+          if (promptText) promptText.textContent = `🎉 Relief 3D dari ${file.name} aktif!`;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function setRelief3DMode(mode) {
+      relief3DMode = mode;
+      const btnSolid = document.getElementById('btnModeSolid');
+      const btnLito = document.getElementById('btnModeLitofan');
+      if (btnSolid && btnLito) {
+        if (mode === 'solid') {
+          btnSolid.className = 'py-1.5 rounded-lg bg-white text-pink-600 shadow-xs transition-all text-center flex items-center justify-center gap-1';
+          btnLito.className = 'py-1.5 rounded-lg text-slate-600 hover:text-pink-600 transition-all text-center flex items-center justify-center gap-1';
+        } else {
+          btnLito.className = 'py-1.5 rounded-lg bg-white text-pink-600 shadow-xs transition-all text-center flex items-center justify-center gap-1';
+          btnSolid.className = 'py-1.5 rounded-lg text-slate-600 hover:text-pink-600 transition-all text-center flex items-center justify-center gap-1';
+        }
+      }
+      buildModel3D(currentModelType);
+    }
+
+    function applyPresetShape(shapeName) {
+      activePresetShape = shapeName;
+      heightmapTexture = null;
+      setRelief3DMode('solid');
+      buildModel3D(currentModelType);
+      const promptText = document.getElementById('partPromptText');
+      if (promptText) promptText.textContent = `✨ Bentuk Vektor '${shapeName.toUpperCase()}' aktif!`;
+      confetti({ particleCount: 35, spread: 55, origin: { y: 0.55 } });
+    }
+
+    function onBgThresholdChange(val) {
+      bgThresholdSensitivity = parseInt(val, 10) || 80;
+      const lbl = document.getElementById('bgThresholdLabel');
+      if (lbl) lbl.textContent = bgThresholdSensitivity + '%';
+      if (heightmapTexture && modelParts['relief']) {
+        buildModel3D(currentModelType);
+      }
+    }
+
+    function onReliefDepthChange(val) {
+      reliefDepthValue = parseFloat(val) || 3.5;
+      const lbl = document.getElementById('reliefDepthLabel');
+      if (lbl) lbl.textContent = reliefDepthValue.toFixed(1) + ' mm';
+      if (modelParts['relief']) buildModel3D(currentModelType);
+    }
+
+    function onInvertReliefChange(checked) {
+      invertReliefValue = checked;
+      if (modelParts['relief']) buildModel3D(currentModelType);
+    }
+
+    function onCustom3DTextChange(val) { custom3DTextValue = val.toUpperCase(); }
+
+    function applyCustom3DText() {
+      heightmapTexture = null;
+      activePresetShape = 'initial';
+      setRelief3DMode('solid');
+      buildModel3D(currentModelType);
+      const promptText = document.getElementById('partPromptText');
+      if (promptText) promptText.textContent = `✨ Inisial '${custom3DTextValue}' diterapkan!`;
+      confetti({ particleCount: 30, spread: 45, origin: { y: 0.55 } });
+    }
+
+    function switchStudioTab(tab) {
+      ['tabContentWarna', 'tabContentBentuk', 'tabContentGambar'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+      ['tabBtnWarna', 'tabBtnBentuk', 'tabBtnGambar'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.className = 'flex-1 py-1.5 rounded-xl text-xs font-cute font-bold transition-all text-slate-600 hover:text-pink-600 flex items-center justify-center gap-1';
+      });
+      if (tab === 'warna') {
+        document.getElementById('tabContentWarna').classList.remove('hidden');
+        document.getElementById('tabBtnWarna').className = 'flex-1 py-1.5 rounded-xl text-xs font-cute font-bold transition-all bg-white text-pink-600 shadow-xs flex items-center justify-center gap-1';
+      } else if (tab === 'bentuk') {
+        document.getElementById('tabContentBentuk').classList.remove('hidden');
+        document.getElementById('tabBtnBentuk').className = 'flex-1 py-1.5 rounded-xl text-xs font-cute font-bold transition-all bg-white text-pink-600 shadow-xs flex items-center justify-center gap-1';
+      } else if (tab === 'gambar') {
+        document.getElementById('tabContentGambar').classList.remove('hidden');
+        document.getElementById('tabBtnGambar').className = 'flex-1 py-1.5 rounded-xl text-xs font-cute font-bold transition-all bg-white text-pink-600 shadow-xs flex items-center justify-center gap-1';
+      }
+    }
+
+    function setupCanvasRaycaster(container) {
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+      let startX = 0, startY = 0;
+
+      container.addEventListener('pointerdown', (e) => {
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+
+      container.addEventListener('pointerup', (e) => {
+        const dist = Math.hypot(e.clientX - startX, e.clientY - startY);
+        if (dist > 6) return; // User was rotating/orbiting the camera, ignore!
+
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+
+        const meshesToTest = Object.values(modelParts);
+        const intersects = raycaster.intersectObjects(meshesToTest, true);
+        if (intersects.length > 0) {
+          let hit = intersects[0].object;
+          while (hit && !hit.userData?.key && hit.parent && hit.parent !== currentMeshGroup) {
+            hit = hit.parent;
+          }
+          if (hit && hit.userData && hit.userData.key) {
+            selectActivePart(hit.userData.key);
+            playClickSound();
+          }
+        }
+      });
     }
 
     function switch3DModel(type) {
-      currentModelType = type;
       document.querySelectorAll('.model-btn').forEach(b => {
-        b.className = 'model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex items-center gap-1.5 hover:border-slate-300';
+        b.className = 'model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex flex-col gap-0.5 hover:border-slate-300 transition-all';
       });
       const activeBtn = document.getElementById('mbtn-' + type);
-      if (activeBtn) {
-        activeBtn.className = 'model-btn active p-2 rounded-xl border-2 border-pink-500 bg-pink-50 font-cute text-xs font-bold text-pink-600 text-left flex items-center gap-1.5';
+      if (activeBtn) activeBtn.className = 'model-btn active p-2 rounded-xl border-2 border-pink-500 bg-pink-50 font-cute text-xs font-bold text-pink-600 text-left flex flex-col gap-0.5 transition-all';
+      const selectEl = document.getElementById('calcProductSelect');
+      if (selectEl) {
+        for (let i = 0; i < selectEl.options.length; i++) {
+          if (selectEl.options[i].getAttribute('data-model') === type) {
+            selectEl.selectedIndex = i;
+            break;
+          }
+        }
       }
-      create3DGeometry(type, currentActiveColor);
+      buildModel3D(type);
+      calcSimulationCost();
     }
 
-    function set3DColor(hex, name, metal = 0.2, rough = 0.35) {
-      currentActiveColor = hex;
-      document.getElementById('selectedColorName').textContent = name;
-      create3DGeometry(currentModelType, hex);
-    }
+    function set3DColor(hex, name, metal = 0.2, rough = 0.35) { applyColorToActivePart(hex, name, metal, rough); }
 
     function toggleAutoRotate() {
       isAutoRotating = !isAutoRotating;
-      document.getElementById('rotateBtnLabel').textContent = isAutoRotating ? 'Pause' : 'Putar';
+      const icon = document.getElementById('rotateIcon');
+      if (icon) {
+        icon.setAttribute('data-lucide', isAutoRotating ? 'pause' : 'play');
+        lucide.createIcons();
+      }
     }
 
-    function setup3DDragControls(container) {
-      let isDragging = false;
-      let prevMousePos = { x: 0, y: 0 };
-
-      container.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        isAutoRotating = false;
-        prevMousePos = { x: e.clientX, y: e.clientY };
-      });
-
-      window.addEventListener('mouseup', () => { isDragging = false; });
-
-      container.addEventListener('mousemove', (e) => {
-        if (!isDragging || !currentMesh) return;
-        const deltaX = e.clientX - prevMousePos.x;
-        const deltaY = e.clientY - prevMousePos.y;
-        currentMesh.rotation.y += deltaX * 0.01;
-        currentMesh.rotation.x += deltaY * 0.005;
-        prevMousePos = { x: e.clientX, y: e.clientY };
-      });
-
-      // Touch events for mobile
-      container.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) {
-          isDragging = true;
-          isAutoRotating = false;
-          prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        }
-      });
-      container.addEventListener('touchmove', (e) => {
-        if (!isDragging || !currentMesh || e.touches.length !== 1) return;
-        const deltaX = e.touches[0].clientX - prevMousePos.x;
-        const deltaY = e.touches[0].clientY - prevMousePos.y;
-        currentMesh.rotation.y += deltaX * 0.01;
-        currentMesh.rotation.x += deltaY * 0.005;
-        prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      });
-      container.addEventListener('touchend', () => { isDragging = false; });
+    function onScaleSelectChange() {
+      const sel = document.getElementById('calcScaleSelect');
+      currentScaleFactor = parseFloat(sel.value) || 1.0;
+      if (currentMeshGroup) currentMeshGroup.scale.set(currentScaleFactor, currentScaleFactor, currentScaleFactor);
+      calcSimulationCost();
     }
+
 
     // 5. SHOPPING CART ENGINE
     function addToCart(title, price, img) {
@@ -2197,15 +3949,32 @@
       renderCartItems();
     }
 
+    let appliedVoucherCode = "";
+
     function applyVoucherCode() {
       const code = document.getElementById('voucherCodeInput').value.trim().toUpperCase();
+      if (!code) {
+        alert("Silakan masukkan kode voucher atau kode referral teman!");
+        return;
+      }
+      const alertEl = document.getElementById('voucherAlert');
       if (code === 'KIREI15') {
         discountPercent = 0.15;
-        document.getElementById('voucherAlert').classList.remove('hidden');
+        appliedVoucherCode = 'KIREI15';
+        alertEl.textContent = '🎉 Kode KIREI15 aktif! Diskon 15% diterapkan.';
+        alertEl.classList.remove('hidden');
+        renderCartItems();
+        confetti({ particleCount: 30, spread: 50 });
+      } else if (code.length >= 3) {
+        // Referral Code Komunitas / Teman (Diskon 10%)
+        discountPercent = 0.10;
+        appliedVoucherCode = code;
+        alertEl.textContent = `🤝 Kode Referral Teman [${code}] aktif! Diskon 10% diterapkan.`;
+        alertEl.classList.remove('hidden');
         renderCartItems();
         confetti({ particleCount: 30, spread: 50 });
       } else {
-        alert("Kode voucher tidak valid!");
+        alert("Kode voucher/referral minimal 3 karakter!");
       }
     }
 
@@ -2231,6 +4000,9 @@
       if (hasBlindBagAddon) {
         summary += `+ Mystery Blind Bag Charm (1x) - Rp 15.000%0A`;
       }
+      if (appliedVoucherCode) {
+        summary += `🏷️ Kode Referral/Voucher: *${appliedVoucherCode}* (Diskon ${Math.round(discountPercent * 100)}%)%0A`;
+      }
       const totalText = document.getElementById('cartTotalText').textContent;
       summary += `%0ATotal: ${totalText}%0ABisa dibantu proses pembayarannya kak?`;
       window.open(`https://wa.me/6281219159200?text=${summary}`, '_blank');
@@ -2242,7 +4014,12 @@
         return;
       }
       const totalText = document.getElementById('cartTotalText').textContent;
-      const numOnly = parseInt(totalText.replace(/[^0-9]/g, '')) || 95000;
+      const parsedNum = parseInt(totalText.replace(/[^0-9]/g, ''), 10);
+      const numOnly = (!isNaN(parsedNum) && parsedNum > 0) ? parsedNum : 0;
+      if (numOnly <= 0) {
+        alert("Total tagihan keranjang belum valid!");
+        return;
+      }
       openInstantQrisModal(numOnly, 'Order Keranjang Kirei3D');
     }
 
@@ -2255,23 +4032,84 @@
     let currentCalcTotal = 95000;
     let currentCalcItemName = "Miniatur Chibi Custom DIY Kit";
     let currentCalcItemImg = "assets/chibi.jpg";
+    let currentWeightGram = 50;
+
+    function handleProductSelectChange() {
+      const prodSelect = document.getElementById('calcProductSelect');
+      const weightCont = document.getElementById('customWeightContainer');
+      if (prodSelect && weightCont) {
+        if (prodSelect.value === 'custom_stl') {
+          weightCont.classList.remove('hidden');
+          lucide.createIcons();
+        } else {
+          weightCont.classList.add('hidden');
+        }
+        const selectedOpt = prodSelect.options[prodSelect.selectedIndex];
+        const modelKey = selectedOpt ? selectedOpt.getAttribute('data-model') : null;
+        if (modelKey && modelKey !== currentModelType) {
+          buildModel3D(modelKey);
+          document.querySelectorAll('.model-btn').forEach(b => {
+            b.className = 'model-btn p-2 rounded-xl border border-slate-200 bg-white font-cute text-xs font-bold text-slate-600 text-left flex flex-col gap-0.5 hover:border-slate-300 transition-all';
+          });
+          const activeBtn = document.getElementById('mbtn-' + modelKey);
+          if (activeBtn) activeBtn.className = 'model-btn active p-2 rounded-xl border-2 border-pink-500 bg-pink-50 font-cute text-xs font-bold text-pink-600 text-left flex flex-col gap-0.5 transition-all';
+        }
+      }
+      calcSimulationCost();
+    }
+
+    function selectCustomStlMode() {
+      const prodSelect = document.getElementById('calcProductSelect');
+      if (prodSelect) {
+        prodSelect.value = 'custom_stl';
+        handleProductSelectChange();
+      }
+    }
+
+    function updateCustomGramWeight(val) {
+      currentWeightGram = Math.max(10, Math.min(1000, parseInt(val, 10) || 10));
+      const rangeEl = document.getElementById('customWeightRange');
+      const inputEl = document.getElementById('customWeightInput');
+      if (rangeEl) rangeEl.value = currentWeightGram;
+      if (inputEl) inputEl.value = currentWeightGram;
+      calcSimulationCost();
+    }
 
     function calcSimulationCost() {
       const prodSelect = document.getElementById('calcProductSelect');
-      const basePrice = parseInt(prodSelect.value) || 95000;
+      if (!prodSelect) return;
+
       const selectedOption = prodSelect.options[prodSelect.selectedIndex];
-      currentCalcItemName = selectedOption.getAttribute('data-name') || 'Custom 3D Print';
-      currentCalcItemImg = selectedOption.getAttribute('data-img') || 'assets/chibi.jpg';
+      const matSelect = document.getElementById('calcMaterialSelect');
+      const selectedMat = matSelect.options[matSelect.selectedIndex];
+      const matExtra = parseInt(selectedMat.value, 10) || 0;
+      const scaleMultiplier = Math.max(0.1, parseFloat(document.getElementById('calcScaleSelect').value) || 1);
 
-      const matExtra = parseInt(document.getElementById('calcMaterialSelect').value) || 0;
-      const scaleMultiplier = parseFloat(document.getElementById('calcScaleSelect').value) || 1;
-      
       let addonExtra = 0;
-      if (document.getElementById('addonPaintKit').checked) addonExtra += 15000;
-      if (document.getElementById('addonGiftBox').checked) addonExtra += 10000;
+      const paintKitEl = document.getElementById('addonPaintKit');
+      const giftBoxEl = document.getElementById('addonGiftBox');
+      if (paintKitEl && paintKitEl.checked) addonExtra += 15000;
+      if (giftBoxEl && giftBoxEl.checked) addonExtra += 10000;
 
-      currentCalcTotal = Math.round((basePrice + matExtra) * scaleMultiplier) + addonExtra;
-      document.getElementById('calcTotalDisplay').textContent = 'Rp ' + currentCalcTotal.toLocaleString('id-ID');
+      if (prodSelect.value === 'custom_stl') {
+        const grams = Math.max(10, Math.min(1000, parseInt(currentWeightGram, 10) || 50));
+        const ratePerGram = parseInt(selectedMat.getAttribute('data-rate'), 10) || 500;
+        const mov = parseInt(selectedMat.getAttribute('data-mov'), 10) || 15000;
+        const rawBase = Math.max(mov, Math.round(grams * ratePerGram));
+        currentCalcItemName = `Jasa Cetak File 3D (${grams}g, ${selectedMat.text.split('(')[0].trim()})`;
+        currentCalcItemImg = selectedOption.getAttribute('data-img') || 'assets/trophy_padel.jpg';
+        currentCalcTotal = Math.max(0, Math.round(rawBase * scaleMultiplier) + addonExtra);
+      } else {
+        const basePrice = Math.max(0, parseInt(prodSelect.value, 10) || 95000);
+        currentCalcItemName = selectedOption.getAttribute('data-name') || 'Custom 3D Print';
+        currentCalcItemImg = selectedOption.getAttribute('data-img') || 'assets/chibi.jpg';
+        currentCalcTotal = Math.max(0, Math.round((basePrice + matExtra) * scaleMultiplier) + addonExtra);
+      }
+
+      const totalDisplay = document.getElementById('calcTotalDisplay');
+      if (totalDisplay) {
+        totalDisplay.textContent = 'Rp ' + currentCalcTotal.toLocaleString('id-ID');
+      }
     }
 
     function addCustomSimulationToCart() {
@@ -2306,10 +4144,21 @@
     function submitCustomOrder() {
       const name = document.getElementById('custName').value.trim() || 'Pelanggan';
       const notes = document.getElementById('custNotes').value.trim() || 'Sesuai spesifikasi';
-      const color = document.getElementById('selectedColorName').textContent;
       const totalDisplay = document.getElementById('calcTotalDisplay').textContent;
       
-      const msg = encodeURIComponent(`Halo Kirei3D! Saya ingin memesan Kustom 3D:%0A- Nama: ${name}%0A- Produk: ${currentCalcItemName}%0A- Model 3D: ${currentModelType.toUpperCase()}%0A- Warna Filamen: ${color}%0A- Estimasi Biaya: ${totalDisplay}%0A- Catatan/Plakat: ${notes}%0A(File gambar/GPX siap dikirimkan di chat WA ini kak)`);
+      const def = MODEL_DEFINITIONS[currentModelType] || MODEL_DEFINITIONS.clicker;
+      let partColorSummary = [];
+      if (def && def.parts) {
+        def.parts.forEach(p => {
+          const hex = getPartColor(currentModelType, p.key, p.defaultColor);
+          const pal = STUDIO_PALETTES.find(item => item.hex.toLowerCase() === hex.toLowerCase());
+          const colorName = pal ? pal.name : hex;
+          partColorSummary.push(`${p.label}: ${colorName} (${hex})`);
+        });
+      }
+      const colorStr = partColorSummary.join(' | ');
+
+      const msg = encodeURIComponent(`Halo Kirei3D! Saya ingin memesan Kustom 3D:%0A- Nama: ${name}%0A- Produk: ${currentCalcItemName}%0A- Model 3D: ${def.name}%0A- Warna AMS Parts: ${colorStr}%0A- Estimasi Biaya: ${totalDisplay}%0A- Catatan/Plakat: ${notes}%0A(Desain dibuat via Kirei3D Slicer Studio 3D)`);
       window.open(`https://wa.me/6281219159200?text=${msg}`, '_blank');
     }
 
